@@ -11,7 +11,7 @@ const { post, featured = false } = Astro.props;
 ---
 
 <article class:list={['post-card', { featured }]}>
-	<a class="post-card-link" href={`/posts/${post.id}/`} aria-label={`阅读：${post.data.title}`}>
+	<a class="post-card-link" href={`/posts/${post.id}/`} aria-label={`阅读学习笔记：${post.data.title}`}>
 		<div class="post-card-meta">
 			<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
 			<span aria-hidden="true">·</span>
@@ -20,7 +20,7 @@ const { post, featured = false } = Astro.props;
 		<h3>{post.data.title}</h3>
 		<p>{post.data.description}</p>
 		<div class="post-card-footer">
-			<div class="tag-row" aria-label="文章标签">
+			<div class="tag-row" aria-label="学习笔记标签">
 				{post.data.tags.slice(0, 3).map((tag) => <span class="tag">{tag}</span>)}
 			</div>
 			<span class="arrow" aria-hidden="true">↗</span>

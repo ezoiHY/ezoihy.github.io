@@ -8,7 +8,7 @@ interface Props {
 
 const {
 	title,
-	description = 'Ezoihy 的个人博客，记录技术、创作与持续探索。',
+	description = 'Ezoihy 的个人博客，记录学习笔记、开源项目、论文阅读与持续探索。',
 } = Astro.props;
 
 const pageTitle = title === "Ezoihy's Blog" ? title : `${title} · Ezoihy's Blog`;
@@ -30,6 +30,7 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
+		<meta name="site-version" content="navigation-v2" />
 		<meta name="description" content={description} />
 		<meta name="theme-color" content="#f4f0e8" />
 		<link rel="canonical" href={canonicalURL} />
@@ -52,7 +53,7 @@ const isActive = (href: string) => href === '/' ? currentPath === '/' : currentP
 			})();
 		</script>
 	</head>
-	<body>
+	<body data-site-version="navigation-v2">
 		<a class="skip-link" href="#main-content">跳到主要内容</a>
 		<header class="site-header">
 			<div class="shell header-inner">
