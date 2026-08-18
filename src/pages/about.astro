@@ -2,28 +2,102 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="关于" description="关于 Ezoihy 与这个个人博客。">
+<BaseLayout title="关于" description="韩喻，华南理工大学机器人工程本科生，研究方向包括灵巧机器人手、欠驱动机构、视觉机器人控制与具身智能。">
 	<header class="page-hero shell">
-		<p class="eyebrow">ABOUT EZOIHY</p>
+		<p class="eyebrow">ABOUT HAN YU</p>
+		<h1>韩喻 <span class="title-alias">/ Harry Han</span></h1>
+		<p class="intro">机器人工程本科生，关注灵巧机器人手、欠驱动机构、视觉机器人控制与具身智能。</p>
 	</header>
 	<section class="shell about-grid">
 		<aside class="profile-card">
 			<img class="profile-avatar" src="/avatar.webp" alt="韩喻的头像" width="1206" height="1642" loading="lazy" decoding="async" />
 			<h2>韩喻</h2>
-			<p>Learning in public.</p>
+			<p>Robotics Engineering Undergraduate</p>
+			<ul class="identity-list">
+				<li>华南理工大学</li>
+				<li>机器人工程</li>
+				<li>Guangzhou, China</li>
+			</ul>
+			<div class="profile-links">
+				<a href="https://github.com/ezoihy" target="_blank" rel="noreferrer">GitHub ↗</a>
+				<a href="mailto:ezoihy@163.com">Email ↗</a>
+			</div>
 		</aside>
 		<div class="about-copy">
-			<h2>关于这个博客</h2>
-			<p>这是我的个人博客。目前它刚刚开始，接下来我会在这里整理学习笔记、开源项目、论文记录，以及对工具和创作过程的理解。</p>
-			<p>相比追求数量，我更希望每篇内容都能留下清晰的问题、真实的过程和可以继续使用的结论。</p>
-			<h2>我希望坚持的原则</h2>
-			<div class="principles">
-				<div class="principle"><strong>保持好奇</strong><span>从真正想弄明白的问题出发。</span></div>
-				<div class="principle"><strong>公开构建</strong><span>记录过程，而不只展示结果。</span></div>
-				<div class="principle"><strong>长期维护</strong><span>让旧内容随着认知一起生长。</span></div>
-			</div>
-			<h2>联系</h2>
-			<p>目前可以通过 <a class="text-link" href="https://github.com/ezoihy" target="_blank" rel="noreferrer">GitHub ↗</a> 找到我。后续你也可以在这里补充邮箱或其他社交账号。</p>
+			<section class="about-section">
+				<p class="section-kicker">PROFILE</p>
+				<h2>把算法、机构与智能控制连接起来</h2>
+				<p class="about-lede">我目前就读于华南理工大学机器人工程专业。六年的信息学竞赛训练让我从算法与编程出发，随后逐步进入机械设计、人工智能和控制科学，希望形成能够跨越软件、硬件与真实机器人系统的工程能力。</p>
+				<p>我尤其关心机器人如何以更简单、可靠和低成本的方式完成灵巧操作：从欠驱动假肢手的机构与腱绳传动，到基于单目视觉的人手动作重定向，再到水下仿生机器人和本地大模型驱动的机器人交互。</p>
+			</section>
+
+			<section class="about-section">
+				<p class="section-kicker">RESEARCH INTERESTS</p>
+				<h2>研究与实践方向</h2>
+				<div class="focus-grid">
+					<article class="focus-card"><span>01</span><h3>灵巧机器人手</h3><p>灵巧操作、人手动作重定向与机器人手控制。</p></article>
+					<article class="focus-card"><span>02</span><h3>欠驱动机构</h3><p>以更少的驱动器实现自适应抓取与可靠力传递。</p></article>
+					<article class="focus-card"><span>03</span><h3>视觉机器人控制</h3><p>从视觉感知、三维重建到运动控制的完整链路。</p></article>
+					<article class="focus-card"><span>04</span><h3>具身智能</h3><p>探索大模型、感知和真实机器人之间的有效连接。</p></article>
+				</div>
+			</section>
+
+			<section class="about-section">
+				<p class="section-kicker">SELECTED WORK</p>
+				<h2>代表性研究与工程经历</h2>
+				<div class="resume-list">
+					<article class="resume-item">
+						<div class="resume-meta"><span>2024—2025</span><strong>工作</strong></div>
+						<h3>无滑轮腱绳驱动欠驱动假肢手</h3>
+						<p>设计了一款 304 g、单驱动器的假肢手，通过紧凑的欠驱动机构实现手指自适应运动与抓握力分配，并完成稳定抓取、湿润及水下环境运行等验证。</p>
+					</article>
+					<article class="resume-item">
+						<div class="resume-meta"><span>2026</span><strong>开源项目</strong></div>
+						<h3>基于单目 RGB 的机器人手控制</h3>
+						<p>结合 HaMeR 三维手部重建与基于优化的逆运动学，在不使用数据手套或动作捕捉设备的情况下，将人手动作映射到仿真多关节机器人手。</p>
+					</article>
+					<article class="resume-item">
+						<div class="resume-meta"><span>2025—至今</span><strong>国家级大学生创新项目</strong></div>
+						<h3>视觉驱动的仿生机器鱼</h3>
+						<p>参与水下人机协作研究，负责视觉识别、潜水员跟踪和算法架构设计，并基于 YOLOv8 开发场景识别模块、协助优化机械结构。</p>
+					</article>
+					<article class="resume-item">
+						<div class="resume-meta"><span>2025</span><strong>Unitree Go1</strong></div>
+						<h3>本地大模型驱动的语音四足机器人</h3>
+						<p>通过 Ollama 本地部署 Qwen 系列模型，将自然语言指令转换为机器人的运动与交互行为，并搭建大模型输出到运动控制接口的 API 链路。</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="about-section">
+				<p class="section-kicker">EXPERIENCE</p>
+				<h2>一些经历</h2>
+				<div class="principles">
+					<div class="principle"><strong>6 年</strong><span>信息学竞赛与算法训练，获得省级一等奖等奖项。</span></div>
+					<div class="principle"><strong>全国二等奖</strong><span>2024 全国大学生数学建模竞赛，并多次获得省级一等奖。</span></div>
+					<div class="principle"><strong>400+ 队伍亚军</strong><span>担任机器人挑战赛队长，协调机械、电控与算法工作。</span></div>
+				</div>
+			</section>
+
+			<section class="about-section">
+				<p class="section-kicker">TOOLKIT</p>
+				<h2>技术工具箱</h2>
+				<div class="skill-cloud" aria-label="技术技能">
+					<span>C++</span><span>Python</span><span>MATLAB</span><span>SolidWorks</span>
+					<span>3D Printing</span><span>YOLO</span><span>HaMeR</span><span>MuJoCo</span>
+					<span>PyBullet</span><span>Inverse Kinematics</span><span>Local LLM</span><span>Robot Prototyping</span>
+				</div>
+			</section>
+
+			<section class="about-section future-card">
+				<p class="section-kicker">WHAT'S NEXT</p>
+				<h2>让前沿机器人技术走向真实生活</h2>
+				<p>我希望继续连接严谨的学术研究与真实世界应用，不只提升技术能力，也理解用户价值、产品开发、团队协作与可持续的商业模式。长期目标是把机器人领域的前沿技术转化为更可靠、更可负担的消费级产品。</p>
+				<div class="future-links">
+					<a class="button primary" href="mailto:ezoihy@163.com">联系我 <span aria-hidden="true">→</span></a>
+					<a class="button secondary" href="https://github.com/ezoihy" target="_blank" rel="noreferrer">查看 GitHub</a>
+				</div>
+			</section>
 		</div>
 	</section>
 </BaseLayout>
