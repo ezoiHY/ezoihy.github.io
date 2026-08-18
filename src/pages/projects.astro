@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+	{
+		number: '01',
+		title: 'Ezoihy’s Blog',
+		description: '一个使用 Astro 与 GitHub Pages 构建的个人数字花园，用于沉淀文章、项目和长期思考。',
+		status: '持续更新',
+	},
+	{
+		number: '02',
+		title: '下一件作品',
+		description: '为未来项目预留的位置。完成新作品后，可以在这里补充目标、技术方案与复盘。',
+		status: '等待启动',
+	},
+	{
+		number: '03',
+		title: '实验与小工具',
+		description: '收纳值得分享的代码实验、效率工具或设计练习，让小想法也拥有完整记录。',
+		status: '正在构思',
+	},
+];
+---
+
+<BaseLayout title="项目" description="Ezoihy 的个人项目与实验作品。">
+	<header class="page-hero shell">
+		<p class="eyebrow">SELECTED BUILDS</p>
+		<h1>项目与实验</h1>
+		<p class="intro">这里记录从想法到落地的过程。随着新项目出现，这一页会逐步替换为真实作品、源代码和复盘文章。</p>
+	</header>
+	<section class="section">
+		<div class="shell project-list">
+			{projects.map((project) => (
+				<article class="project-card">
+					<span class="project-number">{project.number}</span>
+					<div><h2>{project.title}</h2><p>{project.description}</p></div>
+					<span class="project-status">{project.status}</span>
+				</article>
+			))}
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const {
+	title,
+	description = 'Ezoihy 的个人博客，记录技术、创作与持续探索。',
+} = Astro.props;
+
+const pageTitle = title === "Ezoihy's Blog" ? title : `${title} · Ezoihy's Blog`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const currentPath = Astro.url.pathname;
+const navItems = [
+	{ href: '/', label: '首页' },
+	{ href: '/posts/', label: '文章' },
+	{ href: '/projects/', label: '项目' },
+	{ href: '/about/', label: '关于' },
+];
+const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#f4f0e8" />
+		<link rel="canonical" href={canonicalURL} />
+		<link rel="alternate" type="application/rss+xml" title="Ezoihy's Blog RSS" href="/rss.xml" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Ezoihy's Blog" />
+		<meta property="og:title" content={pageTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={pageTitle} />
+		<meta name="twitter:description" content={description} />
+		<title>{pageTitle}</title>
+		<script is:inline>
+			(() => {
+				try {
+					const saved = localStorage.getItem('ezoihy-theme');
+					if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+				} catch {}
+			})();
+		</script>
+	</head>
+	<body>
+		<a class="skip-link" href="#main-content">跳到主要内容</a>
+		<header class="site-header">
+			<div class="shell header-inner">
+				<a class="brand" href="/" aria-label="Ezoihy's Blog 首页">
+					<span class="brand-mark">EH</span>
+					<span class="brand-copy">EZOI.HY<small>NOTES & BUILDS</small></span>
+				</a>
+				<nav class="nav" aria-label="主导航">
+					{navItems.map((item) => (
+						<a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+					))}
+				</nav>
+				<button class="theme-toggle" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<span aria-hidden="true">◐</span>
+				</button>
+			</div>
+		</header>
+
+		<main id="main-content">
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<div class="shell footer-inner">
+				<div>
+					<p class="footer-sign">EZOI.HY</p>
+					<p>保持好奇，慢慢构建。</p>
+				</div>
+				<div class="footer-links">
+					<a href="https://github.com/ezoihy" target="_blank" rel="noreferrer">GitHub ↗</a>
+					<a href="/rss.xml">RSS</a>
+					<span>© {new Date().getFullYear()}</span>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');
+			themeButton?.addEventListener('click', () => {
+				const root = document.documentElement;
+				const current = root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+				const next = current === 'dark' ? 'light' : 'dark';
+				root.dataset.theme = next;
+				try { localStorage.setItem('ezoihy-theme', next); } catch {}
+			});
+		</script>
+	</body>
+</html>

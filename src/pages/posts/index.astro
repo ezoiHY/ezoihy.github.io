@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPublishedPosts } from '../../lib/posts';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout title="文章" description="Ezoihy 的文章与学习笔记。">
+	<header class="page-hero shell">
+		<p class="eyebrow">WRITING ARCHIVE</p>
+		<h1>所有文章</h1>
+		<p class="intro">关于技术、创作、工具和个人成长的阶段性记录。内容会随着理解加深而持续更新。</p>
+	</header>
+	<section class="section">
+		<div class="shell post-grid">
+			{posts.map((post) => <PostCard post={post} />)}
+		</div>
+	</section>
+</BaseLayout>

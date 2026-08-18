@@ -1,0 +1,36 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../lib/posts';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog', ({ data }) => !data.draft);
+	return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+interface Props { post: CollectionEntry<'blog'>; }
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+	<article class="shell">
+		<header class="article-header">
+			<a class="text-link" href="/posts/">← 返回文章列表</a>
+			<h1>{post.data.title}</h1>
+			<p class="article-description">{post.data.description}</p>
+			<div class="article-meta">
+				<time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+				{post.data.updatedDate && <span>更新于 {formatDate(post.data.updatedDate)}</span>}
+				<div class="tag-row">{post.data.tags.map((tag) => <span class="tag">{tag}</span>)}</div>
+			</div>
+		</header>
+		<div class="article-wrap">
+			<div class="prose"><Content /></div>
+			<aside class="article-aside">
+				<p>这是一篇持续维护的笔记。如果内容对你有帮助，欢迎通过 GitHub 与我交流。</p>
+				<a class="text-link" href="https://github.com/ezoihy" target="_blank" rel="noreferrer">访问 GitHub ↗</a>
+			</aside>
+		</div>
+	</article>
+</BaseLayout>
