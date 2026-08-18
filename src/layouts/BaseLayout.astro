@@ -16,8 +16,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
 const currentPath = Astro.url.pathname;
 const navItems = [
 	{ href: '/', label: '首页' },
-	{ href: '/posts/', label: '文章' },
-	{ href: '/projects/', label: '项目' },
+	{ href: '/posts/', label: '学习笔记' },
+	{ href: '/projects/', label: '开源项目' },
+	{ href: '/papers/', label: '论文' },
 	{ href: '/about/', label: '关于' },
 ];
 const isActive = (href: string) => href === '/' ? currentPath === '/' : currentPath.startsWith(href);

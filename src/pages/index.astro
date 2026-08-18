@@ -12,10 +12,10 @@ const posts = (await getPublishedPosts()).slice(0, 4);
 			<div>
 				<p class="eyebrow">Personal notes · ideas in progress</p>
 				<h1 class="display-title">记录好奇，<br />构建<em>长期</em>有用的东西。</h1>
-				<p class="hero-lede">你好，我是 ezoihy。这里收集我的技术笔记、项目实践，以及那些值得反复思考的问题。</p>
+				<p class="hero-lede">你好，我是 ezoihy。这里收集我的学习笔记、开源项目、论文记录，以及那些值得反复思考的问题。</p>
 				<div class="hero-actions">
-					<a class="button primary" href="/posts/">阅读文章 <span aria-hidden="true">→</span></a>
-					<a class="button secondary" href="/projects/">看看项目</a>
+					<a class="button primary" href="/posts/">阅读学习笔记 <span aria-hidden="true">→</span></a>
+					<a class="button secondary" href="/projects/">查看开源项目</a>
 				</div>
 			</div>
 			<aside class="signal-card" aria-label="近期关注方向">
@@ -32,9 +32,9 @@ const posts = (await getPublishedPosts()).slice(0, 4);
 			<div class="section-heading">
 				<div>
 					<p class="section-kicker">LATEST NOTES</p>
-					<h2 class="section-title">最近写下的内容</h2>
+					<h2 class="section-title">最近的学习笔记</h2>
 				</div>
-				<a class="text-link" href="/posts/">查看全部文章 →</a>
+				<a class="text-link" href="/posts/">查看全部笔记 →</a>
 			</div>
 			<div class="post-grid">
 				{posts.map((post) => <PostCard post={post} />)}

@@ -240,8 +240,16 @@ img { max-width: 100%; height: auto; }
 }
 
 @media (max-width: 520px) {
+	.header-inner { flex-wrap: wrap; padding-block: 10px; }
+	.brand { order: 1; }
+	.theme-toggle { order: 2; }
+	.nav {
+		order: 3; width: 100%; margin-left: 0; padding: 4px 0 2px;
+		gap: 18px; overflow-x: auto; scrollbar-width: none;
+	}
+	.nav::-webkit-scrollbar { display: none; }
+	.nav a { flex: none; white-space: nowrap; }
 	.brand-mark { width: 35px; height: 35px; }
-	.nav { gap: 10px; }
 	.nav a { font-size: .76rem; }
 	.theme-toggle { width: 35px; height: 35px; }
 	.display-title { font-size: clamp(3.2rem, 17vw, 5rem); }

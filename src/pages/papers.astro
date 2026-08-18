@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const paperSections = [
+	{
+		number: '01',
+		title: '论文阅读笔记',
+		description: '记录论文的问题背景、核心方法、实验结论与个人理解。',
+		status: '准备中',
+	},
+	{
+		number: '02',
+		title: '研究与写作',
+		description: '整理选题、实验过程、图表和论文写作中的阶段性成果。',
+		status: '等待内容',
+	},
+];
+---
+
+<BaseLayout title="论文" description="Ezoihy 的论文阅读、研究与写作记录。">
+	<header class="page-hero shell">
+		<p class="eyebrow">PAPERS & RESEARCH</p>
+		<h1>论文</h1>
+		<p class="intro">这里用于整理论文阅读、研究过程与写作成果。目前还没有公开条目，后续会随着真实内容逐步补充。</p>
+	</header>
+	<section class="section">
+		<div class="shell project-list">
+			{paperSections.map((section) => (
+				<article class="project-card">
+					<span class="project-number">{section.number}</span>
+					<div><h2>{section.title}</h2><p>{section.description}</p></div>
+					<span class="project-status">{section.status}</span>
+				</article>
+			))}
+		</div>
+	</section>
+</BaseLayout>
