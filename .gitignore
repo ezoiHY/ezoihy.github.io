@@ -22,3 +22,15 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Jekyll / al-folio
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+.bundle/
+/vendor/
+test-results/
+.preview.log
+.preview.pid
+al-folio-upgrade-report.md

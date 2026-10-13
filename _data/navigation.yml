@@ -1,0 +1,15 @@
+- title: about
+  url: /
+  icon: home
+- title: publications
+  url: /publications/
+  icon: research
+- title: projects
+  url: /projects/
+  icon: grid
+- title: blog
+  url: /posts/
+  icon: pen
+- title: cv
+  url: /cv/
+  icon: person

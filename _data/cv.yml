@@ -1,0 +1,75 @@
+# RenderCV data for al_folio_cv 1.0.2.
+# Dates retain the precision supplied by the original profile; unknown dates are omitted.
+cv:
+  name: Harry Han
+  label: Robotics Engineering Undergraduate · South China University of Technology
+  email: ezoihy@163.com
+  location: Guangzhou, China
+  website: https://ezoihy.github.io
+  summary: Six years of informatics competition training gave me a foundation in algorithms and programming, which I have expanded into mechanical design, artificial intelligence, and control. My interests include dexterous robotic hands, underactuated mechanisms, vision-based control, and embodied intelligence. I hope to turn robotics research into reliable, affordable products.
+  social_networks:
+    - network: GitHub
+      username: ezoihy
+  address:
+    city: Guangzhou
+    region: China
+  sections:
+    Education:
+      - institution: South China University of Technology
+        area: Robotics Engineering
+        studyType: Undergraduate · Currently enrolled
+        location: Guangzhou, China
+    Academic Interests:
+      - name: Dexterous robotic hands
+        keywords: [Dexterous manipulation, Human hand-motion retargeting, Robotic hand control]
+      - name: Underactuated mechanisms
+        keywords: [Adaptive grasping, Tendon transmission, Force transmission]
+      - name: Vision-based robot control
+        keywords: [Visual perception, 3D reconstruction, Motion control]
+      - name: Embodied intelligence
+        keywords: [Language models, Perception, Physical robot interaction]
+    Projects:
+      - name: Vision-guided Robotic Fish
+        start_date: "2025"
+        end_date: present
+        url: /projects/robotic-fish/
+        summary: A national-level undergraduate innovation project on underwater human–robot collaboration.
+        highlights:
+          - Responsible for visual recognition, diver tracking, and algorithm architecture.
+          - Developed a YOLOv8 scene-recognition module and contributed to mechanical design improvements.
+      - name: Monocular RGB Control of a Robotic Hand
+        date: "2026"
+        url: /projects/monocular-hand-control/
+        summary: Combined HaMeR 3D hand reconstruction with optimization-based inverse kinematics to map human hand motion to a simulated articulated robotic hand.
+        highlights:
+          - Used monocular RGB input without data gloves or motion-capture equipment.
+      - name: Voice-controlled Quadruped with a Local Language Model
+        date: "2025"
+        url: /projects/language-quadruped/
+        summary: Used the Unitree Go1 platform to convert natural-language instructions into robot motion and interaction.
+        highlights:
+          - Deployed Qwen models locally through Ollama.
+          - Built an API pipeline from language-model outputs to robot motion-control interfaces.
+      - name: Pulley-free Tendon-driven Underactuated Prosthetic Hand
+        start_date: "2024"
+        end_date: "2025"
+        url: /projects/underactuated-hand/
+        summary: Designed a 304 g prosthetic hand with one actuator, using a compact underactuated mechanism for adaptive finger motion and grip-force distribution.
+        highlights:
+          - Tested stable grasping.
+          - Tested operation in wet and underwater conditions.
+    Awards:
+      - title: China Undergraduate Mathematical Contest in Modeling · National second prize
+        date: "2024"
+        summary: Also received provincial first prizes on multiple occasions.
+      - title: Robotics challenge · Runner-up
+        summary: Placed second among more than 400 teams. Served as team captain, coordinating mechanical, electronic control, and algorithm development.
+      - title: Informatics competitions · Provincial first prize and other awards
+        summary: Six years of informatics competition and algorithm training.
+    Skills:
+      - name: Programming and computation
+        keywords: [C++, Python, MATLAB]
+      - name: Mechanisms and prototyping
+        keywords: [SolidWorks, 3D Printing, Robot Prototyping]
+      - name: Perception and robotics
+        keywords: [YOLO, HaMeR, MuJoCo, PyBullet, Inverse Kinematics, Local LLM]

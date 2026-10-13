@@ -1,0 +1,20 @@
+---
+layout: default
+nav_section: /projects/
+---
+<article class="project-detail shell">
+  <header class="page-heading detail-heading">
+    <a class="back-link" href="{{ '/projects/' | relative_url }}">← Projects</a>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.description }}</p>
+    <p class="entry-meta">{{ page.year }} · {{ page.category }}</p>
+    {% if page.tags.size > 0 %}<p class="project-tags">{{ page.tags | join: ' · ' }}</p>{% endif %}
+  </header>
+  {% if page.image %}
+    <figure class="project-figure">
+      <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title }}" width="800" height="560">
+      <figcaption>{{ page.image_caption | default: 'Conceptual illustration, not a photograph of the project hardware' }}</figcaption>
+    </figure>
+  {% endif %}
+  <div class="prose page-content">{{ content }}</div>
+</article>

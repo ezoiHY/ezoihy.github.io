@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ezoihy.github.io/sitemap-index.xml

@@ -1,0 +1,46 @@
+---
+layout: default
+title: Harry Han
+permalink: /
+page_class: home
+searchable: true
+description: Harry Han, an undergraduate in Robotics Engineering at South China University of Technology. Research interests in dexterous manipulation, underactuated mechanisms, and vision-based robot control.
+---
+{% assign profile = site.data.profile %}
+<article class="home-page shell">
+  <section class="profile-section glass-panel" data-liquid-glass="panel" aria-label="About Harry Han">
+    <header class="profile-heading">
+      <h1><strong>Harry</strong> Han</h1>
+      <p>Robotics Engineering · South China University of Technology</p>
+    </header>
+    <section class="biography" aria-label="Biography">
+      <figure class="profile-photo">
+        <img src="{{ profile.avatar | relative_url }}" alt="Harry Han" width="1206" height="1642" fetchpriority="high">
+        <figcaption>{{ profile.affiliation_en }}<br>{{ profile.location_en }}<br><a href="mailto:{{ profile.email }}">{{ profile.email }}</a></figcaption>
+      </figure>
+      <div class="prose">
+        <p>I am an undergraduate studying <strong>Robotics Engineering</strong> at <strong>South China University of Technology</strong> in Guangzhou, China.</p>
+        <p>My interests lie in <strong>dexterous manipulation, underactuated mechanisms, vision-based robot control, and embodied intelligence</strong>. I am interested in how simpler mechanisms and control methods can make robots more reliable and affordable.</p>
+        <p>My projects include an <a href="{{ '/projects/underactuated-hand/' | relative_url }}">underactuated prosthetic hand</a>, <a href="{{ '/projects/monocular-hand-control/' | relative_url }}">monocular hand-motion retargeting</a>, a <a href="{{ '/projects/robotic-fish/' | relative_url }}">biomimetic robotic fish</a>, and <a href="{{ '/projects/language-quadruped/' | relative_url }}">language-driven robot interaction</a>. These projects span mechanical design, perception, simulation, and control.</p>
+        <p>I started with six years of programming and informatics competitions before moving into mechanical design and robotics. This site brings together my research, engineering projects, and occasional notes on what I am learning.</p>
+      </div>
+      <div class="profile-links"><a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer">GitHub</a><span>/</span><a href="mailto:{{ profile.email }}">Email</a><span>/</span><a href="{{ '/cv/' | relative_url }}">CV</a><span>/</span><a href="{{ '/about/' | relative_url }}">More about me</a></div>
+    </section>
+  </section>
+
+  <section class="home-section work-section glass-panel" data-liquid-glass="panel" aria-labelledby="experience-title">
+    <h2 id="experience-title">Recent work</h2>
+    <div class="news-list">{% for exp in profile.experiences limit: 3 %}<div class="news-row"><time>{{ exp.year }}</time><p><a href="{{ exp.url | relative_url }}">{{ exp.title }}</a><span class="news-detail">{{ exp.description }}</span></p></div>{% endfor %}</div>
+  </section>
+
+  <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="projects-title">
+    <div class="section-heading"><h2 id="projects-title">Selected projects</h2><a href="{{ '/projects/' | relative_url }}">All projects →</a></div>
+    <div class="selected-projects">{% assign selected = site.projects | where: 'featured', true | sort: 'order' %}{% for project in selected limit: 2 %}<article class="selected-project"><a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project.image | relative_url }}" alt="" width="800" height="560" loading="lazy"></a><div><h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><a class="project-details-link" href="{{ project.url | relative_url }}">Details</a></div></article>{% endfor %}</div>
+  </section>
+
+  <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="posts-title">
+    <div class="section-heading"><h2 id="posts-title">Latest posts</h2><a href="{{ '/posts/' | relative_url }}">All posts →</a></div>
+    <div class="news-list">{% for post in site.posts limit: 3 %}<div class="news-row"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time><p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p></div>{% endfor %}</div>
+    <div class="contact-line"><a href="mailto:{{ profile.email }}" aria-label="Email">{% include icon.liquid name='mail' %}</a><a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">{% include icon.liquid name='github' %}</a><p>Feel free to get in touch about research and projects.</p></div>
+  </section>
+</article>

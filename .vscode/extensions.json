@@ -1,4 +1,4 @@
 {
-  "recommendations": ["astro-build.astro-vscode"],
+  "recommendations": ["sissel.shopify-liquid", "redhat.vscode-yaml"],
   "unwantedRecommendations": []
 }

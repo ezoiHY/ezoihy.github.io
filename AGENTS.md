@@ -1,22 +1,24 @@
-## Development
+# Harry Han's personal al-folio site
 
-When starting the dev server, use background mode:
+This is a **user-owned site**, based on al-folio v1, not the upstream starter.
+The intentional local layout and style overrides preserve al-folio's academic layout with lightly translucent controls.
+See `UPSTREAM.md` and `docs/AL-FOLIO-ARCHITECTURE.md` before upgrading gems.
 
-```
-astro dev --background
-```
+## Develop and verify
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+- Ruby 3.4, Bundler: `bundle install`, then `bundle exec jekyll build`.
+- Preview: `bundle exec jekyll serve --host 127.0.0.1 --port 4000`.
+- Verify site output: `python3 scripts/check_site.py`.
+- Audit overrides: `bundle exec al-folio upgrade overrides audit`.
+- Keep dependency pins in `Gemfile` and activation in `_config.yml` aligned.
+- Check desktop/mobile, both themes, search, menu and filtering after UI changes.
 
-## Documentation
+## Content and design
 
-Full documentation: https://docs.astro.build
-
-Consult these guides before working on related tasks:
-
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+- Preserve the user's real identity, projects, dates and achievements. Never invent publications or life details to fill space.
+- Keep all public-facing content and UI text in English. Use a 930px document layout, conventional headings and restrained styling.
+- Personal data: `_data/profile.yml`; CV: `_data/cv.yml`; projects/posts: Markdown; publications: BibTeX.
+- Diagrams are conceptual illustrations, not physical project photos or validated engineering drawings.
+- Honor reduced motion and keep glass surfaces readable. No external font/CDN is needed for the custom UI.
+- Keep `/posts/*`, `/projects/`, `/about/` and `/papers/` links working.
+- See `docs/CONTENT.md` for maintenance instructions.

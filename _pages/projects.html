@@ -1,0 +1,28 @@
+---
+layout: default
+title: Projects
+permalink: /projects/
+searchable: true
+description: Harry Han's research and engineering projects in underactuated prosthetic hands, visual control, and biomimetic robotics.
+---
+<header class="page-heading shell">
+  <h1>Projects</h1>
+  <p>Research and engineering projects, with background, contributions, and progress for each.</p>
+</header>
+<section class="shell page-content">
+  <div class="filter-bar" role="group" aria-label="Filter projects">
+    <button class="filter-button active" data-filter="all" aria-pressed="true">All <span>{{ site.projects | size }}</span></button>
+    {% assign categories = site.projects | map: 'category' | uniq %}
+    {% for category in categories %}
+      <button class="filter-button" data-filter="{{ category | escape }}" aria-pressed="false">{{ category }}</button>
+    {% endfor %}
+  </div>
+  <p class="sr-only" id="filter-status" aria-live="polite"></p>
+  <div class="project-grid">
+    {% assign projects = site.projects | sort: 'order' %}
+    {% for project in projects %}
+      {% include project-card.liquid project=project %}
+    {% endfor %}
+  </div>
+  <p class="figure-note">Project illustrations are conceptual and are not photographs of the hardware.</p>
+</section>

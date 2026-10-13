@@ -1,0 +1,30 @@
+---
+layout: default
+title: Blog
+permalink: /posts/
+searchable: true
+description: Harry Han's learning notes, project logs, and personal essays.
+---
+<header class="page-heading shell">
+  <h1>Blog</h1>
+  <p>Learning notes, project logs, and personal essays. <a href="{{ '/rss.xml' | relative_url }}">Subscribe via RSS</a></p>
+</header>
+<section class="shell page-content">
+  <div class="filter-bar" role="group" aria-label="Filter posts">
+    <button class="filter-button active" data-filter="all" aria-pressed="true">All <span>{{ site.posts | size }}</span></button>
+    {% for category in site.categories %}<button class="filter-button" data-filter="{{ category[0] | escape }}" aria-pressed="false">{{ category[0] }}</button>{% endfor %}
+  </div>
+  <p class="sr-only" id="filter-status" aria-live="polite"></p>
+  <div class="journal-list">
+    {% for post in site.posts %}
+      <article class="journal-row" data-category="{{ post.categories | join: '|' | escape }}">
+        <time class="journal-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
+        <div class="journal-copy">
+          <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+          <p>{{ post.description }}</p>
+          <p class="entry-meta">{{ post.categories | join: ' / ' }}{% if post.tags.size > 0 %} · {{ post.tags | join: ', ' }}{% endif %}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>

@@ -1,0 +1,30 @@
+---
+layout: default
+title: Research & Publications
+permalink: /publications/
+searchable: true
+description: Harry Han's research interests and publications.
+---
+<header class="page-heading shell">
+  <h1>Research & Publications</h1>
+  <p>My interests include dexterous manipulation, robot mechanism design, and the use of vision and language models in robotics.</p>
+</header>
+<section class="shell page-content">
+  <section class="research-section">
+    <h2>Research interests</h2>
+    <ul class="research-list">
+      {% for interest in site.data.profile.research_interests %}
+        <li><strong>{{ interest.title }}</strong><p>{{ interest.description }}</p></li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="publications-section">
+    <h2>Publications</h2>
+    <div class="publications">
+      <div class="bibliography-content">{% bibliography %}</div>
+      <div class="publication-empty">
+        <p>No publications are listed yet. See the <a href="{{ '/projects/' | relative_url }}">projects page</a> for related research and engineering work.</p>
+      </div>
+    </div>
+  </section>
+</section>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="560" viewBox="0 0 800 560" fill="none" role="img" aria-labelledby="title desc">
+<title id="title">Bio-inspired robotic fish — conceptual illustration</title>
+<desc id="desc">A streamlined robotic fish with a translucent shell, articulated tail, fin ribs and forward sensor wavefronts. The illustration is conceptual and does not represent a measured prototype.</desc>
+<defs>
+  <linearGradient id="alloy" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff" stop-opacity=".98"/><stop offset="1" stop-color="#DCE9F0" stop-opacity=".92"/></linearGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#C9F3F6" stop-opacity=".65"/><stop offset="1" stop-color="#E4DDFC" stop-opacity=".45"/></linearGradient>
+  <linearGradient id="signal"><stop stop-color="#13B7C3"/><stop offset="1" stop-color="#8F7BDC"/></linearGradient>
+  <radialGradient id="halo"><stop stop-color="#D9F3F7" stop-opacity=".26"/><stop offset=".68" stop-color="#ECF0FC" stop-opacity=".09"/><stop offset="1" stop-color="#EEF6FA" stop-opacity="0"/></radialGradient>
+  <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#54819A" stroke-opacity=".12" stroke-width=".7"/></pattern>
+  <radialGradient id="gridfade"><stop offset=".45" stop-color="white"/><stop offset="1" stop-color="black"/></radialGradient>
+  <mask id="fade"><rect width="800" height="560" fill="url(#gridfade)"/></mask>
+  <filter id="shadow" x="-35%" y="-35%" width="170%" height="190%"><feDropShadow dx="0" dy="13" stdDeviation="14" flood-color="#4F7999" flood-opacity=".12"/></filter>
+  <marker id="arrow" markerWidth="8" markerHeight="8" refX="6.5" refY="4" orient="auto"><path d="M1 1L6 4L1 7" fill="none" stroke="#4AAEBA" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+<rect width="800" height="560" fill="url(#halo)"/>
+<rect x="40" y="32" width="720" height="496" fill="url(#grid)" mask="url(#fade)"/>
+<g fill="none" stroke="#7892A7" stroke-width="1" opacity=".3"><path d="M80 103V79H104M696 79H720V103M80 457V481H104M696 481H720V457"/></g>
+<g fill="none" stroke="#79A8B7" stroke-width="1.15" opacity=".6"><path d="M77 231C132 187 155 371 220 320" stroke-dasharray="5 7"/><path d="M71 292C122 246 158 424 230 374" stroke-dasharray="5 7"/><path d="M81 177C135 139 159 313 215 267" stroke-dasharray="5 7"/></g>
+<g filter="url(#shadow)">
+<path d="M226 272L118 168Q140 251 123 278Q141 309 109 387L225 301Z" fill="url(#glass)" stroke="#294A63" stroke-width="2"/>
+<path d="M140 198L208 279L132 359M130 277L208 279" stroke="#7F9EB3" stroke-width="1.2"/>
+<path d="M334 228L380 144Q397 161 410 197L447 233Z" fill="url(#glass)" stroke="#294A63" stroke-width="1.7"/>
+<path d="M381 148L379 226M393 171L404 228M406 194L426 230" stroke="#7CA6B7" stroke-width="1.1"/>
+<path d="M363 340L395 414Q411 413 435 383L471 336Z" fill="url(#glass)" stroke="#294A63" stroke-width="1.7"/>
+<path d="M392 344L397 409M421 342L415 392M449 340L433 372" stroke="#7CA6B7" stroke-width="1.1"/>
+<path d="M203 280Q255 221 336 219Q457 197 544 242Q605 258 634 280Q614 310 550 333Q462 371 352 343Q263 337 203 296Z" fill="url(#alloy)" stroke="#294A63" stroke-width="2"/>
+<path d="M245 278Q306 234 370 237Q461 222 528 254Q567 267 589 282Q544 316 472 329Q391 341 323 318Q278 309 245 290Z" fill="url(#glass)" stroke="#94BCC5" stroke-width="1.2"/>
+<path d="M222 286L600 282" stroke="#2BAEBC" stroke-width="2" stroke-dasharray="5 7"/>
+<path d="M285 236Q265 281 291 329M340 221Q319 281 345 342M407 216Q383 280 408 354M477 223Q455 281 478 352M540 240Q522 281 542 336" stroke="#93ADBF" stroke-width="1.2"/>
+<path d="M534 247Q517 282 538 331" stroke="#294A63" stroke-width="1.6"/>
+<rect x="224" y="271" width="25" height="30" rx="7" fill="#F1F8FA" stroke="#294A63" stroke-width="1.5"/>
+<path d="M233 277V295M240 277V295" stroke="#8B75CB" stroke-width="1.4"/>
+<circle cx="580" cy="274" r="12" fill="#EDF7FA" stroke="#294A63" stroke-width="1.8"/><circle cx="580" cy="274" r="6" fill="#58C5D0" stroke="#3A697E" stroke-width="1.3"/>
+<path d="M444 281Q457 308 504 316L475 284Z" fill="#DCDCF5" fill-opacity=".7" stroke="#7D71B7" stroke-width="1.5"/>
+<g fill="#EDF6F8" stroke="#3F647B" stroke-width="1.1"><circle cx="329" cy="256" r="3"/><circle cx="422" cy="249" r="3"/><circle cx="421" cy="320" r="3"/><circle cx="495" cy="264" r="3"/></g></g>
+<g fill="none" stroke="url(#signal)" stroke-width="1.6"><path d="M648 256A41 41 0 0 1 648 305" opacity=".9"/><path d="M668 239A65 65 0 0 1 668 322" opacity=".65"/><path d="M689 219A91 91 0 0 1 689 342" opacity=".35"/></g>
+<path d="M299 393H245L223 419M454 192H499L520 169" stroke="#709CAA" stroke-width="1.1"/><g fill="#8B76C9"><circle cx="299" cy="393" r="3"/><circle cx="454" cy="192" r="3"/></g>
+
+</svg>

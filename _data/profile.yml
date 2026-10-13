@@ -1,0 +1,96 @@
+name: Harry Han
+name_en: Harry Han
+handle: ezoihy
+role: Robotics Engineering Undergraduate
+role_en: Robotics Engineering Undergraduate
+affiliation: South China University of Technology
+affiliation_en: South China University of Technology
+location: Guangzhou, China
+location_en: Guangzhou, China
+email: ezoihy@163.com
+github: https://github.com/ezoihy
+avatar: /assets/img/portrait.webp
+headline: Connecting algorithms, mechanisms, and robot control.
+intro: I study robotics engineering at South China University of Technology. My interests include dexterous manipulation, underactuated mechanisms, and embodied intelligence. I hope to develop robotics technology into reliable, affordable products for everyday use.
+bio:
+  - Six years of training in informatics competitions gave me a foundation in algorithms and programming. I have since expanded into mechanical design, artificial intelligence, and control, working toward an engineering skill set that connects software, hardware, and physical robot systems.
+  - I am interested in simpler, more reliable, and lower-cost approaches to dexterous manipulation. My work ranges from underactuated prosthetic hands and tendon transmission to monocular hand-motion retargeting, underwater biomimetic robots, and robot interaction using local language models.
+  - I hope to connect academic research with practical applications. I am also learning about product development, teamwork, and how technology can address real user needs.
+research_interests:
+  - title: Dexterous robotic hands
+    label: Dexterous Manipulation
+    description: Dexterous manipulation, human hand-motion retargeting, and robotic hand control.
+  - title: Underactuated mechanisms
+    label: Mechanism Design
+    description: Adaptive grasping and reliable force transmission with fewer actuators.
+  - title: Vision-based robot control
+    label: Perception & Control
+    description: Connecting visual perception, 3D reconstruction, and motion control.
+  - title: Embodied intelligence
+    label: Robot Intelligence
+    description: Exploring connections between language models, perception, and physical robots.
+education:
+  - institution: South China University of Technology
+    institution_en: South China University of Technology
+    degree: Undergraduate
+    major: Robotics Engineering
+    status: currently enrolled
+    location: Guangzhou, China
+experiences:
+  - year: "2026"
+    title: Monocular RGB Control of a Robotic Hand
+    type: Open-source project
+    description: Combined HaMeR 3D hand reconstruction with optimization-based inverse kinematics to map human hand motion to a simulated articulated robotic hand.
+    url: /projects/monocular-hand-control/
+  - year: "2025–present"
+    title: Vision-guided Robotic Fish
+    type: National-level Undergraduate Innovation Project
+    description: Responsible for visual recognition, diver tracking, and algorithm architecture, with contributions to mechanical design improvements.
+    url: /projects/robotic-fish/
+  - year: "2025"
+    title: Voice-controlled Quadruped with a Local Language Model
+    type: Unitree Go1
+    description: Deployed Qwen models locally using Ollama and built an API pipeline from natural-language instructions to robot motion-control interfaces.
+    url: /projects/language-quadruped/
+  - year: "2024–2025"
+    title: Pulley-free Tendon-driven Underactuated Prosthetic Hand
+    type: Research and engineering
+    description: Designed a 304 g prosthetic hand with one actuator and tested stable grasping and operation in wet and underwater conditions.
+    url: /projects/underactuated-hand/
+awards:
+  - year: "2024"
+    title: China Undergraduate Mathematical Contest in Modeling
+    distinction: National second prize
+    description: Also received provincial first prizes on multiple occasions.
+  - year: ""
+    title: Robotics challenge
+    distinction: Runner-up among 400+ teams
+    description: Served as team captain, coordinating mechanical, electronic control, and algorithm development.
+  - year: ""
+    title: Informatics competitions
+    distinction: Awards including provincial first prize
+    description: Six years of informatics competition and algorithm training.
+toolkit:
+  - C++
+  - Python
+  - MATLAB
+  - SolidWorks
+  - 3D Printing
+  - YOLO
+  - HaMeR
+  - MuJoCo
+  - PyBullet
+  - Inverse Kinematics
+  - Local LLM
+  - Robot Prototyping
+social:
+  - label: GitHub
+    url: https://github.com/ezoihy
+  - label: Email
+    url: mailto:ezoihy@163.com
+# Add verified entries only; do not invent publications, interests, or experience.
+publications: []
+personal:
+  interests: []
+  reading: []
+  gallery: []

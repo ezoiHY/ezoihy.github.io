@@ -1,0 +1,127 @@
+title: "Harry Han"
+first_name: Harry
+last_name: Han
+description: "Harry Han, Robotics Engineering undergraduate at South China University of Technology. Research, engineering projects, and notes on robotics."
+url: "https://ezoihy.github.io"
+baseurl: ""
+lang: en
+timezone: Asia/Shanghai
+author: Harry Han
+email: ezoihy@163.com
+github_username: ezoihy
+theme: al_folio_core
+
+al_folio:
+  api_version: 1
+  style_engine: tailwind
+  tailwind:
+    version: 4.1.18
+    preflight: false
+    css_entry: assets/tailwind/app.css
+  distill:
+    engine: distillpub-template
+    source: al-org-dev/distill-template#al-folio
+    allow_remote_loader: false
+  features:
+    cv:
+      enabled: true
+    distill:
+      enabled: false
+  compat:
+    bootstrap:
+      enabled: false
+  upgrade:
+    channel: stable
+    auto_apply_safe_fixes: false
+
+plugins:
+  - jekyll-scholar
+  - jekyll-feed
+  - jekyll-sitemap
+  - al_folio_core
+  - al_folio_cv
+  - al_folio_upgrade
+
+include: ["_pages"]
+exclude:
+  - src
+  - public
+  - scripts
+  - docs
+  - vendor
+  - node_modules
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - README.md
+  - AGENTS.md
+  - CLAUDE.md
+  - LICENSE
+  - UPSTREAM.md
+  - test-results
+  - .bundle
+  - .github
+  - .al-folio-overrides.yml
+  - .ruby-version
+  - al-folio-upgrade-report.md
+  - assets/img/WALLPAPER.md
+
+collections:
+  projects:
+    output: true
+    permalink: /projects/:name/
+  news:
+    output: false
+  books:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: project
+      nav_section: /projects/
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      nav_section: /posts/
+      permalink: /posts/:title/
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+permalink: /posts/:title/
+future: false
+strict_front_matter: true
+liquid:
+  error_mode: strict
+feed:
+  path: rss.xml
+
+scholar:
+  last_name: [Han, 韩]
+  first_name: [Yu, Harry, 喻]
+  style: apa
+  locale: en
+  source: ./_bibliography
+  bibliography: papers.bib
+  bibliography_template: bib
+  bibtex_filters: [latex, smallcaps, superscript]
+  replace_strings: true
+  join_strings: true
+  query: "@*"
+  group_by: year
+  group_order: descending
+
+enable_darkmode: true
+enable_math: false
+enable_cookie_consent: false
+search_enabled: false
+enable_progressbar: false
+enable_masonry: false
+social_preview_image: /assets/img/portrait.webp

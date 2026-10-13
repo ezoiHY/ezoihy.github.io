@@ -1,0 +1,104 @@
+{
+  "appleMetadata" : "apple-solar.json",
+  "artwork" : "Apple macOS Big Sur photographic dynamic wallpaper",
+  "colorAdjustment" : "None; ImageIO preserves the decoded image's P3 color space.",
+  "copyright" : "Apple Inc. Artwork is not covered by this repository's MIT license.",
+  "dailyFrameOrder" : [
+    1,
+    2,
+    3,
+    0,
+    4,
+    5,
+    6,
+    7,
+    1
+  ],
+  "exportLongestEdge" : 2560,
+  "exports" : [
+    {
+      "bytes" : 1794504,
+      "file" : "big-sur-0.jpg",
+      "height" : 2560,
+      "sha256" : "b0b53a92cecc39529f7b54d4c0a9291b242b3c34d68547ac456a35310f669808",
+      "sourceColorProfile" : "image P3",
+      "sourceIndex" : 0,
+      "width" : 2560
+    },
+    {
+      "bytes" : 963635,
+      "file" : "big-sur-1.jpg",
+      "height" : 2560,
+      "sha256" : "62026bed02444026a917fca5f5b6002cd532f02b2503f9f7ea1bbdaf756c22a2",
+      "sourceColorProfile" : "Display P3",
+      "sourceIndex" : 1,
+      "width" : 2560
+    },
+    {
+      "bytes" : 931969,
+      "file" : "big-sur-2.jpg",
+      "height" : 2560,
+      "sha256" : "d0da304f0a8dc996ff84dbecee06273687cf75a196a8f618626d8e318dc0f064",
+      "sourceColorProfile" : "image P3",
+      "sourceIndex" : 2,
+      "width" : 2560
+    },
+    {
+      "bytes" : 1377948,
+      "file" : "big-sur-3.jpg",
+      "height" : 2560,
+      "sha256" : "6ae416a40325d1ab9fef187b70ba0fabd5866f2a1e257f365bf1ddb367da47e3",
+      "sourceColorProfile" : "image P3",
+      "sourceIndex" : 3,
+      "width" : 2560
+    },
+    {
+      "bytes" : 1798839,
+      "file" : "big-sur-4.jpg",
+      "height" : 2560,
+      "sha256" : "d317d21769b915596ef80500adadd19b45839508d5799404665e133da5236919",
+      "sourceColorProfile" : "image P3",
+      "sourceIndex" : 4,
+      "width" : 2560
+    },
+    {
+      "bytes" : 1492250,
+      "file" : "big-sur-5.jpg",
+      "height" : 2560,
+      "sha256" : "77e214d955a7794ee76b854d35c2c6c018d09af03639755c17a33000c5ab55ff",
+      "sourceColorProfile" : "image P3",
+      "sourceIndex" : 5,
+      "width" : 2560
+    },
+    {
+      "bytes" : 1133971,
+      "file" : "big-sur-6.jpg",
+      "height" : 2560,
+      "sha256" : "20cd81e528d762852e74e792ba2c91d1fb1a72287f392a35e1cb6638ec898618",
+      "sourceColorProfile" : "image P3",
+      "sourceIndex" : 6,
+      "width" : 2560
+    },
+    {
+      "bytes" : 1053180,
+      "file" : "big-sur-7.jpg",
+      "height" : 2560,
+      "sha256" : "29b39c74b97644cd58c37ceefebd7d81a533f482981fee15c727ff0655c91523",
+      "sourceColorProfile" : "image P3",
+      "sourceIndex" : 7,
+      "width" : 2560
+    }
+  ],
+  "jpegQuality" : 0.75,
+  "solarFields" : {
+    "a" : "solar altitude in degrees",
+    "i" : "HEIC frame index",
+    "z" : "solar azimuth in degrees"
+  },
+  "sourceFilename" : "Big Sur.heic",
+  "sourceFrameCount" : 8,
+  "sourceHeight" : 6016,
+  "sourceSHA256" : "8c147037ba6f629b60258970fbda5bec91629ef6c25a0ee8531062f990162561",
+  "sourceWidth" : 6016,
+  "timeNote" : "Apple supplies solar coordinates, not clock times. Any website local-time schedule is a separate adaptation."
+}
