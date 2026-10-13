@@ -64,15 +64,24 @@ strong { font-weight:600; }
 .mobile-nav a[aria-current="page"] { color:var(--accent); }
 
 /* About page: the original al-folio reading order and right-hand portrait. */
-.profile-heading { margin-bottom:25px; }
+.profile-section { display:grid; grid-template-columns:minmax(0,1fr) 28%; grid-template-areas:"heading portrait" "biography portrait"; gap:25px 32px; align-items:start; }
+.profile-heading { grid-area:heading; }
 .profile-heading h1 { font-weight:300; font-size:42px; }
 .profile-heading h1 strong { font-weight:650; }
 .profile-heading > p { margin-top:5px; color:var(--muted); font-size:15px; }
-.biography { display:flow-root; }
-.profile-photo { float:right; width:28%; margin:0 0 20px 32px; }
-.profile-photo img { width:100%; aspect-ratio: .78; object-fit:cover; object-position:center 30%; border-radius:18px; box-shadow:0 6px 20px #07152626; }
-.profile-photo figcaption { margin-top:12px; font-family:var(--mono); font-size:11.5px; line-height:1.7; color:var(--muted); }
-.profile-photo figcaption a { color:var(--muted); }
+.biography { grid-area:biography; min-width:0; }
+.profile-photo { grid-area:portrait; margin:0; }
+.profile-photo > img { width:100%; aspect-ratio: .78; object-fit:cover; object-position:center 30%; border-radius:18px; box-shadow:0 6px 20px #07152626; }
+.profile-photo figcaption { margin-top:22px; font-size:12px; line-height:1.5; color:var(--muted); text-align:center; }
+.profile-affiliations { display:flex; align-items:flex-start; justify-content:center; gap:28px; }
+.profile-affiliation { display:flex; flex-direction:column; align-items:center; gap:8px; min-width:72px; color:inherit; }
+.profile-affiliation img { width:52px; height:52px; object-fit:contain; filter:url(#affiliation-mark); }
+.profile-affiliation span { font-size:11px; font-weight:500; }
+.affiliation-mark-color { flood-color:var(--ink); }
+.profile-socials { display:flex; justify-content:center; gap:12px; margin-top:18px; }
+.profile-socials a { display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:10px; color:var(--ink); }
+.profile-socials a:hover,.profile-socials a:focus-visible { background:var(--hover); text-decoration:none; }
+.profile-socials .icon { width:22px; height:22px; stroke-width:1.7; }
 .prose { line-height:1.78; overflow-wrap:break-word; }
 .prose p { margin:0 0 17px; }
 .prose h2 { margin:34px 0 16px; }
@@ -88,7 +97,6 @@ strong { font-weight:600; }
 .prose table { border-collapse:collapse; width:100%; font-size:14px; }
 .prose th,.prose td { text-align:left; border-bottom:1px solid var(--line); padding:10px; }
 .profile-links { display:flex; flex-wrap:wrap; gap:11px; font-size:14px; margin-top:20px; }
-.profile-links > span { color:var(--line); }
 .home-section { margin-top:34px; }
 .home-section > h2 { margin-bottom:15px; }
 .section-heading { display:flex; align-items:baseline; justify-content:space-between; gap:20px; margin-bottom:19px; }
@@ -242,8 +250,8 @@ kbd { border:1px solid var(--line); border-radius:3px; padding:1px 4px; font:10p
   .desktop-nav { gap:0; }
   .site-header { gap:12px; }
   .desktop-nav a { font-size:13px; padding:7px 9px; }
-  .profile-photo { width:29%; margin-left:24px; }
-  .profile-photo figcaption { font-size:10px; }
+  .profile-section { grid-template-columns:minmax(0,1fr) 29%; column-gap:24px; }
+  .profile-photo figcaption { font-size:11px; }
 }
 @media (max-width:680px) {
   body { font-size:15px; }
@@ -254,11 +262,12 @@ kbd { border:1px solid var(--line); border-radius:3px; padding:1px 4px; font:10p
   .brand { font-size:20px; }
   .desktop-nav { display:none; }
   .menu-toggle { display:inline-flex; }
+  .profile-section { grid-template-columns:minmax(0,1fr); grid-template-areas:"heading" "portrait" "biography"; }
   .profile-heading h1 { font-size:36px; }
   .profile-heading > p { font-size:13px; max-width:320px; }
-  .profile-photo { float:none; width:210px; margin:0 auto 25px; }
-  .profile-photo img { aspect-ratio:.84; }
-  .profile-photo figcaption { font-size:10px; }
+  .profile-photo { width:210px; max-width:100%; margin:0 auto; }
+  .profile-photo > img { aspect-ratio:.84; }
+  .profile-photo figcaption { font-size:12px; }
   h1 { font-size:34px; }
   h2 { font-size:25px; }
   .home-section { margin-top:30px; }

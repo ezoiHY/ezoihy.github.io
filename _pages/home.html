@@ -14,17 +14,27 @@ description: Yu Han (Harry), a Robotics Engineering undergraduate at South China
       <p>Undergraduate in Robotics Engineering · South China University of Technology</p>
       <p>Research Assistant, <a href="https://pairslab.github.io/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a> · The Hong Kong University of Science and Technology (Guangzhou)</p>
     </header>
+    <figure class="profile-photo">
+      <img src="{{ profile.avatar | relative_url }}" alt="Yu Han (Harry)" width="1206" height="1642" fetchpriority="high">
+      <figcaption>
+        <div class="profile-affiliations">
+          <a class="profile-affiliation" href="https://www.scut.edu.cn/" target="_blank" rel="noopener noreferrer" aria-label="South China University of Technology" title="South China University of Technology"><img src="{{ '/assets/img/affiliations/scut.png' | relative_url }}" alt="" width="52" height="52"><span>SCUT</span></a>
+          <a class="profile-affiliation" href="https://www.hkust-gz.edu.cn/" target="_blank" rel="noopener noreferrer" aria-label="The Hong Kong University of Science and Technology (Guangzhou)" title="The Hong Kong University of Science and Technology (Guangzhou)"><img src="{{ '/assets/img/affiliations/hkust-gz.png' | relative_url }}" alt="" width="52" height="52"><span>HKUST(GZ)</span></a>
+        </div>
+        <nav class="profile-socials" aria-label="Profile links">
+          <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">{% include icon.liquid name='github' %}</a>
+          <a href="mailto:{{ profile.email }}" aria-label="Email" title="Email">{% include icon.liquid name='mail' %}</a>
+          <a href="{{ '/cv/' | relative_url }}" aria-label="Curriculum vitae" title="CV">{% include icon.liquid name='cv' %}</a>
+        </nav>
+      </figcaption>
+    </figure>
     <section class="biography" aria-label="Biography">
-      <figure class="profile-photo">
-        <img src="{{ profile.avatar | relative_url }}" alt="Yu Han (Harry)" width="1206" height="1642" fetchpriority="high">
-        <figcaption>{{ profile.affiliation_en }}<br>{{ profile.location_en }}<br><a href="mailto:{{ profile.email }}">{{ profile.email }}</a></figcaption>
-      </figure>
       <div class="prose">
         <p>I am an undergraduate studying <strong>Robotics Engineering</strong> at <strong>South China University of Technology</strong>, where I was advised by <a href="https://www2.scut.edu.cn/wusie/2022/0122/c25374a459098/page.htm" target="_blank" rel="noopener noreferrer">Prof. Yunquan Li</a>. I also work as a research assistant in <a href="https://fangqiangding.com/" target="_blank" rel="noopener noreferrer">Prof. Fangqiang Ding</a>’s <strong><a href="https://pairslab.github.io/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a></strong> at <strong>The Hong Kong University of Science and Technology (Guangzhou)</strong>.</p>
         <p>Before turning to robotics, I spent six years (2016–2022) programming and competing in informatics. My experience now spans both the mechanical design of robotic systems and the development of machine learning models.</p>
         <p>My research interests include dexterous manipulation, multimodal sensing, force-aware robot learning, and embodied intelligence. I aim to bring together advances in robot design and learning to develop trustworthy, scalable physical AI that advances human–machine symbiosis.</p>
       </div>
-      <div class="profile-links"><a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer">GitHub</a><span>/</span><a href="mailto:{{ profile.email }}">Email</a><span>/</span><a href="{{ '/cv/' | relative_url }}">CV</a><span>/</span><a href="{{ '/about/' | relative_url }}">More about me</a></div>
+      <div class="profile-links"><a href="{{ '/about/' | relative_url }}">More about me</a></div>
     </section>
   </section>
 

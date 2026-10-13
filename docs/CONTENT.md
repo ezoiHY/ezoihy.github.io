@@ -11,7 +11,6 @@ Edit `_data/profile.yml`:
 | Field | Used for |
 | --- | --- |
 | `name`, `role` | Name and role on the About page |
-| `affiliation_en`, `location_en` | School and location below the homepage portrait |
 | `avatar` | Portrait path, currently `/assets/img/portrait.webp` |
 | `bio` | About-page paragraphs |
 | `research_interests` | Research interests, labels, and descriptions on the publications page |
@@ -20,7 +19,7 @@ Edit `_data/profile.yml`:
 | `toolkit` | Technical tools |
 | `email`, `github` | Contact details and links |
 
-The homepage name, role line, and biography are written directly in `_pages/home.html`. They are not generated from `headline` or `intro`. Retained fields such as `name_en`, `role_en`, `affiliation`, `location`, `headline`, `intro`, and `social` are not currently used directly by public templates.
+The homepage name, role lines, biography, and affiliations below the portrait are written directly in `_pages/home.html`. The portrait caption shows two monochrome emblems side by side with `SCUT` and `HKUST(GZ)` labels, followed by GitHub, email, and CV icons. Full university names are available through each link's accessible label and hover title, and remain visible in the biography and role lines. The email address and location are not shown as caption text. University links point to their official homepages. Logo sources and display treatment are recorded in `assets/img/affiliations/README.md`. GitHub and email destinations still come from `_data/profile.yml`; CV links to `/cv/`. These sections are not generated from `headline` or `intro`. Retained fields such as `name_en`, `role_en`, `affiliation`, `affiliation_en`, `location`, `location_en`, `headline`, `intro`, and `social` are not currently used directly by public templates.
 
 Use spaces, not tabs, for YAML indentation. Quote year-only values, for example `year: "2026"`. Leave unknown dates empty instead of guessing.
 
