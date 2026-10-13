@@ -67,7 +67,7 @@
   }
 
   const surfaces = hosts.map((host, index) => {
-    // Upstream demo: User Info = D100, blur .5 (20px), radius32, elasticity0.
+    // User Info = D100, with a lighter local blur .375 (16px), radius32, elasticity0.
     // Toolbar: button D64, blur .1 (7.2px), saturation130, no container wobble.
     const compact = host.dataset.liquidGlass !== 'panel';
     const displacement = compact ? 64 : 100;
@@ -115,7 +115,7 @@
     const overLight = false;
     surfaces.forEach(({ host, scales, displacement, compact }) => {
       host.classList.toggle('liquid-over-light', overLight);
-      host.style.setProperty('--liquid-blur', `${(overLight ? 12 : 4) + (compact ? .1 : .5) * 32}px`);
+      host.style.setProperty('--liquid-blur', `${(overLight ? 12 : 4) + (compact ? .1 : .375) * 32}px`);
       scales.forEach((scale, channel) => scale.setAttribute('scale', String(-displacement * (overLight ? .5 : 1) * (1 + channel * .1))));
     });
   }

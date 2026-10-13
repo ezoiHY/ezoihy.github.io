@@ -63,7 +63,7 @@ The implementation uses the original standard displacement JPEG and the browserâ
 
 | Surface | Base displacement magnitude | Blur | Saturation |
 | --- | --- | --- | --- |
-| Content panel (`panel`) | 100 | 20px | 140% |
+| Content panel (`panel`) | 100 | 16px | 140% |
 | Navigation/footer toolbar | 64 | 7.2px | 130% |
 
 Safari and Firefox retain native backdrop blur but do not show SVG displacement, as documented by the upstream project. The local implementation selects this native fallback explicitly. It does not emulate refraction using a wallpaper copy. The glass port has no scroll-sampling handlers, sampling timers, canvas-generated displacement maps, or DOM snapshots. Its JavaScript responds to resize, theme changes, and pointer input; the browser owns backdrop compositing during scroll. This is separate from the minute-boundary wallpaper-selection timer described above.

@@ -333,7 +333,7 @@ body { isolation:isolate; }
 .wallpaper-dialog { width:min(340px,calc(100vw - 24px)); max-height:calc(100dvh - 110px); overflow:auto; padding:21px; margin:92px max(12px,calc((100vw - 1006px)/2)) 0 auto; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:24px; box-shadow:0 18px 60px #0005; }
 .wallpaper-dialog::backdrop { background:#06111d24; }
 .wallpaper-dialog[open] { animation:menu-appear .18s ease-out; }
-:root[data-background="wallpaper"] .wallpaper-dialog { background:rgba(19,31,45,.97); color-scheme:dark; }
+:root[data-background="wallpaper"] .wallpaper-dialog { background:rgba(19,31,45,.72); color-scheme:dark; backdrop-filter:blur(20px) saturate(130%); -webkit-backdrop-filter:blur(20px) saturate(130%); }
 .wallpaper-panel-heading { display:flex; align-items:center; justify-content:space-between; margin-bottom:17px; }
 .wallpaper-panel-heading h2 { font-size:19px; font-weight:600; }
 .wallpaper-panel-heading p { font-size:12px; color:var(--muted); margin-top:2px; }
@@ -360,15 +360,16 @@ body { isolation:isolate; }
 
 /* rdev/liquid-glass-react's native backdrop and original twin rim treatment.
    Browser owns scroll compositing. JavaScript only handles resize and pointer input. */
-.liquid-ready { position:relative; overflow:hidden; --liquid-blur:20px; --liquid-saturation:140%; }
+.liquid-ready { position:relative; overflow:hidden; --liquid-blur:16px; --liquid-saturation:140%; }
 .header-wrap.liquid-ready,.site-footer.liquid-ready { --liquid-saturation:130%; }
 .liquid-ready > :not(.liquid-effect) { position:relative; z-index:1; }
 .liquid-defs { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
 .liquid-effect { display:none; }
 .liquid-shade,.liquid-contrast,.liquid-warp { position:absolute; inset:0; z-index:0; border-radius:inherit; pointer-events:none; }
 .liquid-shade,.liquid-contrast { background:#000; opacity:0; }
-.liquid-shade { opacity:.2; }
-:root[data-theme="dark"] .liquid-shade { opacity:.12; }
+/* A lighter tint lets the landscape read through without fading the content. */
+.liquid-shade { opacity:.12; }
+:root[data-theme="dark"] .liquid-shade { opacity:.07; }
 .liquid-contrast { mix-blend-mode:overlay; }
 .liquid-over-light .liquid-shade { opacity:.2; }
 .liquid-over-light .liquid-contrast { opacity:1; }
@@ -376,12 +377,12 @@ body { isolation:isolate; }
 .liquid-rim { display:none; position:absolute; inset:0; z-index:2; border-radius:inherit; pointer-events:none; padding:1.5px; -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude; box-shadow:0 0 0 .5px #ffffff80 inset,0 1px 3px #ffffff40 inset,0 1px 4px #00000059; }
 .liquid-rim-screen { mix-blend-mode:screen; opacity:.2; background:linear-gradient(135deg,#fff0 0%,#ffffff1f 33%,#ffffff66 66%,#fff0 100%); }
 .liquid-rim-overlay { mix-blend-mode:overlay; background:linear-gradient(135deg,#fff0 0%,#ffffff52 33%,#ffffff99 66%,#fff0 100%); }
-:root[data-background="wallpaper"] .liquid-ready { background:transparent; border:0; box-shadow:0 12px 40px rgba(0,0,0,.25); text-shadow:0 2px 12px rgba(0,0,0,.4); }
+:root[data-background="wallpaper"] .liquid-ready { background:transparent; border:0; box-shadow:0 12px 40px rgba(0,0,0,.18); text-shadow:0 2px 12px rgba(0,0,0,.4); }
 :root[data-background="wallpaper"] .liquid-over-light { box-shadow:0 16px 70px rgba(0,0,0,.45); text-shadow:none; }
 :root[data-background="wallpaper"] .liquid-effect { display:block; }
 /* An inset surface, not another glass sheet, inside a section. */
 :root[data-background="wallpaper"] .project-card { background:rgba(0,0,0,.08); border-color:var(--line); }
-:root[data-background="wallpaper"] .search-dialog { background:rgba(19,30,44,.8); }
+:root[data-background="wallpaper"] .search-dialog { background:rgba(19,30,44,.65); }
 
 /* Short response to an action. No cursor-following spotlight, tilt or scroll reveals. */
 .icon-button,.desktop-nav a,.button,.project-details-link,.mobile-nav a { transition:background .18s ease-out,box-shadow .18s ease-out,transform .2s ease-out; }
@@ -428,12 +429,12 @@ body { isolation:isolate; }
 }
 @media (prefers-reduced-transparency:reduce) {
   :root[data-background="wallpaper"] { --surface:#202a35; --glass:#202a35; }
-  :root[data-background="wallpaper"] .liquid-ready { background:#202a35; }
+  :root[data-background="wallpaper"] :is(.liquid-ready,.search-dialog,.wallpaper-dialog) { background:#202a35; }
   .liquid-effect { display:none !important; }
-  .search-dialog,.search-dialog::backdrop { backdrop-filter:none; -webkit-backdrop-filter:none; }
+  .search-dialog,.search-dialog::backdrop,:root[data-background="wallpaper"] .wallpaper-dialog { backdrop-filter:none; -webkit-backdrop-filter:none; }
 }
 @supports not (backdrop-filter:blur(1px)) {
-  :root[data-background="wallpaper"] .liquid-ready { background:#233243; }
+  :root[data-background="wallpaper"] :is(.liquid-ready,.search-dialog,.wallpaper-dialog) { background:#233243; }
   .liquid-warp { display:none !important; }
 }
 @media print {

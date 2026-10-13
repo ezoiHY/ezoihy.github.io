@@ -154,7 +154,7 @@ The wallpaper consists of eight original photographs from Apple’s Big Sur coas
 
 Automatic mode loads the current photograph and preloads the next distinct one; manual mode loads the chosen photograph only. A minute-boundary clock selects automatic changes; CSS performs a three-second scheduled crossfade, a 0.8-second manual preview transition, and the slow drift. The clock pauses during manual preview, while hidden, or in solid mode, and updates immediately when automatic mode resumes. To change the schedule, edit `periods` in `assets/js/wallpaper.js`, preserve the original frame indices, and run `node scripts/check_wallpaper.cjs`. The complete mapping is in [UPSTREAM.md](../UPSTREAM.md).
 
-The material is a DOM port of `rdev/liquid-glass-react`, using its original displacement JPEG, RGB SVG filter, and 1.5px screen/overlay rims. Content panels use base displacement 100, blur 20px, and saturation 140%; navigation/footer toolbars use 64, 7.2px, and 130%. Wallpaper mode uses white text with a translucent contrast treatment.
+The material is a DOM port of `rdev/liquid-glass-react`, using its original displacement JPEG, RGB SVG filter, and 1.5px screen/overlay rims. Content panels use base displacement 100, blur 16px, and saturation 140%; navigation/footer toolbars use 64, 7.2px, and 130%. Wallpaper mode uses white text with a translucent contrast treatment.
 
 Safari and Firefox use native backdrop blur without SVG refraction, matching the upstream limitation. The browser composites the real backdrop; the glass implementation has no wallpaper copies, scroll-sampling handlers, sampling timers, canvas-generated maps, or React dependency. The separate wallpaper-selection clock runs only at minute boundaries.
 
