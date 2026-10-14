@@ -51,31 +51,53 @@ Each period lasts until the next listed time, and the schedule repeats daily. It
 
 The wallpaper settings panel supports a manual time through a keyboard-accessible slider, a native time input, and four scene presets. `harry-wallpaper-time` stores `auto` or a validated `HH:MM` value in local storage. Manual previews use the same frame schedule, persist across navigation, and stop the automatic clock. **Follow local time** restores automatic selection; **Show wallpaper** retains the solid-background option.
 
-The current photograph loads first, then automatic mode preloads the next distinct photograph; manual mode loads only the selected photograph. CSS composites the three-second automatic crossfade, 0.8-second manual transition, and a 75-second low-amplitude drift. A timer checks at minute boundaries, without a per-frame JavaScript loop or layout sampling. It stops during manual preview, while the document is hidden, or in solid mode, and updates immediately when automatic mode resumes. This also picks up local clock or timezone changes at the next check.
+The current photograph loads first, then automatic mode preloads the next distinct photograph; manual mode loads only the selected photograph. CSS composites the three-second automatic crossfade, 0.8-second manual transition. A timer checks at minute boundaries, without a per-frame JavaScript loop or layout sampling. It stops during manual preview, while the document is hidden, or in solid mode, and updates immediately when automatic mode resumes. This also picks up local clock or timezone changes at the next check.
 
-Reduced-motion preferences disable the drift and crossfade, so scheduled frame changes are immediate; they also disable pointer-driven glass rim changes. Reduced-transparency preferences hide glass effects and use opaque surfaces. Run `node scripts/check_wallpaper.cjs` to check the wallpaper schedule and lifecycle behavior.
+Reduced-motion preferences disable the crossfade, so scheduled frame changes are immediate. Reduced-transparency preferences hide glass effects and use opaque surfaces. Run `node scripts/check_wallpaper.cjs` to check the wallpaper schedule and lifecycle behavior.
 
 ## Liquid-glass implementation and attribution
 
-`assets/js/liquid-glass.js` is a native DOM port of the material in `src/index.tsx` from [rdev/liquid-glass-react](https://github.com/rdev/liquid-glass-react). It adapts implementation code, including the SVG RGB filter and twin screen/overlay rim treatment. React is not a runtime dependency.
+The current renderer is the unmodified core module from [gentpan/liquidglass](https://github.com/gentpan/liquidglass), integrated by `assets/js/liquid-glass.js` and `assets/js/glass-controls.js`. The engine is byte-identical to the one bundled with the explicitly requested `liquid-glass-web` skill. It generates a rounded-rectangle optical field at the surface's actual aspect ratio. The curved-rim slope and refractive index (1.5) determine an inward displacement profile; RGB channels receive slightly different offsets. A specular mask follows the same rim normals. The engine includes WebKit-specific filter coordinate scaling and map decode/cache handling. Its `createSpring` helper drives compact controls; the site does not import the web-component bundle.
 
-The implementation uses the original standard displacement JPEG and the browser’s actual backdrop. RGB channels are displaced separately and recombined with an edge mask. CSS provides native backdrop blur and saturation, while two masked 1.5px rims use `screen` and `overlay` blending. Foreground content remains in the normal semantic DOM.
+### Compact controls from the skill
 
-| Surface | Base displacement magnitude | Blur | Saturation |
+`glass-controls.js` adapts pattern B from the skill's `references/patterns.md` and the navbar/switch/slider implementations in its `assets/components.js`. Native links, checkbox inputs, and the range input remain in place; decorative copies are hidden from accessibility and do not receive pointer events. The navigation indicator refracts only the matching label area, using a 5px bend, narrow bezel, and no chromatic split over its translucent fill. Switches and the time slider show solid thumbs at rest; while pressed, a small lens bends a copy of their track. Those lenses are destroyed after release and when settings close.
+
+All these copies are local to their controls: no fixed-background images, scroll sampling, or geometry polling. Size is measured on resize, and spring frames run only until motion settles. Reduced motion disables thumb squish; reduced transparency or increased contrast removes the optical layers. Light panel tints and directional inset rims preserve the material appearance without filtering the text.
+
+### Sources inspected for this revision
+
+| Project | Implementation inspected | Decision |
+| --- | --- | --- |
+| [gentpan/liquidglass](https://github.com/gentpan/liquidglass/tree/068ad226f53e1ca62d857f78bdc32f58f3c5fce7) | `lib/liquid-glass.js`, especially `profileTable`, `renderLensMap`, `bendScale`, and `createGlass` | Use the unchanged core module for optical maps, filters, and WebKit fixes. |
+| [Meapri/liquid-glass-web](https://github.com/Meapri/liquid-glass-web/tree/1613f8311dbc31bc2331afcfe51a143c56dd6308) | `LiquidGlass.ts` fixed-background fallback, `SurfaceField.ts`, `MapRaster.ts`, `FilterChain.ts` | Adopt the documented fixed-background integration principle. No source code from this project is copied. |
+| [ybouane/liquidglass](https://github.com/ybouane/liquidglass/tree/59af227103795f06421a96e2c7d3dceb081decd2) | `shaders.ts`, `GlassRenderer.ts`, `HtmlCapture.ts` | Useful WebGL optics reference; its DOM capture pipeline is unnecessary for this site's known wallpaper. No code copied. |
+
+### Wallpaper alignment and browser limits
+
+On non-WebKit desktop engines, the filtered material paints the same two original wallpaper images as the page. CSS fixed background attachment, identical cover sizing/position, and shared opacity selectors keep those copies aligned during scroll and time-of-day transitions. The real wallpaper uses ordinary background attachment within its already-fixed viewport container.
+
+Mac Safari can display this SVG refraction, but the full-panel filters over fixed image copies caused severe scrolling lag on this site. Safari/WebKit and iOS therefore use native 3px backdrop blur, a contrast tint, and inset edge highlights on large panels. The panel integration exits before creating wallpaper copies, panel lens SVGs, resize/intersection observers, or panel refresh callbacks. Only the separate compact controls use the shared engine there. Effects do not switch during scrolling. Reducing the displacement-map resolution alone does not reduce the full panel's filtered pixel area. SVG backdrop-filter limitations are tracked in [245510](https://bugs.webkit.org/show_bug.cgi?id=245510) and [297770](https://bugs.webkit.org/show_bug.cgi?id=297770); static rendering support is not evidence of acceptable scrolling performance.
+
+Panel refraction applies only to the designated wallpaper; the compact navigation lens uses decorative label copies. No page content is rasterized. The glass integration has no scroll listener, screenshot capture, coordinate sampling timer, WebGL context, or continuous animation loop. JavaScript observes size, visibility, preferences, and wallpaper changes. The CSS wallpaper drift was removed so the page and filtered copies share exactly the same image geometry. Scheduled three-second crossfades and 0.8-second manual transitions are preserved.
+
+iOS also avoids the unreliable `background-attachment: fixed` alignment. Reduced transparency restores opaque surfaces; reduced motion makes scene transitions immediate. In the enhanced renderer, off-screen surfaces, hidden pages, and solid mode release their filters. Upstream maps are cached and local map resolution is capped at 320,000 pixels per lens. `node scripts/check_glass.cjs` guards Safari/iOS selection, optional-module failure, and enhanced-renderer lifecycle.
+
+| Surface | Maximum rim displacement | Frost | Curved edge width |
 | --- | --- | --- | --- |
-| Content panel (`panel`) | 100 | 16px | 140% |
-| Navigation/footer toolbar | 64 | 7.2px | 130% |
+| Content panel | 28px | 1.5px | 28px |
+| Navigation/footer | 20px | 0.75px | 18px |
 
-Safari and Firefox retain native backdrop blur but do not show SVG displacement, as documented by the upstream project. The local implementation selects this native fallback explicitly. It does not emulate refraction using a wallpaper copy. The glass port has no scroll-sampling handlers, sampling timers, canvas-generated displacement maps, or DOM snapshots. Its JavaScript responds to resize, theme changes, and pointer input; the browser owns backdrop compositing during scroll. This is separate from the minute-boundary wallpaper-selection timer described above.
+Corners remain 32px for desktop panels, 26px for mobile panels, and 28px for the navigation. Chromatic separation is 0.035, deliberately subtle. Text is rendered normally above the lens with a neutral contrast tint behind it.
 
-### Code and texture provenance
+### Vendored code
 
-- Upstream source snapshot: `ac48eab18d1f7f444ae30002d240cae29c863a21`.
-- Copyright: **2025 MAX ROVENSKY**, MIT license.
-- Upstream `displacementMap.jpg` is retained unchanged as `assets/vendor/liquid-glass-displacement.jpg`.
-- Displacement texture SHA-256: `6945d824fd543cb4bb080cf5a58460f29b17a661719ca10ccc718d953bfd7af6`.
-- The upstream license is retained unchanged as [`assets/vendor/liquid-glass-react.LICENSE.txt`](assets/vendor/liquid-glass-react.LICENSE.txt), with the copyright and permission notice intact.
+- Source revision: `068ad226f53e1ca62d857f78bdc32f58f3c5fce7`.
+- Source file: `lib/liquid-glass.js` → `assets/vendor/gentpan-liquidglass.js`, unchanged.
+- SHA-256: `92a62e5b80cfa7e03912b13bdc53aff1c0ae367a5f296de1327e0f62f0579210`.
+- MIT license retained as [`assets/vendor/gentpan-liquidglass.LICENSE.txt`](assets/vendor/gentpan-liquidglass.LICENSE.txt).
+- No CDN, package installation, or React runtime is required.
 
-Preserve this attribution and license when modifying or redistributing the port or texture. The glass port and texture are separate from the Apple wallpaper assets.
+The earlier `rdev/liquid-glass-react` texture and MIT notice remain in `assets/vendor/` for provenance, but the new engine does not load that texture. Their source snapshot was `ac48eab18d1f7f444ae30002d240cae29c863a21`; texture SHA-256 `6945d824fd543cb4bb080cf5a58460f29b17a661719ca10ccc718d953bfd7af6`. Preserve the retained MAX ROVENSKY copyright/license if redistributing those assets. All glass code licensing is separate from Apple's wallpaper artwork.
 
-Other design references, used for ideas rather than copied runtime code, are [Motion](https://github.com/motiondivision/motion) and [Solar Dynamic Wallpaper](https://github.com/liddiard/solar-dynamic-wallpaper), both MIT licensed. Neither is a runtime dependency. The UI/UX Pro Max and Frontend Design skills were used to review contrast, consistency, touch targets, and restrained motion.
+Other design references are [Motion](https://github.com/motiondivision/motion) and [Solar Dynamic Wallpaper](https://github.com/liddiard/solar-dynamic-wallpaper), both MIT licensed and neither a runtime dependency.

@@ -20,7 +20,8 @@
     <script src="{{ '/assets/js/wallpaper.js' | relative_url }}"></script>
     <link rel="stylesheet" href="{{ '/assets/css/studio.css' | relative_url }}">
     <script src="{{ '/assets/js/studio.js' | relative_url }}" defer></script>
-    <script src="{{ '/assets/js/liquid-glass.js' | relative_url }}" defer></script>
+    <script src="{{ '/assets/js/liquid-glass.js' | relative_url }}" type="module"></script>
+    <script src="{{ '/assets/js/glass-controls.js' | relative_url }}" type="module"></script>
   </head>
   <body data-page="{{ page.page_class | default: 'inner' }}">
     {% include symbols.liquid %}

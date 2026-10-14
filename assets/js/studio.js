@@ -28,6 +28,7 @@
     wallpaperSlider.value = String(Number(time.slice(0, 2)) * 60 + Number(time.slice(3)));
     wallpaperSlider.setAttribute('aria-valuetext', time);
     document.querySelectorAll('[data-wallpaper-preset]').forEach(button => button.setAttribute('aria-pressed', String(!automatic && button.dataset.wallpaperPreset === time)));
+    wallpaperDialog.dispatchEvent(new Event('wallpaper-controls-sync'));
   }
   function setBackground(enabled) {
     root.dataset.background = enabled ? 'wallpaper' : 'solid';

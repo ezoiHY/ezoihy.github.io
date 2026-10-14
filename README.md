@@ -45,9 +45,10 @@ Generated files are written to `_site/` and should not be committed. Gemfile and
 | `assets/css/studio.css` | Layout, glass materials, and motion |
 | `assets/js/studio.js` | Theme, background preference, search, and other controls |
 | `assets/js/wallpaper.js` | Visitor-local clock schedule, wallpaper loading, and frame changes |
-| `assets/js/liquid-glass.js` | Native DOM port of the upstream glass effect |
-| `assets/vendor/liquid-glass-displacement.jpg` | Original upstream displacement texture |
-| `assets/vendor/liquid-glass-react.LICENSE.txt` | MIT license for the adapted glass code and texture |
+| `assets/js/liquid-glass.js` | Fixed-wallpaper lens integration and lifecycle |
+| `assets/js/glass-controls.js` | Compact navigation and input lenses, adapted from the liquid-glass-web skill |
+| `assets/vendor/gentpan-liquidglass.js` | Unmodified, locally served SVG refraction engine |
+| `assets/vendor/gentpan-liquidglass.LICENSE.txt` | MIT license for the refraction engine |
 | `_pages/`, `_layouts/`, `_includes/` | Pages, layouts, and shared components |
 | `_config.yml` | Site metadata, URLs, and plugin configuration |
 
@@ -70,13 +71,15 @@ The wallpaper uses eight original photographic frames of Apple’s Big Sur coast
 
 The toolbar’s wallpaper button opens the Big Sur settings panel. Use the time slider, enter a time, or choose Sunrise, Day, Sunset, or Night to preview a lighting state. Turn on **Follow local time** to return to the automatic schedule. **Show wallpaper** switches between the photographs and a solid color. Both preferences are saved in the browser. The theme button independently controls the interface’s light/dark mode; it does not select the wallpaper photograph.
 
-The current frame loads first; automatic mode also preloads the next distinct frame. CSS handles a three-second scheduled crossfade, a shorter 0.8-second manual preview transition, and the slow ambient drift, without a per-frame JavaScript loop. The minute-boundary clock pauses during manual preview, while the page is hidden, or when solid mode is active. Automatic mode refreshes immediately on resume.
+The current frame loads first; automatic mode also preloads the next distinct frame. CSS handles a three-second scheduled crossfade, a shorter 0.8-second manual preview transition, without a per-frame JavaScript loop. The minute-boundary clock pauses during manual preview, while the page is hidden, or when solid mode is active. Automatic mode refreshes immediately on resume.
 
-The glass is a native DOM port of [rdev/liquid-glass-react](https://github.com/rdev/liquid-glass-react), using its original displacement JPEG, SVG RGB filter, and two 1.5px screen/overlay rims. Content panels use displacement magnitude 100, 16px blur, and 140% saturation; toolbar surfaces use 64, 7.2px, and 130%. Panel corners are 32px on desktop and 26px on mobile. The neutral tint is 12% in light mode and 7% in dark mode, allowing more of the landscape through while keeping the text and edge highlights fully visible. Search and wallpaper settings use translucent, blurred surfaces; reduced-transparency preferences restore opaque panels.
+The glass uses the locally vendored [gentpan/liquidglass](https://github.com/gentpan/liquidglass) engine: a rounded lens displacement field, subtle RGB separation, and a geometry-based specular edge. Content panels use 28px maximum rim displacement and 1.5px frost; navigation/footer use 20px and 0.75px. Panel corners remain 32px on desktop and 26px on mobile. A light neutral tint and text shadow support white type while letting the wallpaper show through.
 
-Supported engines apply the SVG displacement to the native backdrop material. Safari and Firefox use native backdrop blur without SVG refraction, matching the upstream limitation. The glass implementation has no copied wallpaper inputs, scroll-sampling handlers, sampling timers, or canvas-generated maps, and React is not required. The wallpaper’s separate minute-boundary clock only selects photographs. Attribution, texture provenance, and the retained MIT license are documented in [UPSTREAM.md](UPSTREAM.md).
+The `liquid-glass-web` skill's overlay-copy pattern powers a spring-driven navigation indicator and refractive switch/slider thumbs. Real links and inputs remain accessible. Thumb lenses exist only during interaction; the small navigation lens bends label copies without copying the wallpaper. Both use the existing, unchanged local engine.
 
-Reduced-motion preferences stop the wallpaper drift and pointer-driven rim changes; scheduled photographs still update, but switch instantly without crossfading. Wallpaper animation pauses while the page is hidden or the wallpaper is disabled. Reduced-transparency preferences hide the glass effects and use opaque surfaces. The Node check above verifies wallpaper scheduling and lifecycle behavior.
+Safari/WebKit and iOS keep native backdrop blur on large panels, with a light neutral tint and directional edge highlights. They create no panel wallpaper copies or large SVG lenses: these caused severe Safari scrolling lag. Other desktop engines retain wallpaper refraction through ordinary SVG `filter`. There is no scroll-coordinate sampling, DOM capture, React, or animation while controls are idle. Wallpaper scheduling and crossfades remain active. Search and wallpaper settings retain native blur. `node scripts/check_glass.cjs` covers the panel renderer selection and lifecycle; control interaction also needs manual review after future changes. Sources, limits, and licenses are recorded in [UPSTREAM.md](UPSTREAM.md).
+
+Reduced motion disables transitions, so scheduled photographs switch instantly. Reduced transparency hides optical layers and restores opaque panels. Hidden pages and solid mode release lens filters; off-screen lenses are suspended. The existing Node check verifies wallpaper scheduling and lifecycle behavior.
 
 ## Content and upstream
 

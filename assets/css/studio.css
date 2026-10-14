@@ -6,7 +6,8 @@
   --glass:rgba(250,251,252,.84); --hover:rgba(50,110,153,.08);
   --card-glass:rgba(255,255,255,.58); --card-edge:rgba(255,255,255,.92);
   --card-shadow:0 5px 20px rgba(44,69,94,.055),inset 0 1px 0 rgba(255,255,255,.9);
-  --radius-panel:32px; --radius-toolbar:28px; --radius-control:12px;
+  --radius-panel:32px; --radius-toolbar:28px; --radius-control:18px;
+  --control-selected:rgba(255,255,255,.72); --control-base:#f1f4f8; --control-off:#c6ced8;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 :root[data-theme="dark"] {
@@ -16,6 +17,7 @@
   --glass:rgba(25,28,33,.87); --hover:rgba(136,197,237,.1);
   --card-glass:rgba(42,48,57,.6); --card-edge:rgba(173,192,216,.15);
   --card-shadow:0 5px 20px rgba(0,0,0,.12),inset 0 1px 0 rgba(222,234,249,.055);
+  --control-selected:rgba(255,255,255,.13); --control-base:#26313e; --control-off:#607084;
 }
 * { box-sizing:border-box; }
 html { scroll-padding-top:24px; }
@@ -53,6 +55,16 @@ strong { font-weight:600; }
 .desktop-nav a { color:var(--ink); font-size:14px; line-height:1.5; padding:8px 12px; border-radius:var(--radius-control); position:relative; }
 .desktop-nav a:hover { background:var(--hover); text-decoration:none; }
 .desktop-nav a.active { color:var(--accent); font-weight:500; background:var(--hover); box-shadow:inset 0 1px 1px #a6c6dd12; }
+/* A small refractive indicator: the real navigation remains native links. */
+.desktop-nav { position:relative; isolation:isolate; }
+.desktop-nav > a,.glass-nav-copy > span { font-weight:500; }
+.glass-nav-copy,.glass-nav-shadow { display:none; position:absolute; pointer-events:none; }
+.glass-nav-copy { inset:0; z-index:2; align-items:center; gap:3px; background:var(--control-selected); clip-path:inset(50%); }
+.glass-nav-copy > span { flex:none; color:var(--ink); font-size:14px; line-height:1.5; padding:8px 12px; white-space:nowrap; }
+.glass-nav-shadow { left:0; top:0; z-index:0; box-shadow:0 3px 10px #071b3024,inset 0 1px 1px #ffffff80,inset 0 -1px 1px #00000012; }
+.glass-nav-ready .glass-nav-copy { display:flex; }
+.glass-nav-ready .glass-nav-shadow { display:block; }
+.glass-nav-ready > a.active,.glass-nav-ready > a:hover { background:transparent; box-shadow:none; }
 .header-tools { display:flex; gap:3px; padding-left:10px; border-left:1px solid var(--line); }
 .icon-button { display:inline-flex; width:36px; height:38px; padding:8px; align-items:center; justify-content:center; border-radius:var(--radius-control); }
 .icon-button:hover { background:var(--hover); }
@@ -230,8 +242,8 @@ strong { font-weight:600; }
 .error-page p { margin:20px 0; }
 
 /* A translucent search panel complements the navigation and home-page rows. */
-.search-dialog { width:min(580px,calc(100% - 32px)); padding:0; margin:17vh auto auto; max-height:70vh; border:1px solid var(--line); border-radius:24px; color:var(--ink); background:var(--glass); box-shadow:0 20px 70px #12213730; backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); }
-.search-dialog::backdrop { background:#15233725; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); }
+.search-dialog { width:min(580px,calc(100% - 32px)); padding:0; margin:17vh auto auto; max-height:70vh; border:1px solid var(--line); border-radius:24px; color:var(--ink); background:var(--glass); box-shadow:0 20px 70px #12213730; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+.search-dialog::backdrop { background:#15233725; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); }
 .search-top { display:flex; gap:12px; align-items:center; padding:15px 18px; border-bottom:1px solid var(--line); }
 .search-top label { display:flex; color:var(--muted); }
 .search-top input { min-width:0; width:100%; padding:3px 0; outline:none; color:var(--ink); background:transparent; font-size:15px; }
@@ -322,27 +334,29 @@ body { isolation:isolate; }
 .site-footer { max-width:1006px; width:calc(100% - 32px); border:0; border-radius:22px; padding:18px 30px; margin:24px auto; }
 
 .desktop-wallpaper { position:fixed; inset:0; z-index:-2; overflow:hidden; pointer-events:none; opacity:1; transition:opacity .35s ease; }
-.wallpaper-layer { position:absolute; inset:-3%; background-size:cover; background-position:50% 50%; animation:wallpaper-drift 75s ease-in-out infinite alternate; transition:opacity 3s ease-in-out; }
-.wallpaper-a { background-image:var(--wallpaper-a-image,url('../img/big-sur/big-sur-4.jpg')); opacity:1; }
-.wallpaper-b { background-image:var(--wallpaper-b-image,none); opacity:0; }
-:root[data-wallpaper-layer="b"] .wallpaper-a { opacity:0; }
-:root[data-wallpaper-layer="b"] .wallpaper-b { opacity:1; }
+.wallpaper-layer,.liquid-photo { position:absolute; inset:0; background-size:cover; background-position:50% 50%; transition:opacity 3s ease-in-out; }
+/* The real wallpaper is already inside a fixed viewport-sized container.
+   Only optional lens copies need fixed background attachment. */
+.liquid-photo { background-attachment:fixed; }
+.wallpaper-a,.liquid-photo-a { background-image:var(--wallpaper-a-image,url('../img/big-sur/big-sur-4.jpg')); opacity:1; }
+.wallpaper-b,.liquid-photo-b { background-image:var(--wallpaper-b-image,none); opacity:0; }
+:root[data-wallpaper-layer="b"] :is(.wallpaper-a,.liquid-photo-a) { opacity:0; }
+:root[data-wallpaper-layer="b"] :is(.wallpaper-b,.liquid-photo-b) { opacity:1; }
 :root[data-background="solid"] .desktop-wallpaper { opacity:0; visibility:hidden; }
-:root[data-background="solid"] .wallpaper-layer,:root[data-page-visible="false"] .wallpaper-layer { animation-play-state:paused; }
-@keyframes wallpaper-drift { from { transform:scale(1.015) translate3d(-.6%,-.4%,0); } to { transform:scale(1.055) translate3d(.6%,.4%,0); } }
 :root[data-background="wallpaper"] { --bg:#192c3a; --ink:#fff; --muted:#f1f5fa; --soft:#e3edf5; --accent:#fff; --line:rgba(255,255,255,.2); --surface:rgba(10,18,29,.24); --hover:rgba(255,255,255,.12); --glass:rgba(18,29,40,.28); --card-glass:rgba(255,255,255,.08); --card-edge:rgba(255,255,255,.35); }
+:root[data-background="wallpaper"] { --control-selected:rgba(255,255,255,.17); --control-base:#243342; --control-off:#5a6a7b; }
 :root[data-background="wallpaper"] .biography .prose a { text-decoration:underline; text-decoration-color:rgba(255,255,255,.48); }
 .background-toggle.is-enabled { color:var(--accent); background:var(--hover); }
 .background-toggle.is-previewing { position:relative; }
 .background-toggle.is-previewing::after { content:""; position:absolute; top:6px; right:6px; width:4px; height:4px; border-radius:50%; background:currentColor; }
-:root:not([data-wallpaper-time="auto"]) .wallpaper-layer { transition-duration:.8s; }
+:root:not([data-wallpaper-time="auto"]) :is(.wallpaper-layer,.liquid-photo) { transition-duration:.8s; }
 
 /* A compact settings panel keeps the toolbar uncluttered on phones. */
 .wallpaper-settings-open { overflow:hidden; }
 .wallpaper-dialog { width:min(340px,calc(100vw - 24px)); max-height:calc(100dvh - 110px); overflow:auto; padding:21px; margin:92px max(12px,calc((100vw - 1006px)/2)) 0 auto; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:24px; box-shadow:0 18px 60px #0005; }
 .wallpaper-dialog::backdrop { background:#06111d24; }
 .wallpaper-dialog[open] { animation:menu-appear .18s ease-out; }
-:root[data-background="wallpaper"] .wallpaper-dialog { background:rgba(19,31,45,.72); color-scheme:dark; backdrop-filter:blur(20px) saturate(130%); -webkit-backdrop-filter:blur(20px) saturate(130%); }
+:root[data-background="wallpaper"] .wallpaper-dialog { background:rgba(19,31,45,.72); color-scheme:dark; backdrop-filter:blur(12px) saturate(130%); -webkit-backdrop-filter:blur(12px) saturate(130%); }
 .wallpaper-panel-heading { display:flex; align-items:center; justify-content:space-between; margin-bottom:17px; }
 .wallpaper-panel-heading h2 { font-size:19px; font-weight:600; }
 .wallpaper-panel-heading p { font-size:12px; color:var(--muted); margin-top:2px; }
@@ -367,35 +381,53 @@ body { isolation:isolate; }
 .wallpaper-presets button:active { transform:scale(.96); }
 .wallpaper-time-hint { margin-top:14px; font-size:11px; color:var(--muted); }
 
-/* rdev/liquid-glass-react's native backdrop and original twin rim treatment.
-   Browser owns scroll compositing. JavaScript only handles resize and pointer input. */
-.liquid-ready { position:relative; overflow:hidden; --liquid-blur:16px; --liquid-saturation:140%; }
-.header-wrap.liquid-ready,.site-footer.liquid-ready { --liquid-saturation:130%; }
+/* Skill pattern B: the native input handles input; only a tiny thumb bends.
+   Opaque copies are clipped to the thumb and have no fixed image attachment. */
+.glass-input { position:relative; display:inline-block; flex:none; vertical-align:middle; }
+.glass-switch { width:52px; height:28px; }
+.glass-range { display:block; width:100%; height:36px; margin:0; }
+.glass-input > input { position:absolute; inset:0; width:100%; height:100%; margin:0; padding:0; opacity:0; z-index:4; cursor:pointer; border:0; border-radius:0; }
+.glass-range > input.wallpaper-time-slider { height:36px; margin:0; appearance:none; -webkit-appearance:none; }
+.glass-range > input::-webkit-slider-thumb { appearance:none; -webkit-appearance:none; width:28px; height:36px; border:0; }
+.glass-range > input::-moz-range-thumb { width:28px; height:36px; border:0; }
+.glass-input-track,.glass-input-copy,.glass-input-thumb,.glass-input-shadow { position:absolute; pointer-events:none; }
+.glass-switch > .glass-input-track { inset:0; border-radius:14px; background:color-mix(in srgb,var(--control-off),#34c759 calc(var(--switch-value,0) * 100%)); box-shadow:inset 0 1px 2px #00000020,inset 0 -1px 1px #ffffff1f; }
+.glass-input-copy { inset:-12px; background:var(--control-base); z-index:1; opacity:0; clip-path:inset(50%); }
+.glass-switch .glass-input-copy > .glass-input-track { left:12px; top:12px; width:52px; height:28px; border-radius:14px; background:color-mix(in srgb,var(--control-off),#34c759 calc(var(--switch-value,0) * 100%)); }
+.glass-range > .glass-input-track,.glass-range .glass-input-copy > .glass-input-track { left:0; right:0; top:15px; height:6px; border-radius:6px; background:linear-gradient(90deg,#172847,#bd8484 25%,#7ac6ec 50%,#e7a87a 75%,#172847); }
+.glass-range .glass-input-copy > .glass-input-track { left:12px; right:12px; top:27px; }
+.glass-input-thumb,.glass-input-shadow { top:0; left:0; }
+.glass-input-thumb { z-index:3; background:#fff; box-shadow:0 2px 6px #00000029,inset 0 1px 1px #fff,inset 0 -1px 1px #8793a329; }
+.glass-input-shadow { z-index:2; opacity:0; box-shadow:0 4px 12px #00000026,inset 0 1px 1px #ffffff80; }
+.glass-input > input:focus-visible ~ .glass-input-thumb { outline:2px solid var(--accent); outline-offset:3px; }
+.glass-input > input:disabled { cursor:default; }
+.glass-input > input:disabled ~ span { opacity:.4 !important; }
+
+/* Native frost is the scrolling-safe material for Safari/iOS. Other desktop
+   engines can add an aligned, filtered wallpaper layer below the content. */
+.liquid-ready { position:relative; overflow:hidden; }
 .liquid-ready > :not(.liquid-effect) { position:relative; z-index:1; }
-.liquid-defs { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
-.liquid-effect { display:none; }
-.liquid-shade,.liquid-contrast,.liquid-warp { position:absolute; inset:0; z-index:0; border-radius:inherit; pointer-events:none; }
-.liquid-shade,.liquid-contrast { background:#000; opacity:0; }
-/* A lighter tint lets the landscape read through without fading the content. */
-.liquid-shade { opacity:.12; }
-:root[data-theme="dark"] .liquid-shade { opacity:.07; }
-.liquid-contrast { mix-blend-mode:overlay; }
-.liquid-over-light .liquid-shade { opacity:.2; }
-.liquid-over-light .liquid-contrast { opacity:1; }
-.liquid-warp { backdrop-filter:blur(var(--liquid-blur)) saturate(var(--liquid-saturation)); -webkit-backdrop-filter:blur(var(--liquid-blur)) saturate(var(--liquid-saturation)); }
-.liquid-rim { display:none; position:absolute; inset:0; z-index:2; border-radius:inherit; pointer-events:none; padding:1.5px; -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude; box-shadow:0 0 0 .5px #ffffff80 inset,0 1px 3px #ffffff40 inset,0 1px 4px #00000059; }
-.liquid-rim-screen { mix-blend-mode:screen; opacity:.2; background:linear-gradient(135deg,#fff0 0%,#ffffff1f 33%,#ffffff66 66%,#fff0 100%); }
-.liquid-rim-overlay { mix-blend-mode:overlay; background:linear-gradient(135deg,#fff0 0%,#ffffff52 33%,#ffffff99 66%,#fff0 100%); }
-:root[data-background="wallpaper"] .liquid-ready { background:transparent; border:0; box-shadow:0 12px 40px rgba(0,0,0,.18); text-shadow:0 2px 12px rgba(0,0,0,.4); }
-:root[data-background="wallpaper"] .liquid-over-light { box-shadow:0 16px 70px rgba(0,0,0,.45); text-shadow:none; }
+.liquid-effect { display:none; pointer-events:none; }
+.liquid-optics,.liquid-shade,.liquid-warp { position:absolute; inset:0; z-index:0; border-radius:inherit; }
+.liquid-optics { background:#192c3a; }
+.liquid-shade { background:linear-gradient(135deg,#08142138,#0814214d); }
+:root[data-theme="dark"] .liquid-shade { background:linear-gradient(135deg,#08142147,#08142157); }
+.liquid-warp { backdrop-filter:blur(3px) saturate(125%); -webkit-backdrop-filter:blur(3px) saturate(125%); }
+.liquid-rim { position:absolute; inset:0; z-index:2; border-radius:inherit; box-shadow:inset 0 1px 1px #ffffff80,inset 0 -1px 1px #ffffff24,inset 1px 0 1px #ffffff18,inset 0 0 0 .5px #ffffff2e; }
+.liquid-rim::before { content:""; position:absolute; inset:0; padding:1px; border-radius:inherit; background:linear-gradient(135deg,#ffffffa6 0%,#ffffff14 32%,#ffffff05 58%,#ffffff45 100%); -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0); mask-composite:exclude; }
+:root[data-background="wallpaper"] .liquid-ready { background:transparent; border:0; box-shadow:0 12px 36px #06111d2e; text-shadow:0 1px 5px #0006; }
 :root[data-background="wallpaper"] .liquid-effect { display:block; }
+:root[data-background="wallpaper"] .liquid-optics { display:none; }
+:root[data-background="wallpaper"] .liquid-refracting > .liquid-optics { display:block; }
+:root[data-background="wallpaper"] .liquid-refracting > :is(.liquid-warp,.liquid-rim) { display:none; }
 /* An inset surface, not another glass sheet, inside a section. */
 :root[data-background="wallpaper"] .project-card { background:rgba(0,0,0,.08); border-color:var(--line); }
 :root[data-background="wallpaper"] .search-dialog { background:rgba(19,30,44,.65); }
 
 /* Short response to an action. No cursor-following spotlight, tilt or scroll reveals. */
 .icon-button,.desktop-nav a,.button,.project-details-link,.mobile-nav a { transition:background .18s ease-out,box-shadow .18s ease-out,transform .2s ease-out; }
-.icon-button:active,.button:active,.project-details-link:active,.desktop-nav a:active { transform:scale(.96); }
+.icon-button:active,.button:active,.project-details-link:active { transform:scaleX(1.045) scaleY(.95); }
+.desktop-nav a:active { transform:none; }
 .icon-button:hover,.desktop-nav a:hover,.mobile-nav a:hover { background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.18),transparent 100%),var(--hover); }
 .search-dialog[open] { animation:search-appear .2s ease-out; }
 .mobile-nav:not([hidden]) { animation:menu-appear .18s ease-out; }
@@ -436,10 +468,12 @@ body { isolation:isolate; }
   .wallpaper-layer { transform:none; }
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) { animation:none !important; }
 }
-@media (prefers-reduced-transparency:reduce) {
+@media (prefers-reduced-transparency:reduce), (prefers-contrast:more) {
   :root[data-background="wallpaper"] { --surface:#202a35; --glass:#202a35; }
   :root[data-background="wallpaper"] :is(.liquid-ready,.search-dialog,.wallpaper-dialog) { background:#202a35; }
   .liquid-effect { display:none !important; }
+  .glass-nav-copy,.glass-nav-shadow,.glass-input-copy,.glass-input-shadow { display:none !important; }
+  .glass-input-thumb { opacity:1 !important; }
   .search-dialog,.search-dialog::backdrop,:root[data-background="wallpaper"] .wallpaper-dialog { backdrop-filter:none; -webkit-backdrop-filter:none; }
 }
 @supports not (backdrop-filter:blur(1px)) {
