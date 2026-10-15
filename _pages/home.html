@@ -38,14 +38,9 @@ description: Yu Han (Harry), a Robotics Engineering undergraduate at South China
     </section>
   </section>
 
-  <section class="home-section work-section glass-panel" data-liquid-glass="panel" aria-labelledby="experience-title">
-    <h2 id="experience-title">Recent work</h2>
-    <div class="news-list">{% for exp in profile.experiences limit: 3 %}<div class="news-row"><time>{{ exp.year }}</time><p><a href="{{ exp.url | relative_url }}">{{ exp.title }}</a><span class="news-detail">{{ exp.description }}</span></p></div>{% endfor %}</div>
-  </section>
-
   <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="projects-title">
     <div class="section-heading"><h2 id="projects-title">Selected projects</h2><a href="{{ '/projects/' | relative_url }}">All projects →</a></div>
-    <div class="selected-projects">{% assign selected = site.projects | where: 'featured', true | sort: 'order' %}{% for project in selected limit: 2 %}<article class="selected-project"><a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project.image | relative_url }}" alt="" width="800" height="560" loading="lazy"></a><div><h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><a class="project-details-link" href="{{ project.url | relative_url }}">Details</a></div></article>{% endfor %}</div>
+    <div class="selected-projects">{% assign selected = site.projects | where: 'featured', true | sort: 'order' %}{% for project in selected limit: 2 %}{% assign project_cover = project.cover | default: project.image %}{% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}{% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}<article class="selected-project"><a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a><div><h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><a class="project-details-link" href="{{ project.url | relative_url }}">Details</a></div></article>{% endfor %}</div>
   </section>
 
   <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="posts-title">

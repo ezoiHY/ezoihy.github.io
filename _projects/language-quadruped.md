@@ -8,8 +8,13 @@ order: 4
 permalink: /projects/language-quadruped/
 featured: false
 accent: blue
-image: /assets/img/quadruped.svg
-image_alt: Conceptual illustration of a quadruped controlled through natural language
+image: /assets/img/language-quadruped-poster.webp
+image_alt: A Unitree Go1 approaching the camera and rising onto its hind legs during the project demonstration
+image_width: 852
+image_height: 480
+image_caption: Real hardware demonstration, excerpted from the original project video.
+video: /assets/video/language-quadruped-demo.mp4
+video_source: https://www.bilibili.com/video/BV1bPKPzZEog/
 tags: [Unitree Go1, Qwen, Ollama, Local LLM]
 highlights:
   - value: Go1

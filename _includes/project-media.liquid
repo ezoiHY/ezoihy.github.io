@@ -1,0 +1,8 @@
+{% assign media = include.project %}
+<div class="project-motion" data-project-motion>
+  <img class="project-motion-poster" src="{{ media.image | relative_url }}" alt="{{ media.image_alt | default: media.title | escape }}" width="{{ media.image_width | default: 800 }}" height="{{ media.image_height | default: 560 }}" loading="{{ include.loading | default: 'lazy' }}">
+  <video class="project-motion-video" muted loop playsinline preload="none" poster="{{ media.image | relative_url }}" aria-hidden="true" tabindex="-1">
+    <source src="{{ media.video | relative_url }}" type="video/mp4">
+  </video>
+  <button class="project-motion-toggle" type="button" hidden>Play preview</button>
+</div>

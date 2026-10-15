@@ -8,8 +8,12 @@ order: 2
 permalink: /projects/monocular-hand-control/
 featured: true
 accent: peach
-image: /assets/img/retarget.svg
-image_alt: Conceptual mapping from human hand landmarks to robotic hand motion
+image: /assets/img/monocular-hand-demo.webp
+image_alt: A two-finger human hand gesture tracked with RGB landmarks beside the corresponding robotic hand pose in SAPIEN
+image_width: 1200
+image_height: 489
+image_caption: Project demo screenshot showing RGB hand landmarks and the corresponding robotic hand pose in SAPIEN simulation.
+image_source: https://github.com/ezoiHY/Kinematic-Control-of-Robotic-Hands-Based-on-a-Monocular-RGB-Cammera/blob/main/ex1.png
 tags: [HaMeR, Hand Reconstruction, Inverse Kinematics, Motion Retargeting]
 highlights:
   - value: RGB
@@ -31,3 +35,5 @@ The system takes monocular RGB images as input, without data gloves or motion-ca
 3. Use the retargeted motion to control an articulated robotic hand in simulation.
 
 The project focuses on motion retargeting between human and robotic hands, examining how visual input can be converted into executable robot motion.
+
+[View the code and demonstration on GitHub](https://github.com/ezoiHY/Kinematic-Control-of-Robotic-Hands-Based-on-a-Monocular-RGB-Cammera).

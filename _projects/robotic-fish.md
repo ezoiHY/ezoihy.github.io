@@ -8,8 +8,14 @@ order: 3
 permalink: /projects/robotic-fish/
 featured: true
 accent: aqua
-image: /assets/img/fish.svg
-image_alt: Conceptual illustration of a biomimetic robotic fish with visual sensing
+image: /assets/img/robotic-fish-photo.webp
+image_alt: A white biomimetic robotic fish with a camera at the front, in a blue water tank
+image_caption: "Project hardware: the biomimetic robotic fish in a water tank."
+image_width: 1706
+image_height: 1279
+cover: /assets/img/robotic-fish-cover.webp
+cover_width: 1672
+cover_height: 941
 tags: [YOLOv8, Underwater Human–Robot Collaboration, Visual Recognition, Biomimetic Robotics]
 highlights:
   - value: YOLOv8

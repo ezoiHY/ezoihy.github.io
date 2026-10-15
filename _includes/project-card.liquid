@@ -1,5 +1,12 @@
 {% assign project = include.project %}
+{% assign project_cover = project.cover | default: project.image %}
+{% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}
+{% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}
 <article class="project-card" data-category="{{ project.category | escape }}">
-  <a class="project-visual" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project.image | relative_url }}" alt="" width="800" height="560" loading="lazy"></a>
+  {% if project.video %}
+    <div class="project-visual">{% include project-media.liquid project=project %}</div>
+  {% else %}
+    <a class="project-visual" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
+  {% endif %}
   <div class="project-copy"><h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><div class="tag-list">{% for tag in project.tags limit: 3 %}<span>{{ tag }}</span>{% endfor %}</div></div>
 </article>

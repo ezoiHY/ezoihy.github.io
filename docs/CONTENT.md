@@ -15,7 +15,7 @@ Edit `_data/profile.yml`:
 | `bio` | About-page paragraphs |
 | `research_interests` | Research interests, labels, and descriptions on the publications page |
 | `education`, `awards` | Education and awards on the About page |
-| `experiences` | First three Recent work entries, in array order |
+| `experiences` | Retained experience data; not currently rendered by public templates |
 | `toolkit` | Technical tools |
 | `email`, `github` | Contact details and links |
 
@@ -53,8 +53,14 @@ year: "2024–2025"
 order: 1
 permalink: /projects/underactuated-hand/
 featured: true
-image: /assets/img/hand.svg
-image_alt: Conceptual structure of a pulley-free tendon-driven prosthetic hand
+image: /assets/img/underactuated-hand-photo.webp
+image_alt: A white prosthetic hand prototype grasping a clear plastic bottle
+image_caption: "Project hardware: the prosthetic hand grasping a plastic bottle."
+image_width: 1280
+image_height: 1280
+cover: /assets/img/underactuated-hand-cover.webp
+cover_width: 1672
+cover_height: 941
 tags: [Underactuated Mechanisms, Tendon Transmission, Adaptive Grasping]
 ---
 ```
@@ -64,12 +70,17 @@ When copying an entry, change its title, path, order, image, and body. Do not re
 - `order` controls ordering; lower numbers appear first.
 - `featured: true` makes an entry eligible for Selected projects. The homepage displays the first two by `order`.
 - `category` controls filtering. Use consistent category names.
+- `image` and its dimensions, alternative text, and caption describe the source image on the project detail page. Optional `cover`, `cover_width`, and `cover_height` select a separate thumbnail image for the homepage and project grid.
 - The current layouts do not render the legacy `accent`, `highlights`, or `image_label` fields. Put verified metrics in the body; unused fields can be removed.
 - `permalink` defines a stable URL. Preserve it after publication to avoid breaking shared links.
 
 Write Markdown after the second `---`. Describe the question, your contributions, actual results, and any public code or videos. Omit a code link when no public repository exists.
 
-Current project images are conceptual illustrations. When replacing one with a real photograph, update `image`, `image_alt`, and the English `image_caption`, and review the shared illustration notice at the bottom of `_pages/projects.html`. Use WebP, SVG, or compressed JPEG files stored in `assets/img/`. Body images can be inserted with:
+The prosthetic hand and robotic fish detail pages show the owner-supplied source photographs: the hand gripping a bottle and the fish in a water tank, provided as attachments on October 15, 2026. Those photographs were converted to WebP without cropping or retouching and remain as each project's `image`. Separate AI-assisted covers, `underactuated-hand-cover.webp` and `robotic-fish-cover.webp`, are used for thumbnails. The built-in image generator was asked to expand the surrounding backgrounds for a wider composition. The source photographs remain available on the detail pages. Prompt summaries and source records are in [`assets/img/PROJECT-MEDIA.md`](../assets/img/PROJECT-MEDIA.md), with the exact prompts in [`project-cover-prompts.md`](../assets/img/project-cover-prompts.md).
+
+All homepage and project-grid thumbnail frames, including video previews, use 16:9 with `object-fit: contain`. The generated covers are 1672 × 941 and fit within that frame. The monocular hand screenshot and quadruped footage remain authentic source media and fit without cropping or AI processing. Detail figures retain their source image proportions. The legacy `image_preserve_ratio` flag no longer controls thumbnails. The earlier `hand.svg` and `fish.svg` remain stored as conceptual illustrations and are no longer used for project previews.
+
+When replacing media, update `image`, `image_alt`, and the English `image_caption`, or the separate `cover` fields when only the thumbnail changes, and review the shared notice at the bottom of `_pages/projects.html`. Use WebP, SVG, or compressed JPEG files stored in `assets/img/`. Set image and cover dimensions to the actual asset dimensions; the shared thumbnail frame supplies the display ratio. For screenshots, set `image_source` to the original source and record provenance in `assets/img/PROJECT-MEDIA.md`. Record owner-supplied photographs there with their provision date; do not infer a capture date, camera, or test result from a photograph. Record AI-assisted derivatives separately from unchanged sources, including the tool, prompt, output dimensions, and intended edit. For an animated preview, add a local H.264 MP4 path in `video`, keep a real poster in `image`, and link the full recording with `video_source`. The project grid and detail page share `_includes/project-media.liquid`; `project-media.js` manages muted looping, pause/play, visibility, and reduced motion. The video source and excerpt times belong in `assets/video/README.md`. Body images can be inserted with:
 
 ```md
 ![Describe what the photograph actually shows](/assets/img/your-project-photo.webp)
@@ -145,7 +156,7 @@ Commit the update to a review branch after validation. Deployment instructions a
 
 The layout keeps al-folio’s reading order and approximately 930px text area. Glass styling does not change the content data sources.
 
-The homepage has four separate `glass-panel` sections with `data-liquid-glass="panel"`: profile, Recent work, Selected projects, and Latest posts. Contact links belong at the end of Latest posts. Do not add nested glass markers to individual experience or project rows. Interior pages use one `document-panel`, and navigation remains in normal document flow rather than covering the content. Panel corners are 32px on desktop and 26px on mobile.
+The homepage has three separate `glass-panel` sections with `data-liquid-glass="panel"`: profile, Selected projects, and Latest posts. Contact links belong at the end of Latest posts. Do not add nested glass markers to individual experience or project rows. Interior pages use one `document-panel`, and navigation remains in normal document flow rather than covering the content. Panel corners are 32px on desktop and 26px on mobile.
 
 The wallpaper consists of eight original photographs from Apple’s Big Sur coastal HEIC, exported to `assets/img/big-sur/`. The wallpaper button opens settings for **Show wallpaper**, **Follow local time**, an editable time, a slider, and four scene presets. Choosing a time enables manual preview and saves `harry-wallpaper-time` as `HH:MM`; enabling Follow local time saves `auto`. Show wallpaper independently retains the solid-background choice. The theme button separately controls interface light/dark mode. The photographs remain Apple’s copyrighted artwork, separate from the repository’s MIT code. Provenance and export details are documented in `assets/img/WALLPAPER.md`.
 
@@ -153,13 +164,19 @@ The wallpaper consists of eight original photographs from Apple’s Big Sur coas
 
 Automatic mode loads the current photograph and preloads the next distinct one; manual mode loads the chosen photograph only. A minute-boundary clock selects automatic changes; CSS performs a three-second scheduled crossfade, a 0.8-second manual preview transition. The clock pauses during manual preview, while hidden, or in solid mode, and updates immediately when automatic mode resumes. To change the schedule, edit `periods` in `assets/js/wallpaper.js`, preserve the original frame indices, and run `node scripts/check_wallpaper.cjs`. The complete mapping is in [UPSTREAM.md](../UPSTREAM.md).
 
-The material uses `gentpan/liquidglass`, served locally without changes. It generates a rounded-rectangle displacement map from a curved optical profile (refractive index 1.5), bends RGB channels slightly differently, and lights the rim from its geometry. Content panels use 28px refraction, 1.5px blur, and a 28px curved edge band. Navigation/footer use 20px refraction, 0.75px blur, and an 18px band. Both use subtle chromatic separation (0.035). Foreground content is outside the filtered layer.
+Outside Safari/WebKit, the material uses `gentpan/liquidglass`, served locally without changes. `glass-wallpaper.js` adapts the skill's WebGL renderer and reuses its rounded-rectangle optical map (refractive index 1.5). Each host contains its own absolute transparent canvas, clipped by the same host radius and `overflow:hidden` as its frost, text, and highlight. Each visible card renders four rim strips directly into its own lazily created WebGL context: 28px displacement across 24px for content, 18px across 16px for bars, curvature 4, chroma 0.1, and specular 0. Optical opacity fades along the rounded silhouette through the inner 60% of the curved band, reaching zero before the rim strips end; the centre stays transparent. A separate CSS layer adds 2px native background blur, representing the requested 10% frost on a 0–20px design scale. Real text and videos remain outside the optical layer.
 
-Safari/WebKit and iOS use native 3px backdrop blur, a light neutral tint, and directional inset edge highlights on the large panels. Full-panel SVG refraction caused severe scrolling lag in Safari, so this fallback skips panel wallpaper copies, generated maps, and panel observers. Keep that early exit: a smaller displacement map alone does not make full-panel filtering cheap. iOS additionally needs to avoid unreliable fixed-background alignment. Run `node scripts/check_glass.cjs` after changing panel renderer selection or lifecycle.
+One uniform `rgb(8 15 24 / .10)` tint covers the full card under the content. Do not add an inset tint or halo: these create a second inner outline. The rim and centre share the same tint and 2px frost. The owner requested a 10% dark mask and 10% frost. Crisp text, a compact dark shadow, and dark hover fills support readability, while contrast in the transparent default depends on the photograph. Reduced transparency or increased contrast restores opaque `#202a35` with at least 4.5:1 for the wallpaper text tokens. Search and settings dialogs use 0.75px blur. With WebGL unavailable, the panel fallback uses the same 2px native blur, the same tint, and CSS highlights.
+
+Do not restore the old full-panel SVG filters over fixed-background copies: these caused Safari scrolling lag. There must also be no optical canvas mounted on the fixed wallpaper; that independent outline visibly separated from scrolling cards. Keep card-owned direct WebGL canvases. Do not restore the shared scratch canvas and per-scroll WebGL-to-2D copies: that transfer path produced a visible following delay in Safari. Photographs are downsampled once to at most 1536px per side and shared as upload sources; GPU textures and maps are cached per card context. Normal scroll events submit sampling coordinates immediately, without another animation-frame queue. A card context is created lazily within an 80px viewport margin; already created off-screen contexts are retained for re-entry. Buffers are capped at two million pixels, 1.5 times CSS density, and GPU size limits; maps are capped at 320,000 pixels and texture size. Hidden/solid modes release GPU resources and shrink bitmaps; context loss falls back to CSS. Run `node scripts/check_glass.cjs` after changing this lifecycle.
+
+Safari/WebKit uses a native CSS alternative after fast scrolling still outran the GPU photo sampler. Four narrow rounded/clipped edge bands reveal viewport-fixed A/B photograph layers with static offsets (panels: 6px in 12px bands; bars: 4px in 8px bands) and inward alpha fades. This approximates a subtle bend, without the continuous lens map or chromatic split. It uses no canvas, sampling-photo decode, scroll listener, or animation-frame sampling. Keep source ancestors free of transform/filter/containment; put the 2px backdrop frost in a separate later sibling. The sources share the wallpaper's image variables, cover alignment, and CSS crossfades. Static offsets stay enabled with reduced motion; solid mode and reduced transparency hide the whole decorative wrapper. Do not re-enable the Safari GPU sampler to strengthen the effect: it reintroduces the fast-scroll delay.
 
 The `liquid-glass-web` skill supplies the separate compact-control approach in `glass-controls.js`: a spring-driven refractive navigation indicator and switch/slider thumbs that turn to glass during a press. Controls keep their original links, input IDs, labels, values, and keyboard behavior. Decorative label/track copies are `aria-hidden` and ignore pointer events. `studio.js` emits `wallpaper-controls-sync` after updating settings, so external changes (presets, clock, and automatic mode) also update the visual thumbs. These small controls use the shared engine in Safari as well; do not expand them into full-panel or full-page filters.
 
-Other desktop engines retain lenses containing the same two wallpaper images as the page, with matching cover sizing, center positioning, and crossfade state. Only these copies use fixed background attachment; the real wallpaper already lives in a fixed container. Do not add transforms to either: geometry drift would break their CSS alignment. The local-time schedule and scene crossfades remain dynamic in both renderers. There are no scroll sampling listeners, periodic geometry reads, DOM screenshots, or continuous JavaScript rendering loops; arbitrary DOM content is never captured.
+For the GPU path, source photographs are sampled at the fixed wallpaper container's cover size and centre position; there are no CSS fixed-background copies. The local-time schedule and scene crossfades remain dynamic. Scrolling updates only the small set of panel sampling coordinates, directly in the passive scroll event. Native Safari scrolling can still lead main-thread sampling; do not promise zero compositor latency. No DOM screenshot, geometry polling timer, or idle animation loop is used.
+
+Background sampling uses the host bounding rectangle minus the fixed wallpaper rectangle. Lens geometry stays at the card's local `(0, 0)` and is clipped by its host; scrolling must never position a separate silhouette in window coordinates. Edge gestures extend a bounded 450ms sampling pulse without changing canvas visibility or material. Native scrolling and pull-to-refresh remain enabled. Keep `.skip-link` clipped until `:focus-visible`, rather than merely translating it above the viewport where a bounce can reveal it.
 
 Maintenance locations:
 
@@ -167,6 +184,7 @@ Maintenance locations:
 - `assets/js/studio.js`: wallpaper/theme preferences, search, and controls.
 - `assets/js/wallpaper.js`: local-clock schedule, current/next image loading, and lifecycle handling.
 - `assets/js/liquid-glass.js`: lens options, resize/visibility handling, and accessibility fallbacks.
+- `assets/js/glass-wallpaper.js`: the skill's WebGL approach adapted for known wallpaper, rim drawing, and cached resources.
 - `assets/js/glass-controls.js`: skill-based navigation and input optics, bounded springs, and decorative copies.
 - `assets/vendor/gentpan-liquidglass.js`: unmodified upstream engine. Update intentionally with its license and provenance.
 - `assets/vendor/gentpan-liquidglass.LICENSE.txt`: retained MIT copyright and license.

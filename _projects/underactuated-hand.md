@@ -8,8 +8,14 @@ order: 1
 permalink: /projects/underactuated-hand/
 featured: true
 accent: lavender
-image: /assets/img/hand.svg
-image_alt: Conceptual structure of a pulley-free tendon-driven prosthetic hand
+image: /assets/img/underactuated-hand-photo.webp
+image_alt: A white prosthetic hand prototype grasping a clear plastic bottle
+image_caption: "Project hardware: the prosthetic hand grasping a plastic bottle."
+image_width: 1280
+image_height: 1280
+cover: /assets/img/underactuated-hand-cover.webp
+cover_width: 1672
+cover_height: 941
 tags: [Underactuated Mechanisms, Tendon Transmission, Adaptive Grasping]
 highlights:
   - value: "304 g"

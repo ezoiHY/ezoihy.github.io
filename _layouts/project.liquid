@@ -12,8 +12,12 @@ nav_section: /projects/
   </header>
   {% if page.image %}
     <figure class="project-figure">
-      <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title }}" width="800" height="560">
-      <figcaption>{{ page.image_caption | default: 'Conceptual illustration, not a photograph of the project hardware' }}</figcaption>
+      {% if page.video %}
+        {% include project-media.liquid project=page loading='eager' %}
+      {% else %}
+        <img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title | escape }}" width="{{ page.image_width | default: 800 }}" height="{{ page.image_height | default: 560 }}">
+      {% endif %}
+      <figcaption>{{ page.image_caption | default: 'Conceptual illustration, not a photograph of the project hardware' }}{% if page.video_source %} <a href="{{ page.video_source | escape }}" target="_blank" rel="noopener noreferrer">Watch the full demo on Bilibili</a>.{% elsif page.image_source %} <a href="{{ page.image_source | escape }}" target="_blank" rel="noopener noreferrer">View the original screenshot</a>.{% endif %}</figcaption>
     </figure>
   {% endif %}
   <div class="prose page-content">{{ content }}</div>
