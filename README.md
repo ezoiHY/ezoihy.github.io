@@ -1,4 +1,4 @@
-# Harry Han
+# Yu Han (Harry)
 
 A personal academic website built with [al-folio](https://github.com/alshedivat/al-folio) v1 and Jekyll. It retains al-folio’s academic reading order, an approximately 930px text column, a right-hand portrait, and English content covering research, projects, publications, a CV, and personal writing.
 
@@ -27,6 +27,8 @@ Content edits trigger regeneration. Restart the server after changing `_config.y
 JEKYLL_ENV=production bundle exec jekyll build
 python3 scripts/check_site.py
 node scripts/check_wallpaper.cjs
+node scripts/check_glass.cjs
+bundle exec al-folio upgrade overrides audit
 ```
 
 Generated files are written to `_site/` and should not be committed. Gemfile and Gemfile.lock pin the dependencies; editing content does not require reinstalling them.
@@ -35,9 +37,11 @@ Generated files are written to `_site/` and should not be committed. Gemfile and
 
 | File or directory | Purpose |
 | --- | --- |
-| `_data/profile.yml` | Contact details, experience, research interests, and About content |
-| `_pages/home.html` | Homepage biography and section structure |
+| `_data/profile.yml` | Shared homepage/About biography and research experience, contact details, education, awards, and research interests |
+| `_pages/home.html` | Homepage presentation, affiliation links, and section structure |
 | `_data/cv.yml` | Structured CV rendered by the al-folio CV plugin |
+| `_cv/main.tex` | Approved editable LaTeX CV; see `_cv/README.md` for provenance and compilation |
+| `assets/pdf/yu-han-cv.pdf` | Downloadable PDF compiled from the approved LaTeX CV |
 | `_projects/*.md` | Project pages, descriptions, tags, and ordering |
 | `_posts/*.md` | Research notes, reading notes, and personal writing |
 | `_bibliography/papers.bib` | Verified publication entries in BibTeX |
@@ -54,6 +58,8 @@ Generated files are written to `_site/` and should not be committed. Gemfile and
 | `_config.yml` | Site metadata, URLs, and plugin configuration |
 
 See the [content guide](docs/CONTENT.md), [architecture notes](docs/AL-FOLIO-ARCHITECTURE.md), and [maintenance boundaries](docs/AL-FOLIO-BOUNDARIES.md).
+
+The homepage and About page render their biography from `profile.bio` and their appointments from `profile.research_experience`. Keep these fields, the structured CV, and the approved LaTeX CV aligned when updating personal information. The web CV is available at `/cv/`; the downloadable version is served at `/assets/pdf/yu-han-cv.pdf`. The CV intentionally omits a separate skills section; verified legacy tool and project details remain in their source data.
 
 ## GitHub Pages deployment
 
@@ -92,7 +98,7 @@ Photo sampling uses each card's position relative to the fixed wallpaper; optica
 
 ## Content and upstream
 
-The biography, four project histories, award summaries, portrait, and two posts come from the previous personal site. The old Astro article is marked as a historical implementation record. No publications, hobbies, enrollment dates, or other missing personal details were invented.
+The four project histories, portrait, two posts, and verified background facts come from the previous personal site. The biography, education dates, three research and industry appointments, five research interests, and awards are synchronized with the owner-approved LaTeX CV in `_cv/main.tex`. The CV's [source notes](_cv/README.md) record the owner's updates and award wording. The old Astro article is marked as a historical implementation record. No publications or personal details are added without a verified source.
 
 Homepage and project-grid thumbnails share a 16:9 frame and fit their media without cropping. The prosthetic hand and robotic fish thumbnails use AI-assisted wide covers derived from photographs supplied by the site owner on October 15, 2026. The edits were requested to expand the surrounding backgrounds; the unchanged source photographs remain on the project detail pages. The monocular hand screenshot and quadruped video use their authentic source media, fitted within the same frame without AI processing. The quadruped preview is a silent loop from the owner's real Bilibili demo, with a still frame as its fallback. The earlier hand and fish SVGs remain stored as conceptual illustrations and are no longer used for project previews. Media sources and cover preparation are recorded in `assets/img/PROJECT-MEDIA.md` and `assets/video/README.md`. When replacing media, update the alternative text and captions too.
 

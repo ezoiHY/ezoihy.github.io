@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 nav_section: /
 searchable: true
-description: Harry Han, a robotics engineering undergraduate at South China University of Technology.
+description: Yu Han (Harry). Education at SCUT, research at PAIRS Lab and the Intelligent Structures Laboratory, a Huawei internship, and academic honors.
 ---
 {% assign profile = site.data.profile %}
 <header class="page-heading shell">
@@ -14,36 +14,37 @@ description: Harry Han, a robotics engineering undergraduate at South China Univ
 <section class="shell page-content">
   <article class="about-story prose">
     <img class="about-portrait" src="{{ profile.avatar | relative_url }}" alt="{{ profile.name }}" width="1206" height="1642">
-    {% for paragraph in profile.bio %}<p>{{ paragraph }}</p>{% endfor %}
+    {% for paragraph in profile.bio %}{{ paragraph | markdownify }}{% endfor %}
   </article>
   <div class="social-links">
     <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
     <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
     <button type="button" data-copy="{{ profile.email }}"><span>Copy email</span></button>
     <a href="{{ '/cv/' | relative_url }}">View CV</a>
+    <a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>Download CV (PDF)</a>
   </div>
   <p id="copy-status" class="sr-only" aria-live="polite"></p>
   <section class="about-section">
     <h2>Education</h2>
     {% for education in profile.education %}
       <div class="education-entry">
-        <h3>{{ education.institution }}</h3>
-        <p>{{ education.major }} · {{ education.degree }}{% if education.status %}, {{ education.status }}{% endif %}</p>
+        <div class="dated-heading"><h3>{{ education.institution }}</h3><span class="date-leader" aria-hidden="true"></span><span class="entry-date">{{ education.period }}</span></div>
+        <p>{{ education.degree }} in {{ education.major }}</p>
         {% if education.location %}<p class="entry-meta">{{ education.location }}</p>{% endif %}
       </div>
     {% endfor %}
   </section>
-  <section class="about-section">
-    <h2>Awards and competitions</h2>
-    <ul class="award-list">
-      {% for award in profile.awards %}
-        <li class="award-item"><strong>{{ award.title }} · {{ award.distinction }}</strong>{% if award.year and award.year != '' %}<span class="entry-meta"> ({{ award.year }})</span>{% endif %}<p>{{ award.description }}</p></li>
-      {% endfor %}
-    </ul>
+  <section class="about-section" id="experience">
+    <h2>Research & industry experience</h2>
+    {% include experience-list.liquid %}
   </section>
   <section class="about-section">
-    <h2>Technical tools</h2>
-    <p class="tool-list">{% for tool in profile.toolkit %}{{ tool }}{% unless forloop.last %} · {% endunless %}{% endfor %}</p>
+    <h2>Honors & awards</h2>
+    <ul class="award-list">
+      {% for award in profile.awards %}
+        <li class="award-item"><div class="dated-heading"><strong>{{ award.title }} · {{ award.distinction }}</strong>{% if award.year and award.year != '' %}<span class="date-leader" aria-hidden="true"></span><span class="entry-date">{{ award.year }}</span>{% endif %}</div>{% if award.description %}<p>{{ award.description }}</p>{% endif %}</li>
+      {% endfor %}
+    </ul>
   </section>
   <section class="about-section">
     <h2>Personal writing</h2>

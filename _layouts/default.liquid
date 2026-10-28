@@ -30,7 +30,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="header-wrap" data-liquid-glass="navigation">
       <div class="site-header shell">
-        <a class="brand" href="{{ '/' | relative_url }}" aria-label="Harry Han home"><strong>Harry</strong> Han</a>
+        <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title | escape }} home"><strong>{{ site.first_name | escape }} {{ site.last_name | escape }}</strong> (Harry)</a>
         <nav class="desktop-nav" aria-label="Main navigation">
           {% for item in site.data.navigation %}<a href="{{ item.url | relative_url }}"{% if page.url == item.url or page.nav_section == item.url %} class="active" aria-current="page"{% endif %}>{{ item.title }}</a>{% endfor %}
         </nav>
@@ -45,7 +45,7 @@
     </header>
     <main id="main" class="main-shell">{% if page.page_class == "home" %}{{ content }}{% else %}<div class="document-panel glass-panel" data-liquid-glass="panel">{{ content }}</div>{% endif %}</main>
     <footer class="site-footer shell" data-liquid-glass="toolbar">
-      <p>© {{ 'now' | date: '%Y' }} Harry Han. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> & <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a>.</p><a href="{{ '/rss.xml' | relative_url }}">RSS</a>
+      <p>© {{ 'now' | date: '%Y' }} {{ site.author | escape }}. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> & <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a>.</p><a href="{{ '/rss.xml' | relative_url }}">RSS</a>
     </footer>
     <dialog id="wallpaper-dialog" class="wallpaper-dialog" aria-labelledby="wallpaper-title">
       <div class="wallpaper-panel-heading"><div><h2 id="wallpaper-title">Big Sur</h2><p>Wallpaper & time of day</p></div><button class="wallpaper-close icon-button" type="button" aria-label="Close wallpaper settings">{% include icon.liquid name='close' %}</button></div>

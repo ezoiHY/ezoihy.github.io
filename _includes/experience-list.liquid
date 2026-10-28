@@ -1,0 +1,14 @@
+<ul class="experience-list">
+  {% for experience in site.data.profile.research_experience %}
+    <li class="experience-entry">
+      <div class="dated-heading">
+        <h3>{% if experience.institution_url %}<a href="{{ experience.institution_url }}">{% endif %}{% if include.compact %}{{ experience.institution_short }}{% else %}{{ experience.institution }}{% endif %}{% if experience.institution_url %}</a>{% endif %}</h3>
+        <span class="date-leader" aria-hidden="true"></span>
+        <span class="entry-date">{{ experience.period }}</span>
+      </div>
+      <p class="experience-role">{{ experience.role }}{% if experience.group %}, {% if experience.group_url %}<a href="{{ experience.group_url }}">{{ experience.group }}</a>{% else %}{{ experience.group }}{% endif %}{% endif %}</p>
+      {% if experience.supervisor %}<p class="entry-meta">Supervisor: {% if experience.supervisor_url %}<a href="{{ experience.supervisor_url }}">{{ experience.supervisor }}</a>{% else %}{{ experience.supervisor }}{% endif %}</p>{% endif %}
+      {% if experience.department %}<p class="entry-meta">{{ experience.department }}</p>{% endif %}
+    </li>
+  {% endfor %}
+</ul>

@@ -12,14 +12,15 @@ Edit `_data/profile.yml`:
 | --- | --- |
 | `name`, `role` | Name and role on the About page |
 | `avatar` | Portrait path, currently `/assets/img/portrait.webp` |
-| `bio` | About-page paragraphs |
+| `bio` | Shared homepage and About-page paragraphs, rendered as Markdown |
 | `research_interests` | Research interests, labels, and descriptions on the publications page |
 | `education`, `awards` | Education and awards on the About page |
-| `experiences` | Retained experience data; not currently rendered by public templates |
-| `toolkit` | Technical tools |
+| `research_experience` | Institutional research and internship appointments on the homepage and About page |
+| `experiences` | Retained project summaries; institutional appointments belong in `research_experience` |
+| `toolkit` | Retained verified background data; not displayed as a separate skills section |
 | `email`, `github` | Contact details and links |
 
-The homepage name, role lines, biography, and affiliations below the portrait are written directly in `_pages/home.html`. The portrait caption shows two monochrome emblems side by side with `SCUT` and `HKUST(GZ)` labels, followed by GitHub, email, and CV icons. Full university names are available through each link's accessible label and hover title, and remain visible in the biography and role lines. The email address and location are not shown as caption text. University links point to their official homepages. Logo sources and display treatment are recorded in `assets/img/affiliations/README.md`. GitHub and email destinations still come from `_data/profile.yml`; CV links to `/cv/`. These sections are not generated from `headline` or `intro`. Retained fields such as `name_en`, `role_en`, `affiliation`, `affiliation_en`, `location`, `location_en`, `headline`, `intro`, and `social` are not currently used directly by public templates.
+The homepage presentation and affiliations below the portrait are defined in `_pages/home.html`. The homepage and About page share `profile.bio` and `profile.research_experience`, so edit those data fields once to update both pages. The portrait caption shows two monochrome emblems side by side with `SCUT` and `HKUST(GZ)` labels, followed by GitHub, email, and CV icons. Full university names are available through each link's accessible label and hover title, and remain visible in the biography and About-page experience entries. The email address and location are not shown as caption text. University links point to their official homepages. Logo sources and display treatment are recorded in `assets/img/affiliations/README.md`. GitHub and email destinations come from `_data/profile.yml`; CV links to `/cv/`. The shared biography is not generated from the retained `headline` or `intro` fields.
 
 Use spaces, not tabs, for YAML indentation. Quote year-only values, for example `year: "2026"`. Leave unknown dates empty instead of guessing.
 
@@ -29,13 +30,14 @@ Site titles, sharing descriptions, URLs, and the global email are configured in 
 
 ## CV
 
-The CV is rendered from `_data/cv.yml` by `al_folio_cv`. This is separate from profile data; check both when changing affiliations, experience, or contact information.
+The web CV at `/cv/` is rendered from `_data/cv.yml` by `al_folio_cv`. The approved PDF source is [`_cv/main.tex`](../_cv/main.tex), with compilation and provenance notes in [`_cv/README.md`](../_cv/README.md). Its compiled PDF is published at `/assets/pdf/yu-han-cv.pdf`. Keep the LaTeX source, `_data/cv.yml`, and `_data/profile.yml` aligned when changing affiliations, dates, experience, research interests, awards, or contact information. Compile and inspect the LaTeX CV before replacing the downloadable PDF; browser printing is a separate export of the web layout.
 
-Keep the outer `cv:` and `sections:` keys. Structured section names must match the plugin, including `Education`, `Projects`, `Awards`, `Skills`, and `Academic Interests`.
+Keep the outer `cv:` and `sections:` keys. The current supported sections are `Education`, `Academic Interests`, `Experience`, `Projects`, and `Awards`. Use the plugin's `Experience` key for research appointments; a custom `Research Experience` key uses a different generic renderer. No separate skills section is displayed. Retain verified legacy tool and project details in their source data rather than adding them to the concise CV.
 
 - Use `date: "2026"` for a single known year.
 - Use `start_date: "2024"` and `end_date: "2025"` for a known range.
 - Use `end_date: present` for confirmed ongoing work.
+- Use month-level dates for known internships, such as `start_date: "2026-07"`; include the months in the summary when the plugin's date badges show years only.
 - Omit unknown date fields instead of estimating them.
 - Do not add unverified language proficiency, positions, or references.
 
@@ -140,7 +142,7 @@ Keep reading notes and work in progress in posts or projects rather than present
 
 ## Content provenance and validation
 
-The migration retains the original biography, four project histories, award summaries, and two posts. No publications, hobbies, enrollment/graduation dates, competition dates, or project URLs were invented. Add missing details as verified information becomes available.
+The site retains the four project histories, two posts, and verified background facts from the original site. Personal information now follows the approved `_cv/main.tex`, including education in 2023–2027 (expected), three research and industry appointments, five research interests, and the updated awards. See `_cv/README.md` for owner-provided updates and award wording. Preserve verified legacy facts in the source data and add further dates or claims only when supported.
 
 Preview the affected pages and check titles, dates, images, links, and mobile layout, then run:
 
@@ -148,6 +150,8 @@ Preview the affected pages and check titles, dates, images, links, and mobile la
 bundle exec jekyll build
 python3 scripts/check_site.py
 node scripts/check_wallpaper.cjs
+node scripts/check_glass.cjs
+bundle exec al-folio upgrade overrides audit
 ```
 
 Commit the update to a review branch after validation. Deployment instructions are in the root `README.md`.

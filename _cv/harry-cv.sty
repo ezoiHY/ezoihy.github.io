@@ -1,0 +1,40 @@
+% Local presentation overrides for CleanCV.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{harry-cv}[2026/10/27 Yu Han research CV]
+\geometry{a4paper,left=19mm,right=19mm,top=15mm,bottom=17mm,footskip=8mm}
+\definecolor{primary}{RGB}{36,65,87}
+\definecolor{muted}{RGB}{90,96,100}
+\hypersetup{pdftitle={Yu Han (Harry) - Curriculum Vitae},pdfauthor={Yu Han},
+  pdfsubject={Robotics research},urlcolor=primary,linkcolor=primary}
+\setlength{\parskip}{1pt}
+\setlength{\emergencystretch}{1.5em}
+\linespread{1.02}
+\titleformat{\section}{\large\normalfont\scshape}{\thesection}{0pt}{}
+\titlespacing*{\section}{0pt}{10pt}{4pt}
+\setlist[itemize]{leftmargin=1.1em,label=\textbullet,itemsep=1.5pt,
+  topsep=2pt,parsep=0pt,partopsep=0pt}
+\renewcommand{\cvname}[1]{%
+  \begin{center}{\fontsize{27}{30}\selectfont\textsc{#1}}\end{center}\vspace{-9pt}}
+\newcommand{\datedline}[2]{%
+  #1\ifstrempty{#2}{}{\nobreak\hspace{0.5em}{\color{muted}\dotfill}%
+  \nobreak\hspace{0.5em}{\small #2}}\par}
+\renewcommand{\cvblock}[5][]{%
+  \textbf{#2}\hfill{\small #3}\\
+  \datedline{\textit{#4}}{#5}%
+  \ifx&#1&\else\begin{itemize}#1\end{itemize}\fi}
+\newcommand{\experience}[4]{%
+  \par\addvspace{5pt}\Needspace{3\baselineskip}%
+  \datedline{\textbf{#1}}{#2}%
+  \textit{#3}\par
+  #4\par}
+\newcommand{\project}[3]{%
+  \par\addvspace{5pt}\Needspace{3\baselineskip}%
+  \datedline{\href{#3}{\textcolor{black}{\textbf{#1}}}}{#2}}
+% Preserve CleanCV's award-list style; omit empty date leaders.
+\renewcommand{\cvitem}[3]{%
+  \item \datedline{#1, \emph{#2}}{#3}}
+\fancyhf{}
+\fancyfoot[L]{\footnotesize\color{muted}Yu Han \enspace\textbar\enspace Curriculum Vitae}
+\fancyfoot[R]{\footnotesize\color{muted}October 2026}
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}

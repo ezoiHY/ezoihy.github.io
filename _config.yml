@@ -1,12 +1,12 @@
-title: "Harry Han"
-first_name: Harry
+title: "Yu Han (Harry)"
+first_name: Yu
 last_name: Han
-description: "Harry Han, Robotics Engineering undergraduate at South China University of Technology. Research, engineering projects, and notes on robotics."
+description: "Yu Han (Harry), Robotics Engineering undergraduate at South China University of Technology and research assistant at PAIRS Lab, HKUST(GZ). Interests: dexterous manipulation, multimodal sensing, force-aware robot learning, human sensing, and embodied intelligence."
 url: "https://ezoihy.github.io"
 baseurl: ""
 lang: en
 timezone: Asia/Shanghai
-author: Harry Han
+author: Yu Han (Harry)
 email: ezoihy@163.com
 github_username: ezoihy
 theme: al_folio_core

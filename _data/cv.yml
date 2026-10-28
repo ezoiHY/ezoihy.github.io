@@ -1,12 +1,12 @@
-# RenderCV data for al_folio_cv 1.0.2.
-# Dates retain the precision supplied by the original profile; unknown dates are omitted.
+# RenderCV data for al_folio_cv 1.0.2; synchronized with _cv/main.tex.
+# Use supported section names. Unknown dates are omitted.
 cv:
-  name: Harry Han
-  label: Robotics Engineering Undergraduate · South China University of Technology
+  name: Yu Han (Harry)
+  label: Robotics Engineering Student · Research Assistant, PAIRS Lab, HKUST(GZ)
   email: ezoihy@163.com
   location: Guangzhou, China
   website: https://ezoihy.github.io
-  summary: Six years of informatics competition training gave me a foundation in algorithms and programming, which I have expanded into mechanical design, artificial intelligence, and control. My interests include dexterous robotic hands, underactuated mechanisms, vision-based control, and embodied intelligence. I hope to turn robotics research into reliable, affordable products.
+  summary: I am pursuing a bachelor's degree in Robotics Engineering at South China University of Technology and work as a research assistant at PAIRS Lab, HKUST(GZ), supervised by Prof. Fangqiang Ding. My interests span dexterous manipulation, multimodal sensing, force-aware robot learning, human sensing, and embodied intelligence.
   social_networks:
     - network: GitHub
       username: ezoihy
@@ -17,59 +17,69 @@ cv:
     Education:
       - institution: South China University of Technology
         area: Robotics Engineering
-        studyType: Undergraduate · Currently enrolled
+        studyType: Bachelor's Degree (expected 2027)
+        start_date: "2023"
+        end_date: "2027"
         location: Guangzhou, China
     Academic Interests:
-      - name: Dexterous robotic hands
-        keywords: [Dexterous manipulation, Human hand-motion retargeting, Robotic hand control]
-      - name: Underactuated mechanisms
-        keywords: [Adaptive grasping, Tendon transmission, Force transmission]
-      - name: Vision-based robot control
-        keywords: [Visual perception, 3D reconstruction, Motion control]
-      - name: Embodied intelligence
-        keywords: [Language models, Perception, Physical robot interaction]
-    Projects:
-      - name: Vision-guided Robotic Fish
-        start_date: "2025"
+      - name: Research areas
+        keywords: [Dexterous manipulation, Multimodal sensing, Force-aware robot learning, Human sensing, Embodied intelligence]
+    # The plugin recognizes Experience; Research Experience would use a generic renderer.
+    Experience:
+      - company: The Hong Kong University of Science and Technology (Guangzhou)
+        position: Research Assistant, PAIRS Lab
+        start_date: "2026"
         end_date: present
-        url: /projects/robotic-fish/
-        summary: A national-level undergraduate innovation project on underwater human–robot collaboration.
-        highlights:
-          - Responsible for visual recognition, diver tracking, and algorithm architecture.
-          - Developed a YOLOv8 scene-recognition module and contributed to mechanical design improvements.
-      - name: Monocular RGB Control of a Robotic Hand
-        date: "2026"
-        url: /projects/monocular-hand-control/
-        summary: Combined HaMeR 3D hand reconstruction with optimization-based inverse kinematics to map human hand motion to a simulated articulated robotic hand.
-        highlights:
-          - Used monocular RGB input without data gloves or motion-capture equipment.
-      - name: Voice-controlled Quadruped with a Local Language Model
-        date: "2025"
-        url: /projects/language-quadruped/
-        summary: Used the Unitree Go1 platform to convert natural-language instructions into robot motion and interaction.
-        highlights:
-          - Deployed Qwen models locally through Ollama.
-          - Built an API pipeline from language-model outputs to robot motion-control interfaces.
-      - name: Pulley-free Tendon-driven Underactuated Prosthetic Hand
+        location: Guangzhou, China
+        url: https://pairslab.github.io/
+        summary: "Supervisor: [Prof. Fangqiang Ding](https://fangqiangding.com/)."
+      - company: South China University of Technology
+        position: Undergraduate Research, Intelligent Structures Laboratory
+        start_date: "2024"
+        end_date: "2026"
+        location: Guangzhou, China
+        summary: "Supervisor: [Prof. Yunquan Li](https://www2.scut.edu.cn/wusie/2022/0122/c25374a459098/page.htm)."
+      - company: Huawei Technologies Co., Ltd.
+        position: Large Language Model Architecture Intern
+        start_date: "2026-07"
+        end_date: "2026-09"
+        # Native date badges show years only; retain month precision in the summary.
+        summary: "Digital Twin Laboratory, GTS Department, ICT BG. Internship: July–September 2026."
+    Projects:
+      - name: Pulley-free Underactuated Prosthetic Hand
         start_date: "2024"
         end_date: "2025"
         url: /projects/underactuated-hand/
-        summary: Designed a 304 g prosthetic hand with one actuator, using a compact underactuated mechanism for adaptive finger motion and grip-force distribution.
-        highlights:
-          - Tested stable grasping.
-          - Tested operation in wet and underwater conditions.
+        summary: Designed a 304 g, single-actuator prosthetic hand for adaptive grasping; demonstrated operation in wet and underwater conditions.
+      - name: Monocular Motion Retargeting for Robotic Hand Control
+        date: "2026"
+        url: /projects/monocular-hand-control/
+        summary: Developed a monocular RGB system for retargeting human hand motion to a robotic hand in simulation.
+      - name: Vision-guided Biomimetic Robotic Fish
+        start_date: "2025"
+        end_date: present
+        url: /projects/robotic-fish/
+        summary: Contributed visual recognition, diver tracking, and system design to a national-level undergraduate innovation project on underwater human–robot collaboration.
+      - name: Natural-language Control of a Quadruped Robot
+        date: "2025"
+        url: /projects/language-quadruped/
+        summary: Integrated locally deployed language models with a Unitree Go1 to translate natural-language instructions into robot motion.
     Awards:
-      - title: China Undergraduate Mathematical Contest in Modeling · National second prize
+      - title: Provincial First Prize
+        awarder: China Undergraduate Mathematical Contest in Modeling
+        date: "2025"
+      - title: National Second Prize
+        awarder: China Undergraduate Mathematical Contest in Modeling
         date: "2024"
-        summary: Also received provincial first prizes on multiple occasions.
-      - title: Robotics challenge · Runner-up
-        summary: Placed second among more than 400 teams. Served as team captain, coordinating mechanical, electronic control, and algorithm development.
-      - title: Informatics competitions · Provincial first prize and other awards
-        summary: Six years of informatics competition and algorithm training.
-    Skills:
-      - name: Programming and computation
-        keywords: [C++, Python, MATLAB]
-      - name: Mechanisms and prototyping
-        keywords: [SolidWorks, 3D Printing, Robot Prototyping]
-      - name: Perception and robotics
-        keywords: [YOLO, HaMeR, MuJoCo, PyBullet, Inverse Kinematics, Local LLM]
+      - title: National First Prize
+        awarder: Asia and Pacific Mathematical Contest in Modeling
+        date: "2024"
+      - title: Runner-up
+        awarder: H&T Cup Robotics Challenge
+        date: "2024"
+        summary: Team captain; coordinated mechanical design, electronic control, and algorithm development.
+      - title: Yujian Xiaomian Innovation Scholarship
+        awarder: South China University of Technology
+        date: "2024"
+      - title: Provincial First Prize
+        awarder: Informatics Competitions

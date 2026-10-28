@@ -1,8 +1,9 @@
-name: Harry Han
-name_en: Harry Han
+# Verified personal information; synchronized with the approved LaTeX CV.
+name: Yu Han (Harry)
+name_en: Yu Han (Harry)
 handle: ezoihy
-role: Robotics Engineering Undergraduate
-role_en: Robotics Engineering Undergraduate
+role: Robotics Engineering Student
+role_en: Robotics Engineering Student
 affiliation: South China University of Technology
 affiliation_en: South China University of Technology
 location: Guangzhou, China
@@ -10,66 +11,110 @@ location_en: Guangzhou, China
 email: ezoihy@163.com
 github: https://github.com/ezoihy
 avatar: /assets/img/portrait.webp
-headline: Connecting algorithms, mechanisms, and robot control.
-intro: I study robotics engineering at South China University of Technology. My interests include dexterous manipulation, underactuated mechanisms, and embodied intelligence. I hope to develop robotics technology into reliable, affordable products for everyday use.
+headline: Research in dexterous manipulation, sensing, and embodied intelligence.
+intro: I am pursuing a bachelor's degree in Robotics Engineering at South China University of Technology and work as a research assistant at PAIRS Lab, HKUST(GZ), supervised by Prof. Fangqiang Ding.
 bio:
-  - Six years of training in informatics competitions gave me a foundation in algorithms and programming. I have since expanded into mechanical design, artificial intelligence, and control, working toward an engineering skill set that connects software, hardware, and physical robot systems.
-  - I am interested in simpler, more reliable, and lower-cost approaches to dexterous manipulation. My work ranges from underactuated prosthetic hands and tendon transmission to monocular hand-motion retargeting, underwater biomimetic robots, and robot interaction using local language models.
-  - I hope to connect academic research with practical applications. I am also learning about product development, teamwork, and how technology can address real user needs.
+  - >-
+    I am pursuing a bachelor's degree in Robotics Engineering at [South China University of Technology](https://www.scut.edu.cn/), with graduation expected in 2027. I am also a research assistant at [PAIRS Lab](https://pairslab.github.io/), [The Hong Kong University of Science and Technology (Guangzhou)](https://www.hkust-gz.edu.cn/), supervised by [Prof. Fangqiang Ding](https://fangqiangding.com/).
+  - >-
+    My research interests include dexterous manipulation, multimodal sensing, force-aware robot learning, human sensing, and embodied intelligence. My projects span underactuated prosthetic hands, visual hand-motion retargeting, underwater robotics, and natural-language robot control.
+  - >-
+    Before turning to robotics, I spent six years (2016–2022) training and competing in informatics. This experience established my foundation in algorithms and programming, which I have since applied to robot perception, control, and system development.
 research_interests:
-  - title: Dexterous robotic hands
+  - title: Dexterous manipulation
     label: Dexterous Manipulation
-    description: Dexterous manipulation, human hand-motion retargeting, and robotic hand control.
-  - title: Underactuated mechanisms
-    label: Mechanism Design
-    description: Adaptive grasping and reliable force transmission with fewer actuators.
-  - title: Vision-based robot control
-    label: Perception & Control
-    description: Connecting visual perception, 3D reconstruction, and motion control.
+    description: Robotic hand control, human hand-motion retargeting, and adaptive grasping.
+  - title: Multimodal sensing
+    label: Multimodal Sensing
+    description: Combining sensing modalities to inform robot perception and interaction.
+  - title: Force-aware robot learning
+    label: Force-aware Robot Learning
+    description: Learning to account for forces and physical interaction in robot behavior.
+  - title: Human sensing
+    label: Human Sensing
+    description: Sensing human motion and behavior for human–robot interaction.
   - title: Embodied intelligence
-    label: Robot Intelligence
-    description: Exploring connections between language models, perception, and physical robots.
+    label: Embodied Intelligence
+    description: Connecting perception, learning, and action in physical robot systems.
 education:
   - institution: South China University of Technology
     institution_en: South China University of Technology
-    degree: Undergraduate
+    degree: Bachelor's Degree
     major: Robotics Engineering
-    status: currently enrolled
+    status: expected graduation in 2027
     location: Guangzhou, China
+    period: "2023–2027 (expected)"
+    start_date: "2023"
+    end_date: "2027"
+research_experience:
+  - institution: The Hong Kong University of Science and Technology (Guangzhou)
+    institution_short: HKUST(GZ)
+    institution_url: https://www.hkust-gz.edu.cn/
+    role: Research Assistant
+    group: PAIRS Lab
+    group_url: https://pairslab.github.io/
+    period: "2026–present"
+    supervisor: Prof. Fangqiang Ding
+    supervisor_url: https://fangqiangding.com/
+    type: academic
+  - institution: South China University of Technology
+    institution_short: SCUT
+    institution_url: https://www.scut.edu.cn/
+    role: Undergraduate Research
+    group: Intelligent Structures Laboratory
+    period: "2024–2026"
+    supervisor: Prof. Yunquan Li
+    supervisor_url: https://www2.scut.edu.cn/wusie/2022/0122/c25374a459098/page.htm
+    type: academic
+  - institution: Huawei Technologies Co., Ltd.
+    institution_short: Huawei
+    role: Large Language Model Architecture Intern
+    group: Digital Twin Laboratory
+    department: GTS Department, ICT BG
+    period: "Jul.–Sep. 2026"
+    type: industry
+# Retained project summaries. Institutional appointments are in research_experience.
 experiences:
   - year: "2026"
-    title: Monocular RGB Control of a Robotic Hand
+    title: Monocular Motion Retargeting for Robotic Hand Control
     type: Open-source project
-    description: Combined HaMeR 3D hand reconstruction with optimization-based inverse kinematics to map human hand motion to a simulated articulated robotic hand.
+    description: Developed a monocular RGB system for retargeting human hand motion to a robotic hand in simulation.
     url: /projects/monocular-hand-control/
   - year: "2025–present"
-    title: Vision-guided Robotic Fish
+    title: Vision-guided Biomimetic Robotic Fish
     type: National-level Undergraduate Innovation Project
-    description: Responsible for visual recognition, diver tracking, and algorithm architecture, with contributions to mechanical design improvements.
+    description: Contributed visual recognition, diver tracking, and system design to underwater human–robot collaboration.
     url: /projects/robotic-fish/
   - year: "2025"
-    title: Voice-controlled Quadruped with a Local Language Model
+    title: Natural-language Control of a Quadruped Robot
     type: Unitree Go1
-    description: Deployed Qwen models locally using Ollama and built an API pipeline from natural-language instructions to robot motion-control interfaces.
+    description: Integrated locally deployed language models with a Unitree Go1 to translate natural-language instructions into robot motion.
     url: /projects/language-quadruped/
   - year: "2024–2025"
-    title: Pulley-free Tendon-driven Underactuated Prosthetic Hand
+    title: Pulley-free Underactuated Prosthetic Hand
     type: Research and engineering
-    description: Designed a 304 g prosthetic hand with one actuator and tested stable grasping and operation in wet and underwater conditions.
+    description: Designed a 304 g, single-actuator prosthetic hand for adaptive grasping; demonstrated operation in wet and underwater conditions.
     url: /projects/underactuated-hand/
 awards:
+  - year: "2025"
+    title: China Undergraduate Mathematical Contest in Modeling
+    distinction: Provincial First Prize
   - year: "2024"
     title: China Undergraduate Mathematical Contest in Modeling
-    distinction: National second prize
-    description: Also received provincial first prizes on multiple occasions.
-  - year: ""
-    title: Robotics challenge
-    distinction: Runner-up among 400+ teams
-    description: Served as team captain, coordinating mechanical, electronic control, and algorithm development.
-  - year: ""
-    title: Informatics competitions
-    distinction: Awards including provincial first prize
-    description: Six years of informatics competition and algorithm training.
+    distinction: National Second Prize
+  - year: "2024"
+    title: Asia and Pacific Mathematical Contest in Modeling
+    distinction: National First Prize
+  - year: "2024"
+    title: H&T Cup Robotics Challenge
+    distinction: Runner-up
+    description: Team captain; coordinated mechanical design, electronic control, and algorithm development.
+  - year: "2024"
+    title: Yujian Xiaomian Innovation Scholarship
+    distinction: Scholarship Recipient
+  - title: Informatics Competitions
+    distinction: Provincial First Prize
+# Retained as background data; not presented as a separate skills section.
 toolkit:
   - C++
   - Python

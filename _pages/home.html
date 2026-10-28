@@ -4,15 +4,15 @@ title: Yu Han (Harry)
 permalink: /
 page_class: home
 searchable: true
-description: Yu Han (Harry), a Robotics Engineering undergraduate at South China University of Technology and a research assistant at PAIRS Lab, HKUST(GZ). Research interests include dexterous manipulation, multimodal sensing, force-aware robot learning, and embodied intelligence.
+description: Yu Han (Harry), a Robotics Engineering student at SCUT and research assistant at PAIRS Lab, HKUST(GZ). Interests include dexterous manipulation, multimodal sensing, force-aware robot learning, human sensing, and embodied intelligence.
 ---
 {% assign profile = site.data.profile %}
 <article class="home-page shell">
   <section class="profile-section glass-panel" data-liquid-glass="panel" aria-label="About Yu Han (Harry)">
     <header class="profile-heading">
       <h1><strong>Yu Han</strong> (Harry)</h1>
-      <p>Undergraduate in Robotics Engineering · South China University of Technology</p>
-      <p>Research Assistant, <a href="https://pairslab.github.io/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a> · The Hong Kong University of Science and Technology (Guangzhou)</p>
+      <p>Bachelor's Degree in Robotics Engineering · SCUT, expected 2027</p>
+      <p>Research Assistant, <a href="https://pairslab.github.io/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a> · HKUST(GZ)</p>
     </header>
     <figure class="profile-photo">
       <img src="{{ profile.avatar | relative_url }}" alt="Yu Han (Harry)" width="1206" height="1642" fetchpriority="high">
@@ -30,12 +30,15 @@ description: Yu Han (Harry), a Robotics Engineering undergraduate at South China
     </figure>
     <section class="biography" aria-label="Biography">
       <div class="prose">
-        <p>I am an undergraduate studying <strong>Robotics Engineering</strong> at <strong>South China University of Technology</strong>, where I was advised by <a href="https://www2.scut.edu.cn/wusie/2022/0122/c25374a459098/page.htm" target="_blank" rel="noopener noreferrer">Prof. Yunquan Li</a>. I also work as a research assistant in <a href="https://fangqiangding.com/" target="_blank" rel="noopener noreferrer">Prof. Fangqiang Ding</a>’s <strong><a href="https://pairslab.github.io/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a></strong> at <strong>The Hong Kong University of Science and Technology (Guangzhou)</strong>.</p>
-        <p>Before turning to robotics, I spent six years (2016–2022) programming and competing in informatics. My experience now spans both the mechanical design of robotic systems and the development of machine learning models.</p>
-        <p>My research interests include dexterous manipulation, multimodal sensing, force-aware robot learning, and embodied intelligence. I aim to bring together advances in robot design and learning to develop trustworthy, scalable physical AI that advances human–machine symbiosis.</p>
+        {% for paragraph in profile.bio %}{{ paragraph | markdownify }}{% endfor %}
       </div>
-      <div class="profile-links"><a href="{{ '/about/' | relative_url }}">More about me</a></div>
+      <div class="profile-links"><a href="{{ '/about/' | relative_url }}">More about me</a><a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>Download CV (PDF)</a></div>
     </section>
+  </section>
+
+  <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="experience-title">
+    <div class="section-heading"><h2 id="experience-title">Research & industry experience</h2></div>
+    {% include experience-list.liquid compact=true %}
   </section>
 
   <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="projects-title">
