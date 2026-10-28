@@ -12,7 +12,7 @@ The template is based on upstream `cleancv.sty` (Git blob SHA: cafc788b1176fb017
 
 ## Content sources
 
-- `../_data/profile.yml`: the homepage/About biography in `bio`, appointments in `research_experience`, contact details, education, awards, research interests, and the verified 2016-2022 informatics background.
+- `../_data/profile.yml`: the About biography in `bio`, appointments in `research_experience`, contact details, education, awards, research interests, and the verified 2016-2022 informatics background.
 - `../_data/cv.yml`: structured data for the web CV, synchronized with this approved LaTeX source.
 - `../_projects/*.md`: project contributions, dates, and results.
 
@@ -38,4 +38,4 @@ Research Experience includes PAIRS Lab at HKUST(GZ), the SCUT laboratory supervi
 
 The informatics award remains undated because a specific award year has not been supplied. The CV does not infer publications, project leadership, quantitative performance improvements, or clinical/waterproof certification. The 2016-2022 informatics training interval is not treated as the date of a particular award.
 
-The website's biography, appointments, research interests, education, and awards are synchronized with this approved CV. Editing the LaTeX source does not regenerate the YAML data or downloadable PDF automatically; update and verify all three together. Changes become public through the site's normal deployment workflow.
+The website's About biography, appointments, research interests, education, and awards are synchronized with this approved CV. Editing the LaTeX source does not regenerate the YAML data or downloadable PDF automatically; update and verify all three together. Changes become public through the site's normal deployment workflow.

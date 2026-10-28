@@ -12,7 +12,7 @@ Edit `_data/profile.yml`:
 | --- | --- |
 | `name`, `role` | Name and role on the About page |
 | `avatar` | Portrait path, currently `/assets/img/portrait.webp` |
-| `bio` | Shared homepage and About-page paragraphs, rendered as Markdown |
+| `bio` | About-page paragraphs, rendered as Markdown |
 | `research_interests` | Research interests, labels, and descriptions on the publications page |
 | `education`, `awards` | Education and awards on the About page |
 | `research_experience` | Institutional research and internship appointments on the homepage and About page |
@@ -20,7 +20,7 @@ Edit `_data/profile.yml`:
 | `toolkit` | Retained verified background data; not displayed as a separate skills section |
 | `email`, `github` | Contact details and links |
 
-The homepage presentation and affiliations below the portrait are defined in `_pages/home.html`. The homepage and About page share `profile.bio` and `profile.research_experience`, so edit those data fields once to update both pages. The portrait caption shows two monochrome emblems side by side with `SCUT` and `HKUST(GZ)` labels, followed by GitHub, email, and CV icons. Full university names are available through each link's accessible label and hover title, and remain visible in the biography and About-page experience entries. The email address and location are not shown as caption text. University links point to their official homepages. Logo sources and display treatment are recorded in `assets/img/affiliations/README.md`. GitHub and email destinations come from `_data/profile.yml`; CV links to `/cv/`. The shared biography is not generated from the retained `headline` or `intro` fields.
+The homepage presentation and affiliations below the portrait are defined in `_pages/home.html`. The homepage introduction and role lines retain the owner-approved wording directly in `_pages/home.html`. The About page renders `profile.bio`; both pages share `profile.research_experience`. Keep the homepage wording distinct unless the owner requests a rewrite. The portrait caption shows two monochrome emblems side by side with `SCUT` and `HKUST(GZ)` labels, followed by GitHub, email, and CV icons. Full university names are available through each link's accessible label and hover title, and remain visible in the biography and About-page experience entries. The email address and location are not shown as caption text. University links point to their official homepages. Logo sources and display treatment are recorded in `assets/img/affiliations/README.md`. GitHub and email destinations come from `_data/profile.yml`; CV links to `/cv/`. Neither biography is generated from the retained `headline` or `intro` fields.
 
 Use spaces, not tabs, for YAML indentation. Quote year-only values, for example `year: "2026"`. Leave unknown dates empty instead of guessing.
 
@@ -142,7 +142,7 @@ Keep reading notes and work in progress in posts or projects rather than present
 
 ## Content provenance and validation
 
-The site retains the four project histories, two posts, and verified background facts from the original site. Personal information now follows the approved `_cv/main.tex`, including education in 2023–2027 (expected), three research and industry appointments, five research interests, and the updated awards. See `_cv/README.md` for owner-provided updates and award wording. Preserve verified legacy facts in the source data and add further dates or claims only when supported.
+The site retains the four robotics project histories, two posts, and verified background facts from the original site. Hyadex and PaperNAS were added from the owner-supplied public repositories on October 28, 2026; their project pages link to those repositories and their image provenance is recorded in `assets/img/PROJECT-MEDIA.md`. The homepage introduction retains its earlier owner-approved wording independently of the About biography. Personal information now follows the approved `_cv/main.tex`, including education in 2023–2027 (expected), three research and industry appointments, five research interests, and the updated awards. See `_cv/README.md` for owner-provided updates and award wording. Preserve verified legacy facts in the source data and add further dates or claims only when supported.
 
 Preview the affected pages and check titles, dates, images, links, and mobile layout, then run:
 
@@ -160,7 +160,7 @@ Commit the update to a review branch after validation. Deployment instructions a
 
 The layout keeps al-folio’s reading order and approximately 930px text area. Glass styling does not change the content data sources.
 
-The homepage has three separate `glass-panel` sections with `data-liquid-glass="panel"`: profile, Selected projects, and Latest posts. Contact links belong at the end of Latest posts. Do not add nested glass markers to individual experience or project rows. Interior pages use one `document-panel`, and navigation remains in normal document flow rather than covering the content. Panel corners are 32px on desktop and 26px on mobile.
+The homepage has four separate `glass-panel` sections with `data-liquid-glass="panel"`: profile, Research & industry experience, Selected projects, and Latest posts. Contact links belong at the end of Latest posts. Do not add nested glass markers to individual experience or project rows. Interior pages use one `document-panel`, and navigation remains in normal document flow rather than covering the content. Panel corners are 32px on desktop and 26px on mobile.
 
 The wallpaper consists of eight original photographs from Apple’s Big Sur coastal HEIC, exported to `assets/img/big-sur/`. The wallpaper button opens settings for **Show wallpaper**, **Follow local time**, an editable time, a slider, and four scene presets. Choosing a time enables manual preview and saves `harry-wallpaper-time` as `HH:MM`; enabling Follow local time saves `auto`. Show wallpaper independently retains the solid-background choice. The theme button separately controls interface light/dark mode. The photographs remain Apple’s copyrighted artwork, separate from the repository’s MIT code. Provenance and export details are documented in `assets/img/WALLPAPER.md`.
 

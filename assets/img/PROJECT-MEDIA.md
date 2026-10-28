@@ -1,5 +1,19 @@
 # Project media sources
 
+## Hyadex
+
+- Website asset: `software/hyadex-discussion.png` (1600 × 1000).
+- Source: [`docs/images/group-discussion.png`](https://github.com/ezoiHY/Hyadex/blob/77dcecbc8f02ac9f0acc6eae4b9ae78beb32eec6/docs/images/group-discussion.png), retrieved on October 28, 2026.
+- The project's README identifies this as an app snapshot-mode render using built-in sample data. It is not a recorded conversation with real users.
+- Preparation: copy the original PNG without cropping, retouching, or image generation. The shared thumbnail frame fits the complete image.
+
+## PaperNAS
+
+- Website asset: `software/papernas-library.jpg` (1265 × 712).
+- Source: [`docs/images/library-light.jpg`](https://github.com/ezoiHY/PaperNAS/blob/main/docs/images/library-light.jpg), retrieved on October 28, 2026. Git blob SHA: `2b0ed0b68e144387b9234beb2d262bf8453e7fb3`.
+- The repository's screenshot documentation identifies the library contents as synthetic demonstration papers, captured from the running application on October 26, 2026.
+- Preparation: copy the original JPEG without cropping, retouching, or image generation. The shared thumbnail frame fits the complete image.
+
 ## Underactuated prosthetic hand
 
 - Website asset: `underactuated-hand-photo.webp` (1280 × 1280).
