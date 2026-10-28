@@ -4,7 +4,8 @@ title: Monocular RGB control of a robotic hand
 description: Retargeting human hand motion from RGB images to an articulated robotic hand in simulation.
 category: Vision & Control
 year: "2026"
-order: 2
+sort_year: 2026
+sort_priority: 10
 permalink: /projects/monocular-hand-control/
 featured: true
 accent: peach

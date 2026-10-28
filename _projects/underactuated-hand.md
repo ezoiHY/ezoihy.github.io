@@ -4,7 +4,8 @@ title: Pulley-free tendon-driven underactuated prosthetic hand
 description: A lightweight, adaptive prosthetic hand using a single actuator and a compact tendon mechanism.
 category: Mechanism Design
 year: "2024—2025"
-order: 1
+sort_year: 2024
+sort_priority: 10
 permalink: /projects/underactuated-hand/
 featured: true
 accent: lavender

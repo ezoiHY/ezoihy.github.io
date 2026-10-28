@@ -4,7 +4,8 @@ title: Vision-guided biomimetic robotic fish
 description: Scene recognition and diver tracking for underwater human–robot collaboration.
 category: Underwater Robotics
 year: "2025—present"
-order: 3
+sort_year: 2025
+sort_priority: 20
 permalink: /projects/robotic-fish/
 featured: true
 accent: aqua

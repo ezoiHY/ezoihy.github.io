@@ -19,9 +19,10 @@ description: Yu Han (Harry)'s robotics projects and open-source software for cod
   </div>
   <p class="sr-only" id="filter-status" aria-live="polite"></p>
   <div class="project-grid">
-    {% assign projects = site.projects | sort: 'order' %}
-    {% for project in projects %}
-      {% include project-card.liquid project=project %}
+    {% assign project_years = site.projects | group_by: 'sort_year' | sort: 'name' | reverse %}
+    {% for project_year in project_years %}
+      {% assign year_projects = project_year.items | sort: 'sort_priority' | reverse %}
+      {% for project in year_projects %}{% include project-card.liquid project=project %}{% endfor %}
     {% endfor %}
   </div>
   <p class="figure-note">The prosthetic hand and robotic fish thumbnails use AI-assisted background expansion from owner-supplied photographs; their detail pages show the unchanged source photographs. The monocular hand screenshot and quadruped footage retain their source framing. Hyadex and PaperNAS interface images come from their repositories and use demonstration data.</p>

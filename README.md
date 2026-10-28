@@ -2,6 +2,8 @@
 
 A personal academic website built with [al-folio](https://github.com/alshedivat/al-folio) v1 and Jekyll. It retains al-folio’s academic reading order, an approximately 930px text column, a right-hand portrait, and English content covering research, projects, publications, a CV, and personal writing.
 
+Selected projects rotates through the featured entries every six seconds, with Previous, Play/Pause, and Next controls. Hover, keyboard interaction, page visibility, and reduced-motion preferences control automatic rotation. Project lists use descending `sort_year`, then descending `sort_priority` within a year; priority is an editorial tie-break, not an inferred date.
+
 The homepage has four independent glass panels: the profile, Research & industry experience, Selected projects, and Latest posts. Interior pages use one `document-panel`. Rows inside a panel do not create additional glass layers. The navigation stays in normal document flow and scrolls with the page, avoiding overlap with the content.
 
 Website: [ezoihy.github.io](https://ezoihy.github.io). This redesign is developed on `codex/academic-homepage` for preview and review; pushing that branch does not deploy the public site.
@@ -28,6 +30,7 @@ JEKYLL_ENV=production bundle exec jekyll build
 python3 scripts/check_site.py
 node scripts/check_wallpaper.cjs
 node scripts/check_glass.cjs
+node scripts/check_project_carousel.cjs
 bundle exec al-folio upgrade overrides audit
 ```
 

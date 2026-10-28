@@ -43,9 +43,25 @@ description: Yu Han (Harry), a Robotics Engineering student at SCUT and research
     {% include experience-list.liquid compact=true %}
   </section>
 
-  <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="projects-title">
+  <section class="home-section glass-panel project-carousel" data-liquid-glass="panel" data-project-carousel aria-labelledby="projects-title" aria-roledescription="carousel">
     <div class="section-heading"><h2 id="projects-title">Selected projects</h2><a href="{{ '/projects/' | relative_url }}">All projects →</a></div>
-    <div class="selected-projects">{% assign selected = site.projects | where: 'featured', true | sort: 'order' %}{% for project in selected limit: 2 %}{% assign project_cover = project.cover | default: project.image %}{% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}{% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}<article class="selected-project"><a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a><div><h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><a class="project-details-link" href="{{ project.url | relative_url }}">Details</a></div></article>{% endfor %}</div>
+    <div class="selected-projects" id="selected-project-slides">
+      {% assign selected = site.projects | where: 'featured', true %}
+      {% assign project_years = selected | group_by: 'sort_year' | sort: 'name' | reverse %}
+      {% for project_year in project_years %}
+        {% assign year_projects = project_year.items | sort: 'sort_priority' | reverse %}
+        {% for project in year_projects %}{% include selected-project.liquid project=project %}{% endfor %}
+      {% endfor %}
+    </div>
+    <div class="project-carousel-controls" data-carousel-controls hidden>
+      <span class="project-carousel-count" data-carousel-count aria-hidden="true">1 / {{ selected.size }}</span>
+      <div class="project-carousel-buttons">
+        <button type="button" data-carousel-previous aria-label="Previous project" aria-controls="selected-project-slides"><span aria-hidden="true">←</span></button>
+        <button type="button" class="project-carousel-toggle" data-carousel-toggle aria-label="Pause automatic project rotation">Pause</button>
+        <button type="button" data-carousel-next aria-label="Next project" aria-controls="selected-project-slides"><span aria-hidden="true">→</span></button>
+      </div>
+      <p class="sr-only" data-carousel-status aria-live="polite" aria-atomic="true"></p>
+    </div>
   </section>
 
   <section class="home-section glass-panel" data-liquid-glass="panel" aria-labelledby="posts-title">
@@ -54,3 +70,4 @@ description: Yu Han (Harry), a Robotics Engineering student at SCUT and research
     <div class="contact-line"><a href="mailto:{{ profile.email }}" aria-label="Email">{% include icon.liquid name='mail' %}</a><a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">{% include icon.liquid name='github' %}</a><p>Feel free to get in touch about research and projects.</p></div>
   </section>
 </article>
+<script src="{{ '/assets/js/project-carousel.js' | relative_url }}" defer></script>

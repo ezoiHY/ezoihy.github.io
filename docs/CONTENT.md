@@ -52,7 +52,8 @@ title: Pulley-free tendon-driven underactuated prosthetic hand
 description: A lightweight, adaptive prosthetic hand using a single actuator and a compact tendon mechanism.
 category: Mechanism Design
 year: "2024–2025"
-order: 1
+sort_year: 2024
+sort_priority: 10
 permalink: /projects/underactuated-hand/
 featured: true
 image: /assets/img/underactuated-hand-photo.webp
@@ -67,10 +68,10 @@ tags: [Underactuated Mechanisms, Tendon Transmission, Adaptive Grasping]
 ---
 ```
 
-When copying an entry, change its title, path, order, image, and body. Do not retain results or metrics belonging to another project.
+When copying an entry, change its title, path, sort fields, image, and body. Do not retain results or metrics belonging to another project.
 
-- `order` controls ordering; lower numbers appear first.
-- `featured: true` makes an entry eligible for Selected projects. The homepage displays the first two by `order`.
+- `sort_year` is the documented project year (the start year for a range). Both Projects and Selected projects sort by descending year. `sort_priority` breaks ties within a year, also descending; it is an editorial display priority and must not imply an unverified month or day.
+- `featured: true` includes an entry in the homepage carousel. All six current projects are featured. The carousel shows one at a time, rotates every six seconds while visible, and wraps around. Visitors can use Previous, Next, arrow keys on the controls, and Play/Pause. Mouse hover pauses temporarily; keyboard focus or manual navigation stops rotation until Play is requested. Reduced motion starts paused and disables transitions. Without JavaScript, the entries remain a readable list.
 - `category` controls filtering. Use consistent category names.
 - `image` and its dimensions, alternative text, and caption describe the source image on the project detail page. Optional `cover`, `cover_width`, and `cover_height` select a separate thumbnail image for the homepage and project grid.
 - The current layouts do not render the legacy `accent`, `highlights`, or `image_label` fields. Put verified metrics in the body; unused fields can be removed.
@@ -82,7 +83,7 @@ The prosthetic hand and robotic fish detail pages show the owner-supplied source
 
 All homepage and project-grid thumbnail frames, including video previews, use 16:9 with `object-fit: contain`. The generated covers are 1672 × 941 and fit within that frame. The monocular hand screenshot and quadruped footage remain authentic source media and fit without cropping or AI processing. Detail figures retain their source image proportions. The legacy `image_preserve_ratio` flag no longer controls thumbnails. The earlier `hand.svg` and `fish.svg` remain stored as conceptual illustrations and are no longer used for project previews.
 
-When replacing media, update `image`, `image_alt`, and the English `image_caption`, or the separate `cover` fields when only the thumbnail changes, and review the shared notice at the bottom of `_pages/projects.html`. Use WebP, SVG, or compressed JPEG files stored in `assets/img/`. Set image and cover dimensions to the actual asset dimensions; the shared thumbnail frame supplies the display ratio. For screenshots, set `image_source` to the original source and record provenance in `assets/img/PROJECT-MEDIA.md`. Record owner-supplied photographs there with their provision date; do not infer a capture date, camera, or test result from a photograph. Record AI-assisted derivatives separately from unchanged sources, including the tool, prompt, output dimensions, and intended edit. For an animated preview, add a local H.264 MP4 path in `video`, keep a real poster in `image`, and link the full recording with `video_source`. The project grid and detail page share `_includes/project-media.liquid`; `project-media.js` manages muted looping, pause/play, visibility, and reduced motion. The video source and excerpt times belong in `assets/video/README.md`. Body images can be inserted with:
+When replacing media, update `image`, `image_alt`, and the English `image_caption`, or the separate `cover` fields when only the thumbnail changes, and review the shared notice at the bottom of `_pages/projects.html`. Use WebP, SVG, or compressed JPEG files stored in `assets/img/`. Set image and cover dimensions to the actual asset dimensions; the shared thumbnail frame supplies the display ratio. For screenshots, set `image_source` to the original source and record provenance in `assets/img/PROJECT-MEDIA.md`. Record owner-supplied photographs there with their provision date; do not infer a capture date, camera, or test result from a photograph. Record AI-assisted derivatives separately from unchanged sources, including the tool, prompt, output dimensions, and intended edit. For an animated preview, add a local H.264 MP4 path in `video`, keep a real poster in `image`, and link the full recording with `video_source`. The project grid and detail page share `_includes/project-media.liquid`; `project-media.js` manages muted looping, pause/play, visibility, and reduced motion. The video source and excerpt times belong in `assets/video/README.md`. For software screenshot galleries, set `wide_media: true` to use the full document width for the hero, and use `<figure class="project-screenshot">` blocks for additional images. Include dimensions, lazy loading, descriptive alt text, a full-size image link, and an English caption with repository provenance. Preserve any demonstration-data notice. Body images can be inserted with:
 
 ```md
 ![Describe what the photograph actually shows](/assets/img/your-project-photo.webp)
@@ -151,6 +152,7 @@ bundle exec jekyll build
 python3 scripts/check_site.py
 node scripts/check_wallpaper.cjs
 node scripts/check_glass.cjs
+node scripts/check_project_carousel.cjs
 bundle exec al-folio upgrade overrides audit
 ```
 

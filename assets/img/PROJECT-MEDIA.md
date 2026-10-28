@@ -56,3 +56,30 @@
 - The full original montage remains available at the source link. Its rights remain with the original rights holders, separate from the repository's code license.
 
 The quadruped video and poster sources are recorded in [`../video/README.md`](../video/README.md). The monocular screenshot and quadruped footage retain their source framing and fit inside the shared 16:9 thumbnail frame without cropping or AI processing. The earlier `hand.svg` and `fish.svg` remain stored as conceptual illustrations; hand and fish thumbnails use the AI-assisted covers above, while detail pages use the unchanged source photographs.
+
+
+## Expanded software galleries
+
+Added October 28, 2026. All files below were copied unchanged from the referenced repository revisions, with no cropping, retouching, or image generation. Inline figures link to the full-size local asset and the original repository file.
+
+### Hyadex gallery
+
+Source revision: `77dcecbc8f02ac9f0acc6eae4b9ae78beb32eec6` in [ezoiHY/Hyadex](https://github.com/ezoiHY/Hyadex/tree/77dcecbc8f02ac9f0acc6eae4b9ae78beb32eec6). Each image is a 1600 × 1000 app snapshot-mode render with built-in sample data, as documented by the repository README.
+
+| Local asset in `software/` | Repository file |
+| --- | --- |
+| `hyadex-changes.png` | `docs/images/chat-changes.png` |
+| `hyadex-approval.png` | `docs/images/chat-approval.png` |
+| `hyadex-autopilot.png` | `docs/images/autopilot-running.png` |
+| `hyadex-scheduled-jobs.png` | `docs/images/scheduled-jobs.png` |
+
+### PaperNAS gallery
+
+Source revision: `0958db1e7e6764f38b7f6e91ed0cadd99e51e602` in [ezoiHY/PaperNAS](https://github.com/ezoiHY/PaperNAS/tree/0958db1e7e6764f38b7f6e91ed0cadd99e51e602). The repository galleries document October 26, 2026 captures from the running applications using synthetic demonstration papers and research records. The native Mac image retains its original primarily Chinese interface labels; the surrounding website caption is English.
+
+| Local asset in `software/` | Repository file | Dimensions | Git blob SHA |
+| --- | --- | --- | --- |
+| `papernas-pdf-reader.jpg` | `docs/images/pdf-reader.jpg` | 1265 × 712 | `7d039805b21c10a39dbc48614db375dbc34e685d` |
+| `papernas-research-evidence.jpg` | `docs/images/research-evidence.jpg` | 1265 × 889 | `6e59f9c416c2dbc5307c2ea8aa8e93433d6f2910` |
+| `papernas-research-plan.jpg` | `docs/images/research-plan.jpg` | 1265 × 889 | `f27c1820d78081993be8eee1bb43d87b79f7a837` |
+| `papernas-macos-analysis.jpg` | `docs/images/macos-analysis.jpg` | 2720 × 1760 | `36b9f464488ae0f2cd11b8d379658fb591c6b672` |

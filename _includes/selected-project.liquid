@@ -1,0 +1,13 @@
+{% assign project = include.project %}
+{% assign project_cover = project.cover | default: project.image %}
+{% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}
+{% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}
+<article class="selected-project" data-project-slide>
+  <a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
+  <div class="selected-project-copy">
+    <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+    <p class="project-meta">{{ project.year }} · {{ project.category }}</p>
+    <p>{{ project.description }}</p>
+    <a class="project-details-link" href="{{ project.url | relative_url }}">View project</a>
+  </div>
+</article>

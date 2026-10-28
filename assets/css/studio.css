@@ -116,14 +116,23 @@ strong { font-weight:600; }
 .news-row { display:grid; grid-template-columns:116px minmax(0,1fr); gap:17px; margin-bottom:13px; align-items:baseline; font-size:14px; line-height:1.6; }
 .news-row time { color:var(--muted); font-size:12px; font-family:var(--mono); }
 .selected-projects { background:none; }
-.selected-project { display:grid; grid-template-columns:154px minmax(0,1fr); gap:24px; padding:22px 0; align-items:start; border-bottom:1px solid var(--line); }
+.selected-project { display:grid; grid-template-columns:minmax(0,42%) minmax(0,1fr); gap:28px; padding:22px 0; align-items:center; border-bottom:1px solid var(--line); }
 .selected-project:first-child { padding-top:0; }
 .selected-project:last-child { padding-bottom:0; border-bottom:0; }
 .selected-project-image { aspect-ratio:16 / 9; border:1px solid var(--line); border-radius:15px; overflow:hidden; background:#18212a; }
 .selected-project-image img { width:100%; height:100%; object-fit:contain; }
-.selected-project h3 { margin:0 0 4px; font-size:17px; }
+.selected-project h3 { margin:0 0 8px; font-size:21px; }
 .selected-project p { font-size:14px; line-height:1.6; }
 .selected-project .project-meta { font-size:12px; margin-bottom:5px; }
+.project-carousel[data-carousel-ready] .selected-projects { display:grid; }
+.project-carousel[data-carousel-ready] .selected-project { grid-area:1 / 1; min-width:0; padding:0; border:0; visibility:hidden; opacity:0; pointer-events:none; transition:opacity .24s ease; }
+.project-carousel[data-carousel-ready] .selected-project.is-active { visibility:visible; opacity:1; pointer-events:auto; }
+.project-carousel-controls { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:22px; }
+.project-carousel-count { font-size:13px; font-variant-numeric:tabular-nums; color:var(--muted); }
+.project-carousel-buttons { display:flex; align-items:center; gap:8px; }
+.project-carousel-buttons button { min-width:44px; min-height:44px; padding:7px 12px; border:1px solid var(--line); border-radius:12px; font-size:16px; }
+.project-carousel-buttons button:hover { background:var(--hover); }
+.project-carousel-buttons .project-carousel-toggle { min-width:68px; font-size:13px; }
 .project-details-link { display:inline-block; font-size:11px; border:1px solid var(--line); padding:2px 11px; margin-top:8px; border-radius:8px; background:var(--card-glass); }
 .contact-line { margin:30px 0 0; padding-top:25px; border-top:1px solid var(--line); text-align:center; }
 .contact-line > a { color:var(--ink); display:inline-flex; margin:0 9px; }
@@ -215,6 +224,10 @@ strong { font-weight:600; }
 .project-figure { max-width:580px; margin:0 auto 30px; }
 .project-figure img { border:1px solid var(--line); border-radius:6px; width:100%; }
 .project-figure figcaption { text-align:center; }
+.project-figure-wide { max-width:none; }
+.project-screenshot { margin:26px 0 34px; }
+.project-screenshot img { width:100%; height:auto; border:1px solid var(--line); border-radius:8px; }
+.project-screenshot figcaption { font-size:12px; line-height:1.65; }
 .project-motion { position:relative; aspect-ratio:16 / 9; overflow:hidden; background:#18212a; }
 .project-motion .project-motion-poster { display:block; width:100%; height:100%; object-fit:contain; border:0; border-radius:0; }
 .project-motion-video { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; opacity:0; }
@@ -302,9 +315,9 @@ kbd { border:1px solid var(--line); border-radius:3px; padding:1px 4px; font:10p
   .section-heading > a { font-size:11px; }
   .news-row { grid-template-columns:90px minmax(0,1fr); gap:13px; font-size:13px; }
   .news-row time { font-size:10px; }
-  .selected-project { grid-template-columns:92px minmax(0,1fr); gap:16px; padding:22px 0; }
-  .selected-project h3 { font-size:16px; }
-  .selected-project p { font-size:13px; }
+  .selected-project { grid-template-columns:1fr; gap:18px; padding:22px 0; }
+  .selected-project h3 { font-size:19px; }
+  .selected-project p { font-size:14px; }
   .selected-project .project-meta { font-size:10px; }
   .project-grid { grid-template-columns:1fr; gap:23px; }
   .project-copy { padding:18px; }
@@ -339,7 +352,7 @@ kbd { border:1px solid var(--line); border-radius:3px; padding:1px 4px; font:10p
 @media (max-width:370px) {
   .shell { width:calc(100% - 32px); }
   .selected-project { grid-template-columns:1fr; }
-  .selected-project-image { max-width:150px; }
+  .selected-project-image { max-width:none; }
   .section-heading > a { font-size:10px; }
   .section-heading h2 { font-size:23px; }
 }

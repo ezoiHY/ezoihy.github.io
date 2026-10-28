@@ -4,9 +4,10 @@ title: Voice-controlled quadruped with a local language model
 description: Connecting natural-language instructions to locomotion and interaction on a Unitree Go1.
 category: Embodied Intelligence
 year: "2025"
-order: 4
+sort_year: 2025
+sort_priority: 10
 permalink: /projects/language-quadruped/
-featured: false
+featured: true
 accent: blue
 image: /assets/img/language-quadruped-poster.webp
 image_alt: A Unitree Go1 approaching the camera and rising onto its hind legs during the project demonstration
