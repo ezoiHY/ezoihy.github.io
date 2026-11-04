@@ -91,7 +91,7 @@ class Document(HTMLParser):
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("site_dir", nargs="?", type=Path, default=Path(__file__).resolve().parents[1] / "_site")
-    parser.add_argument("--origin", default="https://ezoihy.github.io", help="Public site origin for same-site absolute links")
+    parser.add_argument("--origin", default="https://ezoihy.com", help="Public site origin for same-site absolute links")
     args = parser.parse_args()
     site = args.site_dir.resolve()
     origin = args.origin.rstrip("/")

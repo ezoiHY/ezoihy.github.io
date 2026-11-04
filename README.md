@@ -6,7 +6,7 @@ Selected projects rotates through the featured entries every six seconds, with P
 
 The homepage has four independent glass panels: the profile, Research & industry experience, Selected projects, and Latest posts. Interior pages use one `document-panel`. Rows inside a panel do not create additional glass layers. The navigation stays in normal document flow and scrolls with the page, avoiding overlap with the content.
 
-Website: [ezoihy.github.io](https://ezoihy.github.io). This redesign is developed on `codex/academic-homepage` for preview and review; pushing that branch does not deploy the public site.
+Website: [ezoihy.com](https://ezoihy.com), hosted on GitHub Pages. Development branches, including `codex/academic-homepage`, are for preview and review; pushing those branches does not deploy the public site.
 
 ## Local preview
 
@@ -73,7 +73,27 @@ The homepage retains the owner-approved introduction in `_pages/home.html`; the 
 
 Deployment is limited to `main` and `master`, including manually dispatched runs. `codex/academic-homepage` is a review branch.
 
-The site keeps `https://ezoihy.github.io` with an empty `baseurl` and preserves the existing `/posts/*` URLs. Update `url`, `baseurl`, and relevant links if the domain or repository path changes.
+The canonical URL is `https://ezoihy.com` with an empty `baseurl`. Existing paths, including `/posts/*`, `/projects/`, `/about/`, and `/papers/`, stay unchanged.
+
+### Custom domain and DNS
+
+In the repository's **Settings → Pages → Custom domain**, save `ezoihy.com` before directing DNS to GitHub Pages. This repository publishes through a custom GitHub Actions workflow, so a `CNAME` file is not required and does not configure the domain.
+
+In GoDaddy, open **DNS → DNS Records** for `ezoihy.com` and configure:
+
+| Type | Name | Value |
+| --- | --- | --- |
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `ezoihy.github.io` |
+
+Replace any existing apex parking A records and any conflicting `www` record. Preserve unrelated records, including email MX and TXT records. Use the default TTL; GoDaddy nameservers can remain in place. After GitHub's DNS check passes and the certificate is available, enable **Enforce HTTPS** in Pages settings. GitHub Pages redirects `www.ezoihy.com` to the configured apex domain when both DNS records are correctly configured. DNS changes may take up to 24 hours to propagate.
+
+For account-level ownership verification, use **GitHub Settings → Pages → Add a domain** and add the exact TXT record GitHub supplies. Keep that verification record after verification succeeds.
+
+See GitHub's [custom domain documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site) and [domain verification instructions](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages).
 
 ## Wallpaper and glass
 
