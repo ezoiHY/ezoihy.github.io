@@ -1,0 +1,37 @@
+{%- assign search_pages = site.pages | where_exp: 'p', 'p.searchable == true' -%}
+{%- assign search_items = search_pages | concat: site.projects | concat: site.posts -%}
+{%- assign tag_open = '{' | append: '%' -%}
+{%- assign tag_close = '%' | append: '}' -%}
+{%- assign value_open = '{' | append: '{' -%}
+{%- assign value_close = '}' | append: '}' -%}
+{%- capture search_json -%}
+[
+{%- for item in search_items -%}
+  {%- assign search_content = item.content -%}
+  {%- assign template_tags = search_content | split: tag_open -%}
+  {%- for tag in template_tags offset: 1 -%}
+    {%- assign markup = tag | split: tag_close | first | prepend: tag_open | append: tag_close -%}
+    {%- assign search_content = search_content | remove: markup -%}
+  {%- endfor -%}
+  {%- assign template_values = search_content | split: value_open -%}
+  {%- for value in template_values offset: 1 -%}
+    {%- assign markup = value | split: value_close | first | prepend: value_open | append: value_close -%}
+    {%- assign search_content = search_content | remove: markup -%}
+  {%- endfor -%}
+  {%- capture search_text -%}
+    {{ search_content | strip_html }}
+    {%- if item.url == '/about/' or item.url == '/cv/' -%}
+      {{ site.data.profile.bio | join: ' ' }}
+      {{ site.data.profile.education | jsonify }}
+      {{ site.data.profile.research_experience | jsonify }}
+      {{ site.data.profile.awards | jsonify }}
+      {%- if item.url == '/cv/' -%}{{ site.data.cv.cv | jsonify }}{%- endif -%}
+    {%- elsif item.url == '/publications/' -%}
+      {{ site.data.profile.research_interests | jsonify }} {{ site.data.lab_demos | jsonify }}
+    {%- endif -%}
+  {%- endcapture -%}
+  {"title":{{ item.title | jsonify }},"description":{{ item.description | default: item.excerpt | strip_html | normalize_whitespace | truncate: 220 | jsonify }},"url":{{ item.url | relative_url | jsonify }},"keywords":{{ item.tags | join: ' ' | append: ' ' | append: item.category | append: ' ' | append: item.categories | jsonify }},"text":{{ search_text | normalize_whitespace | jsonify }},"type":{% if item.collection == 'projects' %}"Project"{% elsif item.collection == 'posts' %}"Post"{% else %}"Page"{% endif %}}{% unless forloop.last %},{% endunless %}
+{%- endfor -%}
+]
+{%- endcapture -%}
+{{- search_json | replace: '<', '\u003c' -}}

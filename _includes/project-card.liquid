@@ -2,11 +2,11 @@
 {% assign project_cover = project.cover | default: project.image %}
 {% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}
 {% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}
-<article class="project-card" data-category="{{ project.category | escape }}">
+<article class="project-card" data-category="{{ project.category | escape }}" data-project-area="{% if project.category == 'Software' %}software{% else %}robotics{% endif %}" data-project-url="{{ project.url | relative_url }}">
   {% if project.video %}
-    <div class="project-visual">{% include project-media.liquid project=project %}</div>
+    <div class="project-visual">{% include project-media.liquid project=project thumbnail=true %}</div>
   {% else %}
-    <a class="project-visual" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
+    <a class="project-visual" href="{{ project.url | relative_url }}" data-project-link tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
   {% endif %}
-  <div class="project-copy"><h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><div class="tag-list">{% for tag in project.tags limit: 3 %}<span>{{ tag }}</span>{% endfor %}</div></div>
+  <div class="project-copy"><h2 class="project-card-title"><a href="{{ project.url | relative_url }}" data-project-link>{{ project.title }}</a></h2><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><div class="tag-list">{% for tag in project.tags limit: 3 %}<span>{{ tag }}</span>{% endfor %}</div><div class="project-card-links"><a href="{{ project.url | relative_url }}" data-project-link>View project</a>{% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">Code</a>{% endif %}{% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Full demo</a>{% endif %}</div></div>
 </article>

@@ -11,6 +11,12 @@ This is Harry Han’s personalized **al-folio v1** academic website, adapted fro
 
 The original MIT license is retained in `LICENSE`. Site-specific text and the supplied portrait remain the author’s content. Four SVG illustrations were created for this site and depict concepts, not physical project photographs.
 
+## Current presentation (November 4, 2026)
+
+The performance revision preserves the 930px academic reading area and pinned gems. The original landscape remains enabled by default; saved solid-background preferences remain supported. Scenery uses one responsive WebP frame at a time behind near-opaque panels. Only header/footer use CSS blur. The layout no longer imports the optical engine or carousel: there are no panel canvases, duplicated fixed photo layers, refraction maps, or scroll samplers. Projects form a static list; videos require an explicit play action. See [README.md](README.md#appearance-and-performance) and [the audit](docs/SITE-AUDIT-2026-11-04.md).
+
+The implementation descriptions below record the **previous optical design**, retained for provenance and licensing. They do not describe the active runtime. All cited source revisions, artwork attribution, and MIT notices remain applicable to their retained files.
+
 ## Intentional customization
 
 `_layouts/default.liquid`, `post.liquid`, and `bib.liquid` replace matching core layouts. `project.liquid` is a site-specific layout. `_includes/icon.liquid`, `symbols.liquid`, and `project-card.liquid` are site-specific components. `assets/css/studio.css`, `assets/js/studio.js`, and `assets/js/liquid-glass.js` implement the custom visual and interaction layer. The CV continues to render through upstream `al_folio_cv_render`.

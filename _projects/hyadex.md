@@ -3,6 +3,7 @@ layout: project
 title: Hyadex
 description: A self-hosted workspace for coordinating Claude Code and Codex through a native macOS app.
 category: Software
+code_url: https://github.com/ezoiHY/Hyadex
 year: "2026"
 permalink: /projects/hyadex/
 featured: true
@@ -10,6 +11,9 @@ sort_year: 2026
 sort_priority: 30
 wide_media: true
 image: /assets/img/software/hyadex-discussion.png
+cover: /assets/img/optimized/hyadex-cover-800.webp
+cover_width: 800
+cover_height: 500
 image_alt: Hyadex macOS interface showing a sample discussion between a user, Claude Code, and Codex
 image_width: 1600
 image_height: 1000

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-// Run the real carousel script with a small DOM and a deterministic clock.
+// Historical carousel lifecycle checks. The last check guards the current static homepage.
+// Run the retained carousel script with a small DOM and a deterministic clock.
 // These checks cover interaction and accessibility state, not rendered pixels.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -303,13 +304,11 @@ test('absent, single-slide, and incomplete carousels remain static and readable'
   }
 });
 
-test('source markup keeps project content accessible before JavaScript runs', () => {
+test('the published homepage keeps every selected project visible without carousel enhancement', () => {
   const template = fs.readFileSync(path.join(root, '_includes/selected-project.liquid'), 'utf8');
   const home = fs.readFileSync(path.join(root, '_pages/home.html'), 'utf8');
-  const article = template.match(/<article\b[^>]*data-project-slide[^>]*>/)?.[0];
-  assert.ok(article, 'Project slide markup is present');
-  assert.doesNotMatch(article, /\b(?:hidden|inert|aria-hidden)\b/);
-  assert.match(template, /<h3>\s*<a\b[^>]*href=/, 'Every project retains its ordinary title link');
-  assert.match(home, /<div\b[^>]*data-carousel-controls[^>]*\bhidden\b/, 'Inactive controls stay hidden until enhancement succeeds');
-  assert.doesNotMatch(home, /\bdata-carousel-ready\b/, 'The server output never starts in the enhanced state');
+  assert.match(template, /<article class="selected-project">/);
+  assert.doesNotMatch(template, /\b(?:hidden|inert|aria-hidden)\b[^>]*>\s*<div class="selected-project-copy"/);
+  assert.match(template, /<h4 class="selected-project-title">\s*<a\b[^>]*href=/);
+  assert.doesNotMatch(home, /data-project-carousel|data-carousel-controls|project-carousel\.js/);
 });

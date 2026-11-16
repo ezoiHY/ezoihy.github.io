@@ -1,8 +1,17 @@
 {% assign media = include.project %}
+{% assign poster = media.image %}
+{% assign poster_width = media.image_width %}
+{% assign poster_height = media.image_height %}
+{% if include.thumbnail and media.cover %}
+  {% assign poster = media.cover %}
+  {% assign poster_width = media.cover_width %}
+  {% assign poster_height = media.cover_height %}
+{% endif %}
 <div class="project-motion" data-project-motion>
-  <img class="project-motion-poster" src="{{ media.image | relative_url }}" alt="{{ media.image_alt | default: media.title | escape }}" width="{{ media.image_width | default: 800 }}" height="{{ media.image_height | default: 560 }}" loading="{{ include.loading | default: 'lazy' }}">
-  <video class="project-motion-video" muted loop playsinline preload="none" poster="{{ media.image | relative_url }}" aria-hidden="true" tabindex="-1">
+  <img class="project-motion-poster" src="{{ poster | relative_url }}" alt="{{ media.image_alt | default: media.title | escape }}" width="{{ poster_width | default: 800 }}" height="{{ poster_height | default: 560 }}" loading="{{ include.loading | default: 'lazy' }}">
+  <video class="project-motion-video" muted loop playsinline preload="none" poster="{{ poster | relative_url }}" aria-hidden="true" tabindex="-1">
     <source src="{{ media.video | relative_url }}" type="video/mp4">
   </video>
+  <p class="project-motion-status" role="status" hidden></p>
   <button class="project-motion-toggle" type="button" hidden>Play preview</button>
 </div>

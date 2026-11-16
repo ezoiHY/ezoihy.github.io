@@ -3,6 +3,7 @@ layout: project
 title: Monocular RGB control of a robotic hand
 description: Retargeting human hand motion from RGB images to an articulated robotic hand in simulation.
 category: Vision & Control
+code_url: https://github.com/ezoiHY/Kinematic-Control-of-Robotic-Hands-Based-on-a-Monocular-RGB-Cammera
 year: "2026"
 sort_year: 2026
 sort_priority: 10
@@ -10,6 +11,9 @@ permalink: /projects/monocular-hand-control/
 featured: true
 accent: peach
 image: /assets/img/monocular-hand-demo.webp
+cover: /assets/img/optimized/monocular-hand-cover-800.webp
+cover_width: 800
+cover_height: 326
 image_alt: A two-finger human hand gesture tracked with RGB landmarks beside the corresponding robotic hand pose in SAPIEN
 image_width: 1200
 image_height: 489

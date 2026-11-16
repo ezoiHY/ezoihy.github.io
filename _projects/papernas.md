@@ -3,6 +3,7 @@ layout: project
 title: PaperNAS
 description: A self-hosted research workspace connecting paper reading, source evidence, and research records across Mac and web clients.
 category: Software
+code_url: https://github.com/ezoiHY/PaperNAS
 year: "2026"
 sort_year: 2026
 sort_priority: 20
@@ -10,6 +11,9 @@ permalink: /projects/papernas/
 featured: true
 wide_media: true
 image: /assets/img/software/papernas-library.jpg
+cover: /assets/img/optimized/papernas-cover-800.webp
+cover_width: 800
+cover_height: 450
 image_alt: PaperNAS browser library showing groups and synthetic demonstration papers
 image_width: 1265
 image_height: 712

@@ -1,15 +1,18 @@
-- title: about
+- title: Home
   url: /
   icon: home
-- title: publications
+- title: Research
   url: /publications/
   icon: research
-- title: projects
+- title: Projects
   url: /projects/
   icon: grid
-- title: blog
+- title: About
+  url: /about/
+  icon: person
+- title: Blog
   url: /posts/
   icon: pen
-- title: cv
+- title: CV
   url: /cv/
   icon: person

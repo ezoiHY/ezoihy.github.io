@@ -12,5 +12,9 @@ description: Yu Han (Harry)'s curriculum vitae. Education at SCUT, research at H
     <a class="back-link" href="{{ '/about/' | relative_url }}">← About</a>
     <div class="cv-actions"><a class="button" href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>Download CV (PDF)</a><button type="button" class="button print-cv">Print this page</button></div>
   </div>
+  <nav class="profile-links" aria-label="CV contact links">
+    <a href="mailto:{{ site.data.profile.email | escape }}">Email</a>
+    <a href="{{ site.data.profile.github | escape }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </nav>
   <div class="cv-content">{% al_folio_cv_render %}</div>
 </article>

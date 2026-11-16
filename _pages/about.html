@@ -2,7 +2,7 @@
 layout: default
 title: About
 permalink: /about/
-nav_section: /
+nav_section: /about/
 searchable: true
 description: Yu Han (Harry). Education at SCUT, research at PAIRS Lab and the Intelligent Structures Laboratory, a Huawei internship, and academic honors.
 ---
@@ -13,7 +13,7 @@ description: Yu Han (Harry). Education at SCUT, research at PAIRS Lab and the In
 </header>
 <section class="shell page-content">
   <article class="about-story prose">
-    <img class="about-portrait" src="{{ profile.avatar | relative_url }}" alt="{{ profile.name }}" width="1206" height="1642">
+    <img class="about-portrait" src="{{ profile.avatar_small | default: profile.avatar | relative_url }}" srcset="{{ profile.avatar_small | relative_url }} 480w, {{ profile.avatar_large | relative_url }} 800w" sizes="(max-width: 370px) 140px, (max-width: 680px) 110px, 155px" alt="{{ profile.name }}" width="1206" height="1641">
     {% for paragraph in profile.bio %}{{ paragraph | markdownify }}{% endfor %}
   </article>
   <div class="social-links">
@@ -47,7 +47,7 @@ description: Yu Han (Harry). Education at SCUT, research at PAIRS Lab and the In
     </ul>
   </section>
   <section class="about-section">
-    <h2>Personal writing</h2>
-    <p>My learning notes, project logs, and personal essays are collected in the <a href="{{ '/posts/' | relative_url }}">blog</a>.</p>
+    <h2>Writing</h2>
+    <p>I keep a <a href="{{ '/posts/' | relative_url }}">blog</a> for learning notes, project logs, and reflections. <a href="{{ '/posts/hello-world/' | relative_url }}">Why I started this blog</a> introduces what I hope to document.</p>
   </section>
 </section>

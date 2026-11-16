@@ -12,7 +12,7 @@ const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../assets/js/wallpaper.js'), 'utf8');
 const scriptURL = 'https://example.test/profile/assets/js/wallpaper.js';
 
-function browser({ hour = 12, minute = 0, offset = 480, background = 'photo', hidden = false, savedTime = null } = {}) {
+function browser({ hour = 12, minute = 0, offset = 480, background = 'photo', hidden = false, savedTime = null, mobile = false } = {}) {
   let now = Date.UTC(2026, 9, 13, hour, minute) - offset * 60000;
   let nextTimer = 1;
   let observer;
@@ -49,7 +49,7 @@ function browser({ hour = 12, minute = 0, offset = 480, background = 'photo', hi
   }
   class Image {
     set src(url) {
-      const match = /\/big-sur-(\d)\.jpg$/.exec(url);
+      const match = /\/big-sur-(\d)-(?:960|1600)\.webp$/.exec(url);
       assert.ok(match, `Unexpected wallpaper URL: ${url}`);
       requests.push({ image: this, url, frame: Number(match[1]), settled: false });
     }
@@ -60,7 +60,7 @@ function browser({ hour = 12, minute = 0, offset = 480, background = 'photo', hi
   }
   vm.runInNewContext(source, {
     document,
-    window: { addEventListener: register('window') },
+    window: { addEventListener: register('window'), matchMedia: () => ({ matches: mobile }) },
     URL,
     Image,
     MutationObserver,
@@ -82,7 +82,7 @@ function browser({ hour = 12, minute = 0, offset = 480, background = 'photo', hi
     get utcHour() { return new Date(now).getUTCHours(); },
     get visibleFrame() {
       const value = properties.get(`--wallpaper-${root.dataset.wallpaperLayer}-image`);
-      return value === 'none' ? null : Number(/big-sur-(\d)\.jpg/.exec(value)[1]);
+      return value === 'none' ? null : Number(/big-sur-(\d)-(?:960|1600)\.webp/.exec(value)[1]);
     },
     setLocal(hour, minute, second = 0, millisecond = 0) {
       now = Date.UTC(2026, 9, 13, hour, minute, second, millisecond) - offset * 60000;
@@ -138,7 +138,7 @@ test('local-time schedule selects both sides of every boundary and wraps at midn
       b.settle(frame);
       await b.flush();
       assert.equal(b.root.dataset.wallpaperPeriod, period);
-      assert.equal(b.requests.length, 2, 'Only current and next distinct image should load');
+      assert.equal(b.requests.length, 1, 'Only the selected image should load');
       assert.match(b.requests[0].url, /^https:\/\/example\.test\/profile\/assets\/img\/big-sur\//);
     }
   }
@@ -158,20 +158,20 @@ test('minute timer crosses a boundary without changing the image until loading f
   assert.equal(b.visibleFrame, 2);
   assert.equal(b.root.dataset.wallpaperPeriod, 'dawn');
   assert.notEqual(b.root.dataset.wallpaperLayer, layer);
-  assert.equal(b.properties.get(`--wallpaper-${layer}-image`).includes('big-sur-1.jpg'), true);
+  assert.equal(b.properties.get(`--wallpaper-${layer}-image`).includes('big-sur-1-1600.webp'), true);
 });
 
-test('midnight retains the night image and prefetches the following dawn', async () => {
+test('midnight retains the night image without prefetching', async () => {
   const b = browser({ hour: 23, minute: 59 });
   b.settle(1);
   await b.flush();
-  assert.deepEqual(b.requests.map(item => item.frame), [1, 2]);
+  assert.deepEqual(b.requests.map(item => item.frame), [1]);
   const writes = b.writes.length;
   b.runTimer();
   await b.flush();
   assert.equal(b.visibleFrame, 1);
   assert.equal(b.writes.length, writes);
-  assert.deepEqual(b.requests.map(item => item.frame), [1, 2]);
+  assert.deepEqual(b.requests.map(item => item.frame), [1]);
 });
 
 test('timezone changes and pageshow use the updated local clock', async () => {
@@ -329,8 +329,16 @@ test('repeated refreshes keep one aligned minute timer and reuse current images'
   await b.flush();
   assert.equal(b.timers.size, 1);
   assert.equal(b.timers.values().next().value.delay, 17927);
-  assert.deepEqual(b.requests.map(item => item.frame), [4, 5]);
+  assert.deepEqual(b.requests.map(item => item.frame), [4]);
   assert.equal(b.writes.length, 1, 'An unchanged frame does not restart the crossfade');
   assert.equal(b.listeners.document.has('scroll'), false);
   assert.equal(b.listeners.window.has('scroll'), false);
+});
+
+ test('mobile uses a smaller selected scene without loading the desktop variant', async () => {
+  const b = browser({ mobile: true });
+  b.settle(4);
+  await b.flush();
+  assert.equal(b.requests.length, 1);
+  assert.match(b.requests[0].url, /big-sur-4-960\.webp$/);
 });

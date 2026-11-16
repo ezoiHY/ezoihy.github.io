@@ -1,7 +1,7 @@
 ---
 layout: project
 title: Pulley-free tendon-driven underactuated prosthetic hand
-description: A lightweight, adaptive prosthetic hand using a single actuator and a compact tendon mechanism.
+description: A 304 g prosthetic hand using one actuator and a pulley-free tendon mechanism for adaptive grasping.
 category: Mechanism Design
 year: "2024—2025"
 sort_year: 2024
@@ -14,9 +14,9 @@ image_alt: A white prosthetic hand prototype grasping a clear plastic bottle
 image_caption: "Project hardware: the prosthetic hand grasping a plastic bottle."
 image_width: 1280
 image_height: 1280
-cover: /assets/img/underactuated-hand-cover.webp
-cover_width: 1672
-cover_height: 941
+cover: /assets/img/optimized/underactuated-hand-cover-800.webp
+cover_width: 800
+cover_height: 450
 tags: [Underactuated Mechanisms, Tendon Transmission, Adaptive Grasping]
 highlights:
   - value: "304 g"
@@ -27,9 +27,9 @@ highlights:
 
 ## Mechanism design for adaptive grasping
 
-This project focuses on a pulley-free, tendon-driven underactuated prosthetic hand. A single actuator and a compact underactuated mechanism allow the fingers to move adaptively and distribute grasping forces during grasping.
+I designed a **304 g prosthetic hand driven by a single actuator**. Its pulley-free tendon transmission couples finger motion through an underactuated mechanism, allowing the fingers to adapt during grasping and distribute grasping forces.
 
-My aim is to use mechanism and transmission design to achieve reliable grasping with fewer actuators and lower system complexity.
+The design explores how mechanical coupling can reduce the number of actuators needed for adaptive grasping.
 
 ## Completed work
 

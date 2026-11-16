@@ -1,28 +1,23 @@
 ---
 layout: post
-title: Hello, and welcome
-description: My first note on this blog, and a starting point for documenting what I learn and build.
+title: Why I started this blog
+description: A place to record what I learn, how I build projects, and how my understanding changes.
 date: 2026-08-18
 categories: [Personal]
 tags: [Notes, Beginnings]
 permalink: /posts/hello-world/
 ---
 
-This is the first note on my blog.
-
-I want to keep this site for the long term: a place for useful study notes and for documenting open-source projects from the initial idea through to completion.
+I started this blog to keep a record of what I learn and build. I want to document open-source projects from the initial idea through development and review, including the decisions I might otherwise forget.
 
 ## Why keep a blog?
 
-Social platforms work well for quick updates. A blog gives me more control over longer pieces: how I organize them, how I write, and when I publish. I can also return to old posts and revise them as my understanding changes.
-
-> I do not need to have everything figured out before writing. Putting an idea into words can help me understand it.
+A blog gives me space to explain an idea at length and return to it later. I can revise a post as my understanding changes, while version control preserves the earlier thinking. Writing is also a way to find out which parts of an idea I do not yet understand.
 
 ## What I plan to write about
 
-- New technologies and practical methods I learn.
-- The design, development, and review of open-source projects.
-- What I learn about tools, productivity, and the process of making things.
-- Questions I want to record, even when I do not yet have an answer.
+- Study notes on technologies and methods I am learning.
+- Project logs explaining design decisions, implementation, and review.
+- Reflections on tools and questions that arise while making things.
 
-The first version of the blog is online. My next step is to keep adding notes from the work I actually do.
+These are plans for the blog, rather than a finished collection. I will add notes as the work gives me something concrete to share.

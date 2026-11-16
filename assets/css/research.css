@@ -1,0 +1,65 @@
+/* Research shows the existing demonstrations before the broader interests.
+   Loaded only on /publications/; the shared document width and media controls stay intact. */
+.research-page .research-projects {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  align-items:start;
+  gap:30px;
+}
+.research-projects .research-project {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:0;
+  min-width:0;
+  margin:0;
+  padding:0;
+  border:0;
+}
+.research-projects .research-project-media { width:100%; }
+.research-projects .research-project-copy { padding-top:16px; }
+.research-projects .project-meta { margin-bottom:7px; font-size:12px; }
+.research-projects .research-project-copy h3 { font-size:20px; }
+.research-projects .research-project-links { gap:8px 16px; }
+
+/* Native disclosures keep all five areas visible and reveal detail on demand. */
+.research-interest-disclosures {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:30px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.research-interest-disclosures > li { min-width:0; }
+.research-interest { border-bottom:1px solid var(--line); }
+.research-interest summary {
+  min-height:44px;
+  padding:10px 0;
+  color:var(--ink);
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+}
+.research-interest summary::marker { color:var(--accent); }
+.research-interest p {
+  margin:0;
+  padding:0 0 14px 19px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.65;
+}
+
+@media (max-width:760px) {
+  .research-page .research-projects { grid-template-columns:1fr; gap:28px; }
+  .research-projects .research-project + .research-project { padding-top:24px; border-top:1px solid var(--line); }
+  .research-projects .research-project-copy { padding-top:14px; }
+  .research-projects .research-project-copy h3 { font-size:19px; }
+  .research-interest-disclosures { grid-template-columns:1fr; }
+}
+
+@media print {
+  .research-page .research-projects { display:block; }
+  .research-projects .research-project + .research-project { margin-top:22px; }
+  .research-interest { break-inside:avoid; }
+}

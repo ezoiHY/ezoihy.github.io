@@ -14,9 +14,9 @@ image_alt: A white biomimetic robotic fish with a camera at the front, in a blue
 image_caption: "Project hardware: the biomimetic robotic fish in a water tank."
 image_width: 1706
 image_height: 1279
-cover: /assets/img/robotic-fish-cover.webp
-cover_width: 1672
-cover_height: 941
+cover: /assets/img/optimized/robotic-fish-cover-800.webp
+cover_width: 800
+cover_height: 450
 tags: [YOLOv8, Underwater Human–Robot Collaboration, Visual Recognition, Biomimetic Robotics]
 highlights:
   - value: YOLOv8
@@ -36,4 +36,4 @@ I am participating in a national-level student innovation project on underwater 
 - Developed a scene-recognition module based on **YOLOv8**.
 - Assisted with improvements to the fish's mechanical structure.
 
-This work has given me experience with visual algorithms within a complete robot system and helped me understand the connections between perception, algorithm architecture, and mechanical design.
+The recognition module is part of a broader robot system that brings together underwater perception, diver tracking, and mechanical design.

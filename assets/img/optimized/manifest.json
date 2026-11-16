@@ -1,0 +1,262 @@
+[
+  {
+    "source": "assets/img/portrait.webp",
+    "source_sha256": "0764802e04571789c0ce5698f34ce2258648cd6ba54f87d1711f977a006cc959",
+    "source_bytes": 209240,
+    "output": "assets/img/optimized/portrait-480.webp",
+    "width": 480,
+    "height": 653,
+    "quality": 82,
+    "bytes": 20706
+  },
+  {
+    "source": "assets/img/portrait.webp",
+    "source_sha256": "0764802e04571789c0ce5698f34ce2258648cd6ba54f87d1711f977a006cc959",
+    "source_bytes": 209240,
+    "output": "assets/img/optimized/portrait-800.webp",
+    "width": 800,
+    "height": 1089,
+    "quality": 82,
+    "bytes": 55350
+  },
+  {
+    "source": "assets/img/software/hyadex-discussion.png",
+    "source_sha256": "8f99eb6626ca095d3d116df9625dfbc197fec72a60ca561c1cb7030eac791b6f",
+    "source_bytes": 296421,
+    "output": "assets/img/optimized/hyadex-cover-800.webp",
+    "width": 800,
+    "height": 500,
+    "quality": 84,
+    "bytes": 26660
+  },
+  {
+    "source": "assets/img/software/papernas-library.jpg",
+    "source_sha256": "9aab10a85966fd7183e1918ee04016a0df3068f2ca278387d648b7511d070e1c",
+    "source_bytes": 58796,
+    "output": "assets/img/optimized/papernas-cover-800.webp",
+    "width": 800,
+    "height": 450,
+    "quality": 84,
+    "bytes": 18214
+  },
+  {
+    "source": "assets/img/underactuated-hand-cover.webp",
+    "source_sha256": "5e7cc24e8af030be4eeb6cbada898d77cafe7b007356d90d927f3865b12c79a5",
+    "source_bytes": 58936,
+    "output": "assets/img/optimized/underactuated-hand-cover-800.webp",
+    "width": 800,
+    "height": 450,
+    "quality": 84,
+    "bytes": 15294
+  },
+  {
+    "source": "assets/img/robotic-fish-cover.webp",
+    "source_sha256": "46b0caa7f1d7e30cebbad62821d98905e04d57a843bdbc4f200dc33662fa9bcd",
+    "source_bytes": 91006,
+    "output": "assets/img/optimized/robotic-fish-cover-800.webp",
+    "width": 800,
+    "height": 450,
+    "quality": 84,
+    "bytes": 22980
+  },
+  {
+    "source": "assets/img/monocular-hand-demo.webp",
+    "source_sha256": "1c34ae64e98f7bac33e15df083802494541fa8f956c7e054726cb12377d4b988",
+    "source_bytes": 30660,
+    "output": "assets/img/optimized/monocular-hand-cover-800.webp",
+    "width": 800,
+    "height": 326,
+    "quality": 84,
+    "bytes": 11958
+  },
+  {
+    "source": "assets/img/language-quadruped-poster.webp",
+    "source_sha256": "0dd264bf0280bcd0a098e035f3f85010456b9e843ee7dfc19a727518931f5862",
+    "source_bytes": 33512,
+    "output": "assets/img/optimized/language-quadruped-cover-800.webp",
+    "width": 800,
+    "height": 451,
+    "quality": 84,
+    "bytes": 26766
+  },
+  {
+    "source": "assets/img/affiliations/scut.png",
+    "source_sha256": "66f2324cb979c31aeae39d59c7a9261cdf22109612ad7d2010aaea04b71569c4",
+    "source_bytes": 71404,
+    "output": "assets/img/optimized/scut-104.webp",
+    "width": 104,
+    "height": 104,
+    "quality": 90,
+    "bytes": 9184
+  },
+  {
+    "source": "assets/img/affiliations/hkust-gz.png",
+    "source_sha256": "14122e0f5f95538cfaf475e1bb42c2d72202d5bfee7024eef2fc712c63310b65",
+    "source_bytes": 8247,
+    "output": "assets/img/optimized/hkust-gz-104.webp",
+    "width": 104,
+    "height": 104,
+    "quality": 90,
+    "bytes": 2100
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-0.jpg",
+    "source_sha256": "b0b53a92cecc39529f7b54d4c0a9291b242b3c34d68547ac456a35310f669808",
+    "source_bytes": 1794504,
+    "output": "assets/img/big-sur/big-sur-0-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 116442
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-0.jpg",
+    "source_sha256": "b0b53a92cecc39529f7b54d4c0a9291b242b3c34d68547ac456a35310f669808",
+    "source_bytes": 1794504,
+    "output": "assets/img/big-sur/big-sur-0-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 308584
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-1.jpg",
+    "source_sha256": "62026bed02444026a917fca5f5b6002cd532f02b2503f9f7ea1bbdaf756c22a2",
+    "source_bytes": 963635,
+    "output": "assets/img/big-sur/big-sur-1-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 40068
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-1.jpg",
+    "source_sha256": "62026bed02444026a917fca5f5b6002cd532f02b2503f9f7ea1bbdaf756c22a2",
+    "source_bytes": 963635,
+    "output": "assets/img/big-sur/big-sur-1-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 112644
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-2.jpg",
+    "source_sha256": "d0da304f0a8dc996ff84dbecee06273687cf75a196a8f618626d8e318dc0f064",
+    "source_bytes": 931969,
+    "output": "assets/img/big-sur/big-sur-2-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 45400
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-2.jpg",
+    "source_sha256": "d0da304f0a8dc996ff84dbecee06273687cf75a196a8f618626d8e318dc0f064",
+    "source_bytes": 931969,
+    "output": "assets/img/big-sur/big-sur-2-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 115086
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-3.jpg",
+    "source_sha256": "6ae416a40325d1ab9fef187b70ba0fabd5866f2a1e257f365bf1ddb367da47e3",
+    "source_bytes": 1377948,
+    "output": "assets/img/big-sur/big-sur-3-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 84264
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-3.jpg",
+    "source_sha256": "6ae416a40325d1ab9fef187b70ba0fabd5866f2a1e257f365bf1ddb367da47e3",
+    "source_bytes": 1377948,
+    "output": "assets/img/big-sur/big-sur-3-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 215650
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-4.jpg",
+    "source_sha256": "d317d21769b915596ef80500adadd19b45839508d5799404665e133da5236919",
+    "source_bytes": 1798839,
+    "output": "assets/img/big-sur/big-sur-4-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 116980
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-4.jpg",
+    "source_sha256": "d317d21769b915596ef80500adadd19b45839508d5799404665e133da5236919",
+    "source_bytes": 1798839,
+    "output": "assets/img/big-sur/big-sur-4-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 316824
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-5.jpg",
+    "source_sha256": "77e214d955a7794ee76b854d35c2c6c018d09af03639755c17a33000c5ab55ff",
+    "source_bytes": 1492250,
+    "output": "assets/img/big-sur/big-sur-5-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 87372
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-5.jpg",
+    "source_sha256": "77e214d955a7794ee76b854d35c2c6c018d09af03639755c17a33000c5ab55ff",
+    "source_bytes": 1492250,
+    "output": "assets/img/big-sur/big-sur-5-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 234410
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-6.jpg",
+    "source_sha256": "20cd81e528d762852e74e792ba2c91d1fb1a72287f392a35e1cb6638ec898618",
+    "source_bytes": 1133971,
+    "output": "assets/img/big-sur/big-sur-6-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 63644
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-6.jpg",
+    "source_sha256": "20cd81e528d762852e74e792ba2c91d1fb1a72287f392a35e1cb6638ec898618",
+    "source_bytes": 1133971,
+    "output": "assets/img/big-sur/big-sur-6-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 159060
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-7.jpg",
+    "source_sha256": "29b39c74b97644cd58c37ceefebd7d81a533f482981fee15c727ff0655c91523",
+    "source_bytes": 1053180,
+    "output": "assets/img/big-sur/big-sur-7-960.webp",
+    "width": 960,
+    "height": 960,
+    "quality": 78,
+    "bytes": 54384
+  },
+  {
+    "source": "assets/img/big-sur/big-sur-7.jpg",
+    "source_sha256": "29b39c74b97644cd58c37ceefebd7d81a533f482981fee15c727ff0655c91523",
+    "source_bytes": 1053180,
+    "output": "assets/img/big-sur/big-sur-7-1600.webp",
+    "width": 1600,
+    "height": 1600,
+    "quality": 78,
+    "bytes": 142166
+  }
+]

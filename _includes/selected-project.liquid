@@ -2,12 +2,16 @@
 {% assign project_cover = project.cover | default: project.image %}
 {% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}
 {% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}
-<article class="selected-project" data-project-slide>
-  <a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
+<article class="selected-project">
+  {% if project.video %}
+    <div class="selected-project-image">{% include project-media.liquid project=project thumbnail=true %}</div>
+  {% else %}
+    <a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
+  {% endif %}
   <div class="selected-project-copy">
-    <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+    <h4 class="selected-project-title"><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h4>
     <p class="project-meta">{{ project.year }} · {{ project.category }}</p>
     <p>{{ project.description }}</p>
-    <a class="project-details-link" href="{{ project.url | relative_url }}">View project</a>
+    <div class="selected-project-links"><a class="project-details-link" href="{{ project.url | relative_url }}">View project</a>{% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">Code</a>{% endif %}{% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Full demo</a>{% endif %}</div>
   </div>
 </article>

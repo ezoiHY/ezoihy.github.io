@@ -1,5 +1,6 @@
 /* Original Big Sur photographs, selected by local clock or a saved preview time.
- * Only the current and next photograph are loaded. The browser composites
+ * Only the selected photograph loads; future scenes never compete with content.
+ * The browser composites
  * the crossfade; this clock never reads layout or runs on scroll.
  */
 (() => {
@@ -22,7 +23,8 @@
     { minute: 1140, frame: 7, name: 'dusk' },
     { minute: 1200, frame: 1, name: 'night' },
   ];
-  const photoURL = frame => new URL(`big-sur-${frame}.jpg`, base).href;
+  const size = window.matchMedia('(max-width: 760px)').matches ? 960 : 1600;
+  const photoURL = frame => new URL(`big-sur-${frame}-${size}.webp`, base).href;
   const periodIndex = date => {
     const manual = root.dataset.wallpaperTime;
     const minute = validTime(manual) ? Number(manual.slice(0, 2)) * 60 + Number(manual.slice(3)) : date.getHours() * 60 + date.getMinutes();
@@ -38,6 +40,8 @@
       const image = new Image();
       image.onload = () => resolve(image);
       image.onerror = () => { if (images.get(frame) === promise) images.delete(frame); reject(new Error('Wallpaper image unavailable')); };
+      image.decoding = 'async';
+      image.fetchPriority = 'low';
       image.src = photoURL(frame);
     });
     images.set(frame, promise);
@@ -68,12 +72,11 @@
         activeFrame = period.frame;
       }
       root.dataset.wallpaperPeriod = period.name;
-      // Cache only the next distinct photograph, after the current one loads.
-      const next = root.dataset.wallpaperTime === 'auto' ? periods.slice(index + 1).concat(periods).find(item => item.frame !== period.frame) : null;
+      // Keep only the selected image in JS memory. A future scene loads when
+      // it is actually selected, while the old layer remains visible.
       for (const frame of images.keys()) {
-        if (frame !== period.frame && frame !== next?.frame) images.delete(frame);
+        if (frame !== period.frame) images.delete(frame);
       }
-      if (next) loadPhoto(next.frame).catch(() => {});
     } catch { /* Keep the previous photograph, or the dark readable fallback. */ }
   }
   function schedule() {

@@ -2,6 +2,100 @@
 (() => {
   'use strict';
   const root = document.documentElement;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const motionTokens = getComputedStyle(root);
+  const motionDuration = parseFloat(motionTokens.getPropertyValue('--motion-standard')) || 240;
+  const motionEase = motionTokens.getPropertyValue('--motion-ease').trim() || 'cubic-bezier(.22,1,.36,1)';
+  const motions = new Map();
+  function stopMotion(element) {
+    const motion = motions.get(element);
+    if (motion) { motion.animation.onfinish = null; motion.animation.cancel(); }
+    motions.delete(element);
+  }
+  function animate(element, frames, duration = motionDuration, complete = () => {}) {
+    stopMotion(element);
+    if (reducedMotion.matches || !element.animate) { complete(); return; }
+    const animation = element.animate(frames, { duration, easing: motionEase });
+    const finish = () => {
+      if (motions.get(element)?.animation !== animation) return;
+      stopMotion(element); complete();
+    };
+    motions.set(element, { animation, finish });
+    animation.onfinish = finish;
+  }
+  // A changed system preference also settles animations already in progress.
+  reducedMotion.addEventListener('change', event => {
+    if (event.matches) [...motions.values()].forEach(motion => motion.finish());
+  });
+  const closingDialogs = new WeakSet();
+  function openDialog(panel) {
+    const wasOpen = panel.open;
+    const style = wasOpen ? getComputedStyle(panel) : null;
+    const from = style ? { opacity: style.opacity, transform: style.transform } : { opacity: 0, transform: 'translateY(-6px) scale(.98)' };
+    stopMotion(panel);
+    closingDialogs.delete(panel);
+    if (!wasOpen) panel.showModal();
+    animate(panel, [from, { opacity: 1, transform: 'none' }]);
+  }
+  function closeDialog(panel, immediate = false) {
+    if (!panel?.open || (closingDialogs.has(panel) && !immediate)) return;
+    if (immediate) { stopMotion(panel); closingDialogs.delete(panel); panel.close(); return; }
+    const style = getComputedStyle(panel);
+    const from = { opacity: style.opacity, transform: style.transform };
+    closingDialogs.add(panel);
+    animate(panel, [from, { opacity: 0, transform: 'translateY(-4px) scale(.985)' }], 140, () => {
+      closingDialogs.delete(panel);
+      panel.close();
+    });
+  }
+  document.querySelectorAll('#search-dialog, #wallpaper-dialog').forEach(panel => {
+    panel.addEventListener('cancel', event => { event.preventDefault(); closeDialog(panel); });
+    panel.addEventListener('close', () => { if (!panel.open) { stopMotion(panel); closingDialogs.delete(panel); } });
+  });
+  // One surface follows the target. Measure the visible position before cancelling
+  // so a second interaction can redirect an unfinished transition without jumping.
+  function movingIndicator(container, className, selected, underline = false) {
+    if (!container) return () => {};
+    const indicator = document.createElement('span');
+    indicator.className = className;
+    indicator.setAttribute('aria-hidden', 'true');
+    indicator.hidden = true;
+    container.append(indicator);
+    container.classList.add(underline ? 'motion-filter-ready' : 'motion-nav-ready');
+    let target = selected();
+    function move(next, animated = true) {
+      target = next;
+      if (!target || !container.getClientRects().length) { indicator.hidden = true; return; }
+      const before = indicator.hidden ? null : indicator.getBoundingClientRect();
+      stopMotion(indicator);
+      const bounds = container.getBoundingClientRect();
+      const rect = target.getBoundingClientRect();
+      Object.assign(indicator.style, {
+        left: `${rect.left - bounds.left}px`, top: `${(underline ? rect.bottom + 3 : rect.top) - bounds.top}px`,
+        width: `${rect.width}px`, height: `${underline ? 2 : rect.height}px`,
+      });
+      indicator.hidden = false;
+      const after = indicator.getBoundingClientRect();
+      if (animated && before && after.width) animate(indicator, [
+        { transform: `translate(${before.left - after.left}px, ${before.top - after.top}px) scaleX(${before.width / after.width})` },
+        { transform: 'none' },
+      ]);
+    }
+    move(target, false);
+    if ('ResizeObserver' in window) new ResizeObserver(() => move(target, false)).observe(container);
+    return move;
+  }
+  const desktopNav = document.querySelector('.desktop-nav');
+  const activeNav = () => desktopNav?.querySelector('.active');
+  const moveNav = movingIndicator(desktopNav, 'motion-nav-indicator', activeNav);
+  const restoreNav = () => moveNav(desktopNav?.querySelector('a:focus-visible') || activeNav());
+  desktopNav?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('pointerenter', () => { if (finePointer.matches) moveNav(link); });
+    link.addEventListener('focus', () => moveNav(link));
+  });
+  desktopNav?.addEventListener('pointerleave', restoreNav);
+  desktopNav?.addEventListener('focusout', () => queueMicrotask(restoreNav));
   const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
   const themeButton = document.querySelector('.theme-toggle');
   const backgroundButton = document.querySelector('.background-toggle');
@@ -42,16 +136,16 @@
     updateBackgroundUI();
   }
   function closeWallpaper() {
-    if (wallpaperDialog?.open) wallpaperDialog.close();
+    closeDialog(wallpaperDialog);
   }
   updateBackgroundUI();
   new MutationObserver(updateBackgroundUI).observe(root, { attributes:true, attributeFilter:['data-background', 'data-wallpaper-time', 'data-wallpaper-period'] });
   backgroundButton?.addEventListener('click', () => {
     if (!wallpaperDialog) return;
-    document.querySelector('#search-dialog')?.close();
+    closeDialog(document.querySelector('#search-dialog'), true);
     closeMenu();
     updateBackgroundUI();
-    wallpaperDialog.showModal();
+    openDialog(wallpaperDialog);
     document.body.classList.add('wallpaper-settings-open');
   });
   wallpaperEnabled?.addEventListener('change', () => setBackground(wallpaperEnabled.checked));
@@ -60,7 +154,7 @@
   wallpaperSlider?.addEventListener('input', () => setWallpaperTime(formatTime(Number(wallpaperSlider.value))));
   document.querySelectorAll('[data-wallpaper-preset]').forEach(button => button.addEventListener('click', () => setWallpaperTime(button.dataset.wallpaperPreset)));
   document.querySelector('.wallpaper-close')?.addEventListener('click', closeWallpaper);
-  wallpaperDialog?.addEventListener('close', () => document.body.classList.remove('wallpaper-settings-open'));
+  wallpaperDialog?.addEventListener('close', () => { if (!wallpaperDialog.open) document.body.classList.remove('wallpaper-settings-open'); });
   wallpaperDialog?.addEventListener('click', event => {
     if (event.target !== wallpaperDialog) return;
     const rect = wallpaperDialog.getBoundingClientRect();
@@ -90,31 +184,59 @@
   });
   const menu = document.querySelector('#mobile-nav');
   const menuButton = document.querySelector('.menu-toggle');
-  function closeMenu() {
-    if (!menu) return;
-    menu.hidden = true;
-    menuButton?.setAttribute('aria-expanded', 'false');
-    menuButton?.setAttribute('aria-label', 'Open navigation');
+  let menuOpen = false;
+  function setMenu(open, immediate = false) {
+    if (!menu || (menuOpen === open && !immediate)) return;
+    const height = menu.hidden ? 0 : menu.getBoundingClientRect().height;
+    const opacity = menu.hidden ? 0 : getComputedStyle(menu).opacity;
+    const padding = menu.hidden ? '0px' : getComputedStyle(menu).paddingBottom;
+    stopMotion(menu);
+    menuOpen = open;
+    menu.hidden = false;
+    menu.inert = !open;
+    menuButton?.setAttribute('aria-expanded', String(open));
+    menuButton?.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+    if (!open && menu.contains(document.activeElement)) menuButton?.focus();
+    const finish = () => { menu.hidden = !open; menu.style.overflow = ''; };
+    if (immediate) { finish(); return; }
+    const fullHeight = menu.getBoundingClientRect().height;
+    const fullPadding = getComputedStyle(menu).paddingBottom;
+    menu.style.overflow = 'hidden';
+    animate(menu, [
+      { height: `${height}px`, opacity, paddingBottom: padding },
+      { height: `${open ? fullHeight : 0}px`, opacity: open ? 1 : 0, paddingBottom: open ? fullPadding : '0px' },
+    ], open ? motionDuration : 140, finish);
   }
-  menuButton?.addEventListener('click', () => {
-    menu.hidden = !menu.hidden;
-    menuButton.setAttribute('aria-expanded', String(!menu.hidden));
-    menuButton.setAttribute('aria-label', menu.hidden ? 'Open navigation' : 'Close navigation');
-  });
+  function closeMenu() { setMenu(false); }
+  menuButton?.addEventListener('click', () => setMenu(!menuOpen));
   menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
   document.addEventListener('click', event => { if (!event.target.closest('.header-wrap')) closeMenu(); });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && menu && !menu.hidden) { closeMenu(); menuButton?.focus(); }
   });
-  window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if (event.matches) closeMenu(); });
+  window.matchMedia('(min-width: 761px)').addEventListener('change', event => { if (event.matches) setMenu(false, true); });
   const dialog = document.querySelector('#search-dialog');
   const searchInput = document.querySelector('#site-search');
   const resultContainer = document.querySelector('#search-results');
+  const searchSummary = document.querySelector('#search-summary');
+  const normalizeSearch = value => String(value || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().replace(/[-–—_]/g, ' ');
   let searchItems = [];
-  try { searchItems = JSON.parse(document.querySelector('#search-data')?.textContent || '[]'); } catch { /* Keep other controls working. */ }
+  try {
+    searchItems = JSON.parse(document.querySelector('#search-data')?.textContent || '[]').map(item => ({
+      ...item,
+      fields: [item.title, item.description, item.keywords, item.text].map(normalizeSearch),
+    }));
+  } catch { /* Keep other controls working. */ }
   function renderSearch() {
-    const tokens = searchInput.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    const matches = searchItems.filter(item => tokens.every(token => `${item.title} ${item.description}`.toLocaleLowerCase().includes(token))).slice(0, 12);
+    const query = normalizeSearch(searchInput.value).trim();
+    const tokens = query.split(/\s+/).filter(Boolean);
+    const ranked = searchItems.filter(item => tokens.every(token => item.fields.some(field => field.includes(token))));
+    const score = item => tokens.reduce((sum, token) => sum + item.fields.reduce((weight, field, index) => weight + (field.includes(token) ? [8, 4, 2, 1][index] : 0), 0), item.fields[0].includes(query) ? 10 : 0);
+    if (tokens.length) ranked.sort((a, b) => score(b) - score(a));
+    const matches = ranked.slice(0, 12);
+    if (searchSummary) searchSummary.textContent = tokens.length
+      ? ranked.length > matches.length ? `Showing ${matches.length} of ${ranked.length} results` : `${ranked.length} ${ranked.length === 1 ? 'result' : 'results'}`
+      : 'Search projects, pages, and posts';
     resultContainer.replaceChildren();
     if (!matches.length) {
       const empty = document.createElement('p'); empty.className = 'search-empty';
@@ -130,20 +252,21 @@
     });
   }
   function openSearch() {
-    if (!dialog || dialog.open) return;
-    closeMenu(); closeWallpaper(); searchInput.value = ''; renderSearch(); dialog.showModal(); document.body.classList.add('search-open'); searchInput.focus();
+    if (!dialog || (dialog.open && !closingDialogs.has(dialog))) return;
+    closeMenu(); closeDialog(wallpaperDialog, true); searchInput.value = ''; renderSearch(); openDialog(dialog); document.body.classList.add('search-open'); searchInput.focus();
   }
   document.querySelectorAll('.search-trigger').forEach(button => button.addEventListener('click', openSearch));
-  document.querySelector('.search-close')?.addEventListener('click', () => dialog.close());
-  dialog?.addEventListener('close', () => document.body.classList.remove('search-open'));
+  document.querySelector('.search-close')?.addEventListener('click', () => closeDialog(dialog));
+  dialog?.addEventListener('close', () => { if (!dialog.open) document.body.classList.remove('search-open'); });
   dialog?.addEventListener('click', event => {
     if (event.target === dialog) {
       const rect = dialog.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeDialog(dialog);
     }
   });
   searchInput?.addEventListener('input', renderSearch);
   searchInput?.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { event.preventDefault(); closeDialog(dialog); return; }
     if (event.key === 'ArrowDown') { event.preventDefault(); resultContainer.querySelector('a')?.focus(); }
     if (event.key === 'Enter') resultContainer.querySelector('a')?.click();
   });
@@ -158,15 +281,107 @@
   });
   const filterButtons = document.querySelectorAll('[data-filter]');
   const cards = document.querySelectorAll('[data-category]');
-  filterButtons.forEach(button => button.addEventListener('click', () => {
+  const explorer = document.querySelector('[data-project-explorer]');
+  const projectQuery = document.querySelector('#project-search');
+  const projectReset = document.querySelector('[data-project-reset]');
+  const projectViews = document.querySelectorAll('[data-project-view]');
+  const projectFields = new Map(searchItems.map(item => [item.url, item.fields.join(' ')]));
+  const validAreas = ['all', 'robotics', 'software'];
+  function projectParams() {
+    const params = new URLSearchParams();
+    const area = document.querySelector('[data-filter].active')?.dataset.filter || 'all';
+    if (area !== 'all') params.set('area', area);
+    const query = projectQuery?.value.trim().slice(0, 200);
+    if (query) params.set('q', query);
+    if (explorer?.dataset.view === 'list') params.set('view', 'list');
+    return params;
+  }
+  function syncProjectLocation(mode) {
+    if (!explorer) return;
+    const params = projectParams();
+    const url = new URL(location.href);
+    ['area', 'q', 'view'].forEach(key => { if (params.has(key)) url.searchParams.set(key, params.get(key)); else url.searchParams.delete(key); });
+    if (mode && url.href !== location.href) history[mode === 'push' ? 'pushState' : 'replaceState'](null, '', url);
+    const query = params.toString();
+    explorer.querySelectorAll('[data-project-link]').forEach(link => {
+      link.href = link.closest('[data-project-url]').dataset.projectUrl + (query ? `?${query}` : '');
+    });
+  }
+  const moveFilter = movingIndicator(document.querySelector('.filter-bar'), 'motion-filter-indicator', () => document.querySelector('[data-filter].active'), true);
+  function filterCards(button, { motion = true, historyMode = null } = {}) {
+    if (!button) return;
+    const before = new Map();
+    if (motion) cards.forEach(card => { if (!card.hidden) before.set(card, { rect: card.getBoundingClientRect(), opacity: getComputedStyle(card).opacity }); });
+    cards.forEach(stopMotion);
     filterButtons.forEach(item => { const selected = item === button; item.classList.toggle('active', selected); item.setAttribute('aria-pressed', String(selected)); });
+    moveFilter(button);
     let visible = 0;
+    const tokens = normalizeSearch(projectQuery?.value).trim().split(/\s+/).filter(Boolean);
     cards.forEach(card => {
-      card.hidden = button.dataset.filter !== 'all' && !card.dataset.category.split("|").includes(button.dataset.filter);
+      const areaMatches = button.dataset.filter === 'all' || (explorer
+        ? card.dataset.projectArea === button.dataset.filter
+        : card.dataset.category.split('|').includes(button.dataset.filter));
+      const text = projectFields.get(card.dataset.projectUrl) || normalizeSearch(card.textContent);
+      card.hidden = !areaMatches || (explorer && !tokens.every(token => text.includes(token)));
       if (!card.hidden) visible++;
     });
-    const status = document.querySelector('#filter-status'); if (status) status.textContent = `Showing ${visible} ${visible === 1 ? 'item' : 'items'}`;
+    if (motion && !reducedMotion.matches) cards.forEach(card => {
+      if (card.hidden) return;
+      const after = card.getBoundingClientRect();
+      if (after.top > innerHeight || after.bottom < 0) return;
+      const previous = before.get(card);
+      const from = previous
+        ? { transform: `translate(${previous.rect.left - after.left}px, ${previous.rect.top - after.top}px)`, opacity: previous.opacity }
+        : { transform: 'translateY(6px)', opacity: 0 };
+      animate(card, [from, { transform: 'none', opacity: 1 }]);
+    });
+    const status = document.querySelector('#filter-status');
+    if (status) status.textContent = explorer ? `Showing ${visible} of ${cards.length} projects` : `Showing ${visible} ${visible === 1 ? 'item' : 'items'}`;
+    if (explorer) {
+      explorer.querySelector('.project-empty').hidden = visible !== 0;
+      projectReset.hidden = button.dataset.filter === 'all' && !projectQuery.value;
+      syncProjectLocation(historyMode);
+    }
+  }
+  filterButtons.forEach(button => button.addEventListener('click', () => {
+    if (!button.classList.contains('active')) filterCards(button, { historyMode: 'push' });
   }));
+  if (explorer) {
+    explorer.querySelector('.project-browser-controls').hidden = false;
+    function setProjectView(view) {
+      explorer.dataset.view = view === 'list' ? 'list' : 'cards';
+      projectViews.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.projectView === explorer.dataset.view)));
+    }
+    function restoreProjectLocation() {
+      const params = new URLSearchParams(location.search);
+      const area = validAreas.includes(params.get('area')) ? params.get('area') : 'all';
+      projectQuery.value = (params.get('q') || '').slice(0, 200);
+      setProjectView(params.get('view'));
+      filterCards(document.querySelector(`[data-filter="${area}"]`), { motion: false });
+    }
+    restoreProjectLocation();
+    window.addEventListener('popstate', restoreProjectLocation);
+    projectQuery.addEventListener('input', () => filterCards(document.querySelector('[data-filter].active'), { motion: false, historyMode: 'replace' }));
+    projectReset.addEventListener('click', () => {
+      projectQuery.value = '';
+      filterCards(document.querySelector('[data-filter="all"]'), { historyMode: 'push' });
+      projectQuery.focus();
+    });
+    projectViews.forEach(button => button.addEventListener('click', () => {
+      cards.forEach(stopMotion);
+      setProjectView(button.dataset.projectView);
+      syncProjectLocation('push');
+    }));
+  }
+  // A project opened from a filtered collection returns to that same collection.
+  const returnParams = new URLSearchParams(location.search);
+  document.querySelectorAll('[data-project-return], [data-project-continue]').forEach(link => {
+    const url = new URL(link.href);
+    if (validAreas.includes(returnParams.get('area')) && returnParams.get('area') !== 'all') url.searchParams.set('area', returnParams.get('area'));
+    if (returnParams.get('q')) url.searchParams.set('q', returnParams.get('q').slice(0, 200));
+    if (returnParams.get('view') === 'list') url.searchParams.set('view', 'list');
+    link.href = url.href;
+  });
   document.querySelectorAll('[data-copy]').forEach(button => {
     button.addEventListener('click', async () => {
       const label = button.querySelector('span'); const status = document.querySelector('#copy-status');

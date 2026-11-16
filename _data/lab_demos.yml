@@ -1,0 +1,18 @@
+# Public PAIRS Lab demonstrations, verified on 2026-11-16.
+# These are lab-level references, not claims of personal authorship.
+# Media stays hosted at the credited source. The owner requested muted automatic
+# loops on 2026-11-16; video loading starts when visible, subject to reduced motion.
+- id: wrist-sensing
+  title: Wrist-worn muscle-activity sensing
+  status: Ongoing lab prototype
+  description: A wrist-worn setup records muscle activity and inertial signals alongside hand gestures.
+  poster: https://pairslab.github.io/images/research/topics/wrist-semg-collection_hu2536971295627480260.webp
+  video: https://pairslab.github.io/media/research/demos/wrist-semg-collection.mp4
+  source: https://pairslab.github.io/research/#human-sensing
+- id: block-stacking
+  title: Sequential block stacking
+  status: Ongoing lab prototype
+  description: A single robotic arm places blocks in sequence in an ongoing lab prototype.
+  poster: https://pairslab.github.io/images/research/topics/single-arm-block-stacking_hu18171906873744871315.webp
+  video: https://pairslab.github.io/media/research/demos/single-arm-block-stacking.mp4
+  source: https://pairslab.github.io/research/#embodied-autonomy

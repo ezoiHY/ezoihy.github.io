@@ -1,0 +1,18 @@
+{% assign demo = include.demo %}
+<article class="lab-demo" aria-labelledby="{{ demo.id }}-title">
+  <div class="lab-demo-media">
+    <img class="lab-demo-poster" src="{{ demo.poster | escape }}" alt="" loading="lazy" hidden>
+    <video data-lab-demo controls playsinline muted loop preload="none" poster="{{ demo.poster | escape }}" aria-labelledby="{{ demo.id }}-title" aria-describedby="{{ demo.id }}-description">
+      <source src="{{ demo.video | escape }}" type="video/mp4">
+      <a href="{{ demo.source | escape }}">Watch this demonstration on PAIRS Lab</a>.
+    </video>
+    <button class="lab-demo-play project-motion-toggle" type="button" aria-label="Play {{ demo.title | escape }}" hidden>Play demo</button>
+  </div>
+  <div class="lab-demo-copy">
+    <p class="lab-demo-meta">PAIRS Lab · {{ demo.status }}</p>
+    <h3 id="{{ demo.id }}-title">{{ demo.title }}</h3>
+    <p id="{{ demo.id }}-description">{{ demo.description }}</p>
+    <p class="lab-demo-error" role="status" hidden>Preview unavailable. Watch the demonstration at the source below.</p>
+    <a class="lab-demo-source" href="{{ demo.source | escape }}" target="_blank" rel="noopener noreferrer">View on PAIRS Lab</a>
+  </div>
+</article>

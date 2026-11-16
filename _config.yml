@@ -47,6 +47,7 @@ exclude:
   - src
   - public
   - scripts
+  - services
   - docs
   - vendor
   - node_modules

@@ -1,5 +1,9 @@
 # macOS wallpaper assets
 
+## Delivery derivatives (November 4, 2026)
+
+The current site loads `big-sur-N-960.webp` on mobile or `big-sur-N-1600.webp` on desktop, only when wallpaper is enabled. These proportional resizes preserve the original color profile; no crop, retouching or synthetic content is applied. The original JPEGs below remain intact. `scripts/optimize_media.py` regenerates the derivatives, and `assets/img/optimized/manifest.json` records dimensions, source hashes and byte sizes. The Apple attribution below also applies to derivatives.
+
 ## Big Sur photographic dynamic wallpaper
 
 The files in `big-sur/` are the eight original lighting states of Apple's Big Sur coastal landscape, exported from the HEIC installed on this Mac. These are photographs from the Big Sur dynamic desktop, not the similarly named abstract **Big Sur Graphic** artwork. No images were generated, recolored, or composited; the exports only resize and JPEG-encode the original frames.

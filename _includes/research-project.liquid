@@ -1,0 +1,20 @@
+{% assign project = include.project %}
+<article class="research-project">
+  <div class="research-project-media">
+    {% if project.video %}
+      {% include project-media.liquid project=project thumbnail=true %}
+    {% else %}
+      <a href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project.cover | default: project.image | relative_url }}" alt="" width="{{ project.cover_width | default: project.image_width }}" height="{{ project.cover_height | default: project.image_height }}" loading="lazy"></a>
+    {% endif %}
+  </div>
+  <div class="research-project-copy">
+    <p class="project-meta">{{ project.year }} · {{ include.media_label }}</p>
+    <h3><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h3>
+    <p>{{ project.description }}</p>
+    <div class="research-project-links">
+      <a href="{{ project.url | relative_url }}">View project</a>
+      {% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">View code</a>{% endif %}
+      {% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Watch full demo</a>{% endif %}
+    </div>
+  </div>
+</article>

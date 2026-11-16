@@ -3,23 +3,43 @@ layout: default
 title: Research & Publications
 permalink: /publications/
 searchable: true
-description: Yu Han (Harry)'s research interests in dexterous manipulation, multimodal sensing, force-aware robot learning, human sensing, and embodied intelligence.
+description: Yu Han (Harry)'s research interests and robotics projects, with separately attributed PAIRS Lab demonstrations of wrist sensing and block stacking.
 ---
 <header class="page-heading shell">
   <h1>Research & Publications</h1>
   <p>Research in dexterous manipulation, sensing, and embodied intelligence.</p>
+  <nav class="research-jumps" aria-label="On this page"><a href="#research-projects">Projects & demos</a><a href="#research-interests">Interests</a><a href="#lab-demos">PAIRS Lab</a><a href="#publications">Publications</a></nav>
 </header>
-<section class="shell page-content">
-  <section class="research-section">
-    <h2>Research interests</h2>
-    <ul class="research-list">
+<section class="shell page-content research-page">
+  <section aria-labelledby="research-projects">
+    <div class="section-heading"><h2 id="research-projects">Projects & demos</h2><a href="{{ '/projects/' | relative_url }}">All projects</a></div>
+    <div class="research-projects">
+      {% assign hand = site.projects | where: 'url', '/projects/monocular-hand-control/' | first %}
+      {% assign quadruped = site.projects | where: 'url', '/projects/language-quadruped/' | first %}
+      {% include research-project.liquid project=hand media_label='Simulation screenshot' %}
+      {% include research-project.liquid project=quadruped media_label='Hardware demonstration' %}
+    </div>
+  </section>
+  <section class="research-section" aria-labelledby="research-interests">
+    <h2 id="research-interests">Research interests</h2>
+    <ul class="research-interest-disclosures">
       {% for interest in site.data.profile.research_interests %}
-        <li><strong>{{ interest.title }}</strong><p>{{ interest.description }}</p></li>
+        <li>
+          <details class="research-interest">
+            <summary>{{ interest.title }}</summary>
+            <p>{{ interest.description }}</p>
+          </details>
+        </li>
       {% endfor %}
     </ul>
   </section>
-  <section class="publications-section">
-    <h2>Publications</h2>
+  <section aria-labelledby="lab-demos">
+    <h2 id="lab-demos">PAIRS Lab demonstrations</h2>
+    <div class="lab-demo-intro"><p>Selected demonstrations from <a href="https://pairslab.github.io/research/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a>, where I work as a research assistant. These are lab-level prototypes, presented separately from my own projects and publications.</p></div>
+    <div class="lab-demo-grid">{% for demo in site.data.lab_demos %}{% include lab-demo.liquid demo=demo %}{% endfor %}</div>
+  </section>
+  <section class="publications-section" aria-labelledby="publications">
+    <h2 id="publications">Publications</h2>
     <div class="publications">
       <div class="bibliography-content">{% bibliography %}</div>
       <div class="publication-empty">

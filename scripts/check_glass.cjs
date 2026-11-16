@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-// Integration/lifecycle checks with a stub renderer. This does not measure
+// Historical optical integration/lifecycle checks with a stub renderer.
+// The final contrast check covers the current CSS reading surfaces. This does not measure
 // shader pixels, browser frame rate, or real Safari scrolling performance.
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -361,20 +362,30 @@ test('CSS photo transition drawing stops when its animation finishes', async () 
   assert.equal(b.pending, 0);
 });
 
-test('accessible opaque material gives every wallpaper text token 4.5:1', () => {
+test('theme text stays readable on the translucent reading surface over any photograph', () => {
   const css = fs.readFileSync(path.join(__dirname, '../assets/css/studio.css'), 'utf8');
-  const solid = css.match(/@media\s*\(prefers-reduced-transparency:reduce\)[\s\S]*?\.liquid-ready,\.search-dialog,\.wallpaper-dialog\)\s*\{\s*background:(#[\da-f]{6})/i);
-  assert.ok(solid, 'Read the real accessibility surface from the stylesheet');
-  const bg = [0, 2, 4].map(i => parseInt(solid[1].slice(i + 1, i + 3), 16));
-  const tokens = css.match(/:root\[data-background="wallpaper"\]\s*\{[^}]*--ink:([^;]+); --muted:([^;]+); --soft:([^;]+);/);
-  assert.ok(tokens);
-  const luminance = rgb => rgb.map(v => v / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4)
-    .reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
-  for (const hex of tokens.slice(1)) {
+  const blocks = [css.match(/:root \{([^}]+)\}/)[1], css.match(/:root\[data-theme="dark"\] \{([^}]+)\}/)[1]];
+  const rgb = hex => {
     const digits = hex.slice(1);
     const full = digits.length === 3 ? [...digits].map(v => v + v).join('') : digits;
-    const rgb = [0, 2, 4].map(i => parseInt(full.slice(i, i + 2), 16));
-    const ratio = (luminance(rgb) + .05) / (luminance(bg) + .05);
-    assert.ok(ratio >= 4.5, `${hex} contrast is ${ratio.toFixed(2)}:1`);
+    return [0, 2, 4].map(i => parseInt(full.slice(i, i + 2), 16));
+  };
+  const luminance = color => color.map(v => v / 255).map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4)
+    .reduce((sum, v, i) => sum + v * [.2126, .7152, .0722][i], 0);
+  const fills = [
+    css.match(/:root\[data-background="wallpaper"\] \{ --reading-surface:rgba\(([^)]+)\)/)[1],
+    css.match(/:root\[data-background="wallpaper"\]\[data-theme="dark"\] \{ --reading-surface:rgba\(([^)]+)\)/)[1],
+  ].map(fill => fill.split(',').map(Number));
+  for (const [index, block] of blocks.entries()) {
+    const token = name => rgb(block.match(new RegExp('--' + name + ':(#[a-f0-9]+)'))[1]);
+    for (const extreme of [0, 255]) {
+      const [r, g, b, opacity] = fills[index];
+      const bg = [r, g, b].map(value => value * opacity + extreme * (1 - opacity));
+      for (const name of ['ink', 'muted', 'soft', 'accent']) {
+        const values = [luminance(token(name)), luminance(bg)].sort((a, b) => b - a);
+        const ratio = (values[0] + .05) / (values[1] + .05);
+        assert.ok(ratio >= 4.5, `${name} contrast is ${ratio.toFixed(2)}:1`);
+      }
+    }
   }
 });

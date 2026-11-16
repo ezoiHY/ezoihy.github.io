@@ -10,6 +10,9 @@ permalink: /projects/language-quadruped/
 featured: true
 accent: blue
 image: /assets/img/language-quadruped-poster.webp
+cover: /assets/img/optimized/language-quadruped-cover-800.webp
+cover_width: 800
+cover_height: 451
 image_alt: A Unitree Go1 approaching the camera and rising onto its hind legs during the project demonstration
 image_width: 852
 image_height: 480
@@ -30,10 +33,10 @@ This engineering project uses a **Unitree Go1** quadruped to explore how natural
 
 I deployed Qwen models locally through **Ollama** and built an API pipeline connecting model outputs to the robot's motion-control interface.
 
-## Implementation
+## System workflow
 
-- Deployed Qwen models locally.
-- Connected natural-language instructions to robot actions.
-- Built an API pipeline from model outputs to the motion-control interface.
+1. Receive a natural-language instruction.
+2. Process it with a locally deployed Qwen model.
+3. Pass the model output through the API pipeline to the Go1 motion-control interface.
 
-This project is part of my exploration of language models in physical robot systems. It also prompted me to consider how perception, interaction, and motion execution work together within a single system.
+The video above shows the physical robot demonstration. The project explores the connection between language interpretation and motion execution.
