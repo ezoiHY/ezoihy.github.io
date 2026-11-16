@@ -26,18 +26,32 @@ research_interests:
   - title: Dexterous manipulation
     label: Dexterous Manipulation
     description: Robotic hand control, human hand-motion retargeting, and adaptive grasping.
+    links:
+      - title: Hand retargeting
+        url: /projects/monocular-hand-control/
+      - title: Adaptive grasping
+        url: /projects/underactuated-hand/
   - title: Multimodal sensing
     label: Multimodal Sensing
     description: Combining sensing modalities to inform robot perception and interaction.
+    links:
+      - title: PAIRS Lab sensing demo
+        url: /publications/#wrist-sensing
   - title: Force-aware robot learning
     label: Force-aware Robot Learning
     description: Learning to account for forces and physical interaction in robot behavior.
   - title: Human sensing
     label: Human Sensing
     description: Sensing human motion and behavior for human–robot interaction.
+    links:
+      - title: PAIRS Lab wrist demo
+        url: /publications/#wrist-sensing
   - title: Embodied intelligence
     label: Embodied Intelligence
     description: Connecting perception, learning, and action in physical robot systems.
+    links:
+      - title: Language-controlled quadruped
+        url: /projects/language-quadruped/
 education:
   - institution: South China University of Technology
     institution_en: South China University of Technology

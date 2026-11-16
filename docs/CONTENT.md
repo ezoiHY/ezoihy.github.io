@@ -13,7 +13,7 @@ Edit `_data/profile.yml`:
 | `name`, `role` | Name and role on the About page |
 | `avatar` | Portrait path, currently `/assets/img/portrait.webp` |
 | `bio` | About-page paragraphs, rendered as Markdown |
-| `research_interests` | Research interests, labels, and descriptions on the publications page |
+| `research_interests` | Research interests, labels, descriptions, and optional verified project/demo links |
 | `education`, `awards` | Education and awards on the About page |
 | `research_experience` | Institutional research and internship appointments on the homepage and About page |
 | `experiences` | Retained project summaries; institutional appointments belong in `research_experience` |
@@ -106,7 +106,11 @@ When replacing media, update `image`, `image_alt`, and the English `image_captio
 
 ## Research page and lab demonstrations
 
-`_pages/publications.html` retains `/publications/` and the `/papers/` compatibility link. It leads with two personal project examples (monocular hand control and the quadruped), using two large media columns on desktop and one on mobile. The five verified interests from `_data/profile.yml` use native expandable descriptions. A separate PAIRS Lab demonstration section and the BibTeX publication list follow. The screenshot and hardware-video labels distinguish the evidence types. `assets/css/research.css` is loaded only on this page. Preserve `#research-projects`, `#research-interests`, `#lab-demos`, and `#publications`. An empty bibliography stays empty; lab demonstrations are not added as personal publications.
+`_pages/publications.html` retains `/publications/` and the `/papers/` compatibility link. It leads with two personal project examples (monocular hand control and the quadruped), using two large media columns on desktop and one on mobile. The five verified interests from `_data/profile.yml` appear as a research map, with every description visible. A separate PAIRS Lab demonstration section and the BibTeX publication list follow. The screenshot and hardware-video labels distinguish the evidence types. `assets/css/research.css` and `assets/js/research-map.js` are loaded only on this page. Preserve `#research-projects`, `#research-interests`, `#lab-demos`, and `#publications`. An empty bibliography stays empty; lab demonstrations are not added as personal publications.
+
+`_includes/research-map.liquid` places the five interests around a Robotics hub on desktop and along a vertical branch on mobile. Hover or keyboard focus highlights a connection; activating a title selects that branch, activating it again clears selection, and the Robotics button resets the map. Descriptions and resource links never collapse. SVG connections are decorative, adapt to the actual node dimensions, and do not replace the headings or text. Without JavaScript, the blocks and links stay readable while the optional selection buttons remain disabled. Printed output uses simple blocks without the hub or connecting lines.
+
+Each interest may have `links` with a `title` and local `url`. Only associate work supported by its existing description. The current force-aware robot learning interest intentionally has no project link: mechanical force distribution alone does not establish force-aware learning. Lab links retain PAIRS Lab attribution and target the demo article IDs (`#wrist-sensing`, `#block-stacking`) so the video appears at the destination.
 
 The two lab demonstrations are configured in `_data/lab_demos.yml`: wrist-worn muscle-activity sensing and sequential block stacking. Their descriptions, posters, video URLs, ongoing-prototype status, and source anchors were checked against [PAIRS Lab Research](https://pairslab.github.io/research/) on November 16, 2026. The videos and posters remain hosted by PAIRS Lab; no media was copied into this repository. This is a lab-level showcase, not a claim of personal authorship or a verified publication.
 

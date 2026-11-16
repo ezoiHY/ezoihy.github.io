@@ -1,5 +1,5 @@
 {% assign demo = include.demo %}
-<article class="lab-demo" aria-labelledby="{{ demo.id }}-title">
+<article class="lab-demo" id="{{ demo.id }}" aria-labelledby="{{ demo.id }}-title">
   <div class="lab-demo-media">
     <img class="lab-demo-poster" src="{{ demo.poster | escape }}" alt="" loading="lazy" hidden>
     <video data-lab-demo controls playsinline muted loop preload="none" poster="{{ demo.poster | escape }}" aria-labelledby="{{ demo.id }}-title" aria-describedby="{{ demo.id }}-description">

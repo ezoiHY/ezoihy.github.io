@@ -22,16 +22,7 @@ description: Yu Han (Harry)'s research interests and robotics projects, with sep
   </section>
   <section class="research-section" aria-labelledby="research-interests">
     <h2 id="research-interests">Research interests</h2>
-    <ul class="research-interest-disclosures">
-      {% for interest in site.data.profile.research_interests %}
-        <li>
-          <details class="research-interest">
-            <summary>{{ interest.title }}</summary>
-            <p>{{ interest.description }}</p>
-          </details>
-        </li>
-      {% endfor %}
-    </ul>
+    {% include research-map.liquid %}
   </section>
   <section aria-labelledby="lab-demos">
     <h2 id="lab-demos">PAIRS Lab demonstrations</h2>

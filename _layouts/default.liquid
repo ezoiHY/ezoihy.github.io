@@ -22,7 +22,7 @@
     <script>try{const r=document.documentElement,t=localStorage.getItem('harry-theme');r.dataset.theme=(t==='light'||t==='dark')?t:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.background=localStorage.getItem('harry-background')==='solid'?'solid':'wallpaper';}catch(e){}</script>
     <script src="{{ '/assets/js/wallpaper.js' | relative_url }}" defer></script>
     <link rel="stylesheet" href="{{ '/assets/css/studio.css' | relative_url }}">
-    {% if page.url == '/publications/' %}<link rel="stylesheet" href="{{ '/assets/css/research.css' | relative_url }}">{% endif %}
+    {% if page.url == '/publications/' %}<link rel="stylesheet" href="{{ '/assets/css/research.css' | relative_url }}"><script src="{{ '/assets/js/research-map.js' | relative_url }}" defer></script>{% endif %}
     <noscript><style>.header-tools,.filter-bar,.print-cv,[data-copy]{display:none}@media(max-width:760px){.site-header{flex-wrap:wrap}.desktop-nav{display:flex;flex-wrap:wrap;width:100%;order:2}.desktop-nav a{min-height:44px}}</style></noscript>
     <script src="{{ '/assets/js/studio.js' | relative_url }}" defer></script>
     <script src="{{ '/assets/js/project-media.js' | relative_url }}" defer></script>

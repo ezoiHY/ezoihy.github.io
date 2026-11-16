@@ -8,7 +8,7 @@ The homepage has four independent glass panels: the concise profile, Selected pr
 
 Projects supports All / Robotics / Software, local keyword filtering, and Cards / List layouts. `area`, `q`, and `view` URL parameters make the selection shareable and preserve it through project details, continuation links, and return navigation. Project pages offer an image viewer with keyboard navigation, captions, original-size inspection, and ordinary original-image links without JavaScript. Longer descriptions receive a section outline.
 
-The Research page leads with two large personal project demonstrations, followed by expandable research interests, separately attributed PAIRS Lab demonstrations, and the publication list. Lab demo metadata lives in `_data/lab_demos.yml`; its videos remain hosted by the lab, with native playback controls and source links.
+The Research page leads with two large personal project demonstrations, followed by a research-interest map, separately attributed PAIRS Lab demonstrations, and the publication list. The five map nodes keep their descriptions visible, highlight branches on selection, and link to relevant existing work. Lab demo metadata lives in `_data/lab_demos.yml`; its videos remain hosted by the lab, with the shared Play/Pause preview button and source links. Native video controls remain the no-JavaScript fallback.
 
 On November 16, 2026, the owner requested muted automatic looping for these two lab demos, replacing their earlier explicit-play-only behavior. With JavaScript, each starts when at least 10% visible and the page is visible, and both may play together. They pause offscreen or when the page is hidden; a visitor's explicit pause persists until manual playback. Reduced motion disables automatic playback, and a Play demo button remains available if the browser blocks autoplay. See [content maintenance](docs/CONTENT.md#research-page-and-lab-demonstrations).
 
@@ -59,6 +59,7 @@ Optional browser regression checks require a locally installed Playwright packag
 | `assets/js/studio.js` | Theme, background preference, search, and other controls |
 | `assets/js/project-viewer.js`, `assets/css/project-viewer.css` | Detail-page image viewing and long-description outlines |
 | `assets/css/research.css` | Research-page demonstration and interests layout |
+| `assets/js/research-map.js` | Research-map connections, focus and selection |
 | `assets/js/wallpaper.js` | Visitor-local clock schedule, wallpaper loading, and frame changes |
 | `assets/js/liquid-glass.js` | Historical lens implementation; not loaded by the site |
 | `assets/js/glass-wallpaper.js` | Historical WebGL adapter; not loaded by the site |
