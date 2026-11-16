@@ -73,24 +73,32 @@
     let loadTimeout = null;
     let automaticPauses = 0;
     let blocked = false;
-    const playLabel = button.getAttribute('aria-label') || 'Play demo';
+    const title = video.closest('.lab-demo')?.querySelector('h3')?.textContent.trim() || 'demonstration';
     const message = video.closest('.lab-demo')?.querySelector('.lab-demo-error');
     const fallbackMessage = message?.textContent || 'Preview unavailable. Watch the demonstration at the source below.';
     // null follows automatic playback; true/false preserve explicit user intent.
     const state = { video, visible: !canObserve, intent: null };
     video.muted = true;
+    // Keep native controls as the no-script fallback; enhanced demos share the
+    // same persistent preview button as personal project videos.
+    video.controls = false;
+    video.tabIndex = -1;
     media.classList.add('is-enhanced');
     poster.hidden = false;
     button.hidden = false;
     video.inert = true;
+    const label = () => {
+      button.textContent = failed ? 'Retry preview' : pending ? 'Cancel loading' : video.paused ? 'Play preview' : 'Pause preview';
+      button.setAttribute('aria-label', `${button.textContent}: ${title}`);
+      if (pending) button.setAttribute('aria-busy', 'true');
+      else button.removeAttribute('aria-busy');
+    };
     const resetButton = () => {
       playRequest++;
       clearTimeout(loadTimeout);
       loadTimeout = null;
       pending = false;
-      button.removeAttribute('aria-busy');
-      button.textContent = failed ? 'Retry demo' : 'Play demo';
-      button.setAttribute('aria-label', failed ? playLabel.replace(/^Play /, 'Retry ') : playLabel);
+      label();
     };
     const showError = (text = fallbackMessage) => {
       failed = true;
@@ -105,15 +113,14 @@
       // Invalidate pending work before pause() can reject its play promise.
       resetButton();
       if (!video.paused) { automaticPauses++; video.pause(); }
+      label();
     };
     const play = () => {
       if (pending || !video.paused) return;
       if (failed) { failed = false; video.load(); }
       const request = ++playRequest;
       pending = true;
-      button.textContent = 'Cancel loading';
-      button.setAttribute('aria-label', playLabel.replace(/^Play /, 'Cancel loading '));
-      button.setAttribute('aria-busy', 'true');
+      label();
       loadTimeout = setTimeout(() => {
         if (request === playRequest && pending) showError('This demonstration took too long to load. Retry or watch it at the source below.');
       }, 20000);
@@ -131,7 +138,7 @@
     };
     state.pause = pause;
     button.addEventListener('click', () => {
-      if (pending) { state.intent = false; pause(); return; }
+      if (pending || !video.paused) { state.intent = false; pause(); return; }
       state.intent = true;
       blocked = false;
       if (allowed()) play();
@@ -146,16 +153,15 @@
     video.addEventListener('pause', () => {
       if (automaticPauses) automaticPauses--;
       else if (video.paused) { state.intent = false; resetButton(); }
+      label();
     });
     video.addEventListener('playing', () => {
       if (failed || video.paused || !allowed()) { pause(); return; }
-      const transferFocus = state.intent === true && document.activeElement === button;
       failed = false;
       resetButton();
       if (message) message.hidden = true;
       video.inert = false;
       media.classList.add('is-ready');
-      if (transferFocus) { video.tabIndex = 0; video.focus({ preventScroll: true }); }
     });
     video.addEventListener('error', () => showError());
     video.querySelector('source')?.addEventListener('error', () => showError());
