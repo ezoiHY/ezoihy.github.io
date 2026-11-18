@@ -101,12 +101,29 @@
   const backgroundButton = document.querySelector('.background-toggle');
   const wallpaperDialog = document.querySelector('#wallpaper-dialog');
   const wallpaperEnabled = document.querySelector('#wallpaper-enabled');
+  const wallpaperMotion = document.querySelector('#wallpaper-motion');
+  const motionHint = document.querySelector('#wallpaper-motion-hint');
+  const staticScenery = window.matchMedia('(prefers-reduced-motion: reduce), (prefers-contrast: more), (forced-colors: active), (prefers-reduced-transparency: reduce)');
+  let sceneryRequested = root.dataset.wallpaperMotion !== 'off';
   const wallpaperAuto = document.querySelector('#wallpaper-auto');
   const wallpaperTime = document.querySelector('#wallpaper-time');
   const wallpaperSlider = document.querySelector('#wallpaper-time-slider');
   const formatTime = minute => `${String(Math.floor(minute / 60)).padStart(2, '0')}:${String(minute % 60).padStart(2, '0')}`;
   const localTime = () => { const now = new Date(); return formatTime(now.getHours() * 60 + now.getMinutes()); };
   const currentWallpaperTime = () => root.dataset.wallpaperTime === 'auto' ? localTime() : root.dataset.wallpaperTime || localTime();
+  function syncScenery() {
+    const hidden = root.dataset.background === 'solid';
+    const available = !hidden && !staticScenery.matches;
+    const active = available && sceneryRequested;
+    root.dataset.wallpaperMotion = active ? 'on' : 'off';
+    if (!wallpaperMotion || !motionHint) return;
+    wallpaperMotion.checked = active;
+    wallpaperMotion.disabled = !available;
+    motionHint.hidden = available;
+    motionHint.textContent = available ? '' : hidden
+      ? 'Turn on the wallpaper to animate the scenery.'
+      : 'Your display preferences keep the scenery still.';
+  }
   function updateBackgroundUI() {
     const enabled = root.dataset.background !== 'solid';
     const automatic = !root.dataset.wallpaperTime || root.dataset.wallpaperTime === 'auto';
@@ -116,6 +133,7 @@
     backgroundButton?.setAttribute('title', automatic ? 'Wallpaper and time · Automatic' : `Wallpaper and time · ${time}`);
     if (!wallpaperDialog) return;
     wallpaperEnabled.checked = enabled;
+    syncScenery();
     wallpaperAuto.checked = automatic;
     document.querySelector('#wallpaper-time-controls').disabled = !enabled;
     wallpaperTime.value = time;
@@ -149,6 +167,17 @@
     document.body.classList.add('wallpaper-settings-open');
   });
   wallpaperEnabled?.addEventListener('change', () => setBackground(wallpaperEnabled.checked));
+  wallpaperMotion?.addEventListener('change', () => {
+    sceneryRequested = wallpaperMotion.checked;
+    try { localStorage.setItem('harry-wallpaper-motion', sceneryRequested ? 'on' : 'off'); } catch { /* Local choice still applies. */ }
+    syncScenery();
+  });
+  staticScenery.addEventListener('change', syncScenery);
+  window.addEventListener('storage', event => {
+    if (event.key !== 'harry-wallpaper-motion' && event.key !== null) return;
+    sceneryRequested = event.newValue !== 'off';
+    syncScenery();
+  });
   wallpaperAuto?.addEventListener('change', () => setWallpaperTime(wallpaperAuto.checked ? 'auto' : currentWallpaperTime()));
   wallpaperTime?.addEventListener('change', () => setWallpaperTime(wallpaperTime.value));
   wallpaperSlider?.addEventListener('input', () => setWallpaperTime(formatTime(Number(wallpaperSlider.value))));
@@ -160,9 +189,18 @@
     const rect = wallpaperDialog.getBoundingClientRect();
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeWallpaper();
   });
-  const syncVisibility = () => { root.dataset.pageVisible = String(!document.hidden); };
+  function syncVisibility() {
+    root.dataset.pageVisible = String(!document.hidden);
+  }
   syncVisibility();
   document.addEventListener('visibilitychange', syncVisibility);
+  window.addEventListener('pageshow', event => {
+    if (!event.persisted) return;
+    // A cached document may have missed preference changes on the next page.
+    try { sceneryRequested = localStorage.getItem('harry-wallpaper-motion') !== 'off'; } catch { /* Keep the local choice. */ }
+    syncScenery();
+    syncVisibility();
+  });
   function currentTheme() { return root.dataset.theme || (colorScheme.matches ? 'dark' : 'light'); }
   function updateThemeUI() {
     const dark = currentTheme() === 'dark';

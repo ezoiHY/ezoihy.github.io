@@ -23,11 +23,62 @@
   .document-panel { padding-inline:var(--page-gutter); }
   .document-panel,.home-page.shell { background:var(--reading-surface,var(--surface)); border:1px solid var(--line); border-radius:22px; box-shadow:0 12px 44px #10243a14; }
   :root[data-background] .home-page .glass-panel { background:transparent; box-shadow:none; border:0; border-radius:0; }
+  :root[data-background] .home-page > .profile-section { border-start-start-radius:inherit; border-start-end-radius:inherit; }
   .home-page > .home-section { padding-inline:var(--page-gutter); }
   .home-page > .home-section:last-child { padding-bottom:var(--page-gutter); }
   .document-panel .page-heading h1 { font-size:clamp(2.3rem,5.2vw,3.65rem); font-weight:620; line-height:1.04; letter-spacing:-.055em; text-wrap:balance; }
   .document-panel .page-heading > p { max-width:64ch; }
   .document-panel .breadcrumbs { margin-bottom:clamp(22px,3.4vw,37px); }
+}
+/* The photograph and light move on separate layers. Copy and portrait stay on the page. */
+.wallpaper-scene { position:absolute; inset:0; }
+@media screen and (prefers-reduced-motion:no-preference) {
+  :root { --coast-light:255 236 201; --coast-reflection:119 175 208; }
+  :root:is([data-wallpaper-period="dawn"],[data-wallpaper-period="sunrise"],[data-wallpaper-period="sunset"]) {
+    --coast-light:255 205 158; --coast-reflection:218 165 135;
+  }
+  :root:is([data-wallpaper-period="dusk"],[data-wallpaper-period="night"]) {
+    --coast-light:169 193 234; --coast-reflection:127 153 203;
+  }
+  :root[data-wallpaper-motion="off"], :root[data-page-visible="false"] { --scenery-play:paused; }
+  :where([data-background="wallpaper"][data-wallpaper-motion]) .wallpaper-scene {
+    animation:coastal-pan 23s ease-in-out -8s infinite alternate;
+    animation-play-state:var(--scenery-play,running);
+  }
+  :where([data-background="wallpaper"][data-wallpaper-motion]) .wallpaper-scene::after {
+    content:""; position:absolute; inset:-8%; pointer-events:none;
+    background:
+      radial-gradient(ellipse 42% 34% at 22% 40%,rgb(var(--coast-light) / .44),transparent 85%),
+      radial-gradient(ellipse 34% 21% at 86% 55%,rgb(var(--coast-light) / .28),transparent 90%);
+    animation:coastal-light 13s ease-in-out -4s infinite alternate;
+    animation-play-state:var(--scenery-play,running);
+  }
+  :where([data-background="wallpaper"][data-wallpaper-motion]) .home-page .profile-section {
+    isolation:isolate; overflow:clip;
+  }
+  :where([data-background="wallpaper"][data-wallpaper-motion]) .home-page .profile-section::before {
+    content:""; position:absolute; z-index:-1; pointer-events:none;
+    inset:0 -6% 0 0;
+    background:radial-gradient(ellipse 62% 98% at 84% 18%,rgb(var(--coast-reflection) / .26),transparent 85%);
+    animation:coastal-reflection 13s ease-in-out -4s infinite alternate;
+    animation-play-state:var(--scenery-play,running);
+  }
+  @keyframes coastal-pan {
+    from { transform:translate(-1.1%,.55%) scale(1.055); }
+    to { transform:translate(1.25%,-.7%) scale(1.085); }
+  }
+  @keyframes coastal-light {
+    from { transform:translate(-4%,-1%); opacity:.36; }
+    to { transform:translate(5%,2%); opacity:.85; }
+  }
+  @keyframes coastal-reflection {
+    from { transform:translateX(-3%); opacity:.25; }
+    to { transform:translateX(3%); opacity:.85; }
+  }
+}
+@media (prefers-contrast:more), (prefers-reduced-transparency:reduce), (forced-colors:active) {
+  .wallpaper-scene { animation:none; }
+  :root[data-background] .wallpaper-scene::after, :root[data-background] .home-page .profile-section::before { display:none; animation:none; }
 }
 .brand { display:inline-flex; align-items:center; gap:9px; font-size:18px; font-weight:400; }
 .brand-sign { width:30px; height:30px; flex:none; border-radius:9px; }

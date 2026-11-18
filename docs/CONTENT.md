@@ -199,6 +199,8 @@ Commit the update to a review branch after validation. Deployment instructions a
 
 Keep the 930px document reading area, system fonts, ordinary headings, and native links and inputs. The landscape wallpaper remains the default, with solid mode available in settings. The wallpaper uses responsive WebP derivatives of the original Big Sur scenes, with the visitor's saved local-time or manual selection. `assets/js/wallpaper.js` loads only the selected image; `studio.js` owns settings, theme, menu, search, and filters.
 
+The ambient pan, coastal light, and homepage reflection are defined in `assets/css/portfolio.css`. The wallpaper settings store the visitor’s animation preference in `harry-wallpaper-motion`. Background tabs pause these animations. Reduced motion, reduced transparency, increased contrast, forced colors, and solid backgrounds use still scenery.
+
 Reading panels use near-opaque theme surfaces over photography. Only the header/footer have a CSS backdrop blur. Do not reconnect the historical WebGL, fixed-photo copies, or optical control modules without measuring browser scrolling and transfer cost. Their source and licenses remain retained; [UPSTREAM.md](../UPSTREAM.md) marks their documentation as historical.
 
 Use responsive portrait sources and thumbnail derivatives instead of shipping the full source to small previews. Original project images and provenance remain intact. `scripts/optimize_media.py` generates resized WebP copies with Pillow as an optional authoring dependency, not a Jekyll build dependency. Update dimensions with the actual output sizes. No generated derivative changes a project's evidence or image captions.

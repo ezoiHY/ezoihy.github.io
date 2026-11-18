@@ -127,6 +127,105 @@ async function homePreview(page) {
   await page.waitForFunction(() => document.querySelector('.home-jumps [aria-current]')?.hash === '#software-title');
   await page.evaluate(() => window.scrollTo(0, 0));
 }
+function readWallpaperFrame() {
+  const scene = document.querySelector('.wallpaper-scene');
+  const hero = document.querySelector('.home-page .profile-section');
+  const frame = (element, pseudo) => {
+    const style = getComputedStyle(element, pseudo);
+    return [style.transform, style.opacity, style.backgroundPosition];
+  };
+  return {
+    scenery: frame(scene),
+    sceneryLight: frame(scene, '::after'),
+    ...(hero && { portraitLight: frame(hero, '::before') }),
+  };
+}
+async function sampleWallpaper(page, moving, label) {
+  // CSS pauses take effect on the next rendering update in WebKit and Blink.
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const before = await page.evaluate(readWallpaperFrame);
+  // Real elapsed time samples both composited transforms and animated light.
+  await page.waitForTimeout(moving ? 1100 : 450);
+  const after = await page.evaluate(readWallpaperFrame);
+  for (const layer of Object.keys(before)) {
+    if (moving) assert.notDeepEqual(after[layer], before[layer], `${label}: ${layer} must move`);
+    else assert.deepEqual(after[layer], before[layer], `${label}: ${layer} must stay still`);
+  }
+  return { before, after };
+}
+async function wallpaperMotion(page) {
+  const root = page.locator('html');
+  const toggle = page.locator('#wallpaper-motion');
+  const openSettings = () => page.locator('.background-toggle').click();
+  const closeSettings = async () => {
+    await page.locator('.wallpaper-close').click();
+    await page.locator('#wallpaper-dialog').waitFor({ state: 'hidden' });
+  };
+  const contentBoxes = () => page.locator('.profile-portrait img, #profile-name, .biography p').evaluateAll(elements =>
+    elements.map(element => {
+      const { x, y, width, height } = element.getBoundingClientRect();
+      return { x, y, width, height };
+    }));
+
+  assert.equal(await root.getAttribute('data-wallpaper-motion'), 'on');
+  const boxes = await contentBoxes();
+  assert.equal(boxes.length, 3);
+  const movement = await sampleWallpaper(page, true, 'Default wallpaper');
+  assert.deepEqual(await contentBoxes(), boxes, 'Portrait, name, and biography must stay in place');
+
+  await openSettings();
+  assert.ok(await toggle.isChecked());
+  await toggle.uncheck();
+  await closeSettings();
+  assert.equal(await root.getAttribute('data-wallpaper-motion'), 'off');
+  await sampleWallpaper(page, false, 'Motion switched off');
+  await page.reload({ waitUntil: 'networkidle' });
+  assert.equal(await root.getAttribute('data-wallpaper-motion'), 'off');
+  await page.locator('.profile-portrait').click();
+  await page.waitForURL(origin + '/about/');
+  await sampleWallpaper(page, false, 'Saved preference on About');
+  await openSettings();
+  assert.equal(await toggle.isChecked(), false);
+  await toggle.check();
+  await closeSettings();
+  await sampleWallpaper(page, true, 'Motion switched on from About');
+  await page.goto(origin, { waitUntil: 'networkidle' });
+  assert.equal(await root.getAttribute('data-wallpaper-motion'), 'on');
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  assert.ok(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches));
+  await sampleWallpaper(page, false, 'Reduced motion');
+  await page.emulateMedia({ reducedMotion: 'no-preference', contrast: 'more' });
+  assert.ok(await page.evaluate(() => matchMedia('(prefers-contrast: more)').matches));
+  await sampleWallpaper(page, false, 'High contrast');
+  await page.emulateMedia({ contrast: 'no-preference' });
+  await openSettings();
+  await page.locator('#wallpaper-enabled').uncheck();
+  await closeSettings();
+  assert.equal(await root.getAttribute('data-background'), 'solid');
+  await sampleWallpaper(page, false, 'Solid background');
+  await openSettings();
+  await page.locator('#wallpaper-enabled').check();
+  await closeSettings();
+
+  // Headless browsers keep all tabs visible. Exercise the same event and
+  // hidden flag that the browser uses, then restore its native getter.
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', { configurable: true, value: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  try {
+    assert.equal(await root.getAttribute('data-page-visible'), 'false');
+    await sampleWallpaper(page, false, 'Hidden-page event');
+  } finally {
+    await page.evaluate(() => {
+      delete document.hidden;
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+  }
+  await sampleWallpaper(page, true, 'Visible page resumed');
+  return movement;
+}
 async function wallpaper(page, name) {
   await page.locator('.background-toggle').click();
   await page.locator('#wallpaper-enabled').uncheck();
@@ -270,6 +369,7 @@ async function projects(page) {
         assert.equal(await page.locator('.menu-toggle').getAttribute('aria-expanded'), 'false');
         await page.goto(origin, { waitUntil: 'networkidle' });
       });
+      if (enabled('wallpaper-motion')) await check(`${name}: wallpaper motion and preferences`, () => wallpaperMotion(page));
       if (enabled('wallpaper')) await check(`${name}: wallpaper scenes and persistence`, () => wallpaper(page, name));
       if (enabled('projects')) await check(`${name}: project filtering and manual video`, () => projects(page));
       await check(`${name}: no runtime errors`, async () => assert.deepEqual(errors, []));

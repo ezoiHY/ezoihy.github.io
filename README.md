@@ -108,7 +108,7 @@ See GitHub's [custom domain documentation](https://docs.github.com/en/pages/conf
 
 ## Appearance and performance
 
-New visitors see the original Big Sur landscape behind a light/dark document theme. The toolbar can switch to a solid background or preview a time of day; explicit saved preferences remain respected. Photography stays behind near-opaque reading surfaces, so the theme and text contrast remain consistent. Header and footer use a small CSS blur only in wallpaper mode. No optical engine, GPU canvas, scroll sampler, or duplicated wallpaper is loaded.
+New visitors see the original Big Sur landscape behind a light/dark document theme. The landscape pans slowly while soft light moves over the coast. Light on the homepage follows the selected time of day. The wallpaper panel includes an **Animate scenery** switch and remembers the choice across pages. The toolbar also supports a solid background and manual time previews. Photography stays behind near-opaque reading surfaces, so the theme and text contrast remain consistent. Header and footer use a small CSS blur only in wallpaper mode. No optical engine, GPU canvas, scroll sampler, or duplicated wallpaper is loaded.
 
 `assets/js/wallpaper.js` loads only the selected frame, using a 960px WebP on mobile or 1600px on desktop. It is deferred and requests decorative images at low priority. There is no next-scene prefetch. The minute timer pauses while hidden, in solid mode, or during a manual time selection. CSS owns the short crossfade; reduced motion disables it. Reduced transparency or increased contrast makes every reading surface opaque.
 
