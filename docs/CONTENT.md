@@ -20,7 +20,7 @@ Edit `_data/profile.yml`:
 | `toolkit` | Retained verified background data; not displayed as a separate skills section |
 | `email`, `github` | Contact details and links |
 
-The homepage portrait, introduction, and SCUT and PAIRS Lab role links are defined in `_pages/home.html`. Its `hardware` front matter selects project URLs and short, verified captions for the photograph selector. The full photographs and alternative text come from the corresponding project records. The first available photograph is shown without JavaScript. The About page renders the full `profile.bio`; both pages use `profile.research_experience`. Keep names, dates, and contributions aligned with the approved records. Affiliation logo sources are recorded in `assets/img/affiliations/README.md`.
+The homepage portrait, introduction, and SCUT and PAIRS Lab role links are defined in `_pages/home.html`. The right-hand portrait uses the image variants from `_data/profile.yml` and links to About. The About page renders the full `profile.bio`; both pages use `profile.research_experience`. Keep names, dates, and contributions aligned with the approved records. Affiliation logo sources are recorded in `assets/img/affiliations/README.md`.
 
 The homepage has a compact sticky section navigator for Projects, Software, Experience, and Writing. Keep its targets aligned with the real section IDs. Main navigation is configured in `_data/navigation.yml`; Home points to `/` and About points to `/about/`. The brand also links home. Every interior page has a visible Home breadcrumb and a Back to home footer link. Project and post breadcrumbs link to their parent collection and restore the project filters or blog category that led to the detail page.
 

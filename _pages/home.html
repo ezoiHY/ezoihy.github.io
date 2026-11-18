@@ -4,22 +4,16 @@ title: Yu Han (Harry)
 permalink: /
 page_class: home
 searchable: true
-hardware:
-  - url: /projects/underactuated-hand/
-    caption: Single actuator · 304 g
-  - url: /projects/robotic-fish/
-    caption: Underwater vision · YOLOv8
 description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and research assistant at PAIRS Lab, HKUST(GZ). Robotics projects, research tools, and CV.
 ---
 {% assign profile = site.data.profile %}
 <article class="home-page shell">
   <section class="profile-section glass-panel" aria-labelledby="profile-name">
     <div class="profile-intro">
-      <div class="profile-identity">
-        <a class="portrait-link" href="{{ '/about/' | relative_url }}" aria-label="About {{ profile.name | escape }}"><img src="{{ profile.avatar_small | default: profile.avatar | relative_url }}" width="56" height="56" alt="Yu Han (Harry)"></a>
-        <span class="profile-location">{% include icon.liquid name='pin' %}{{ profile.location | escape }}</span>
-      </div>
-      <header class="profile-heading"><h1 id="profile-name">Yu Han <span>(Harry)</span></h1></header>
+      <header class="profile-heading">
+        <p class="profile-location">{% include icon.liquid name='pin' %}{{ profile.location | escape }}</p>
+        <h1 id="profile-name">Yu Han <span>(Harry)</span></h1>
+      </header>
       <div class="biography">
         <p>I design adaptive robotic hands and work on how robots see and move, from retargeting hand gestures to tracking divers underwater.</p>
       </div>
@@ -32,7 +26,12 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
         <a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>{% include icon.liquid name='download' %} Download CV</a>
       </nav>
     </div>
-    {% include hardware-showcase.liquid %}
+    <a class="profile-portrait" href="{{ '/about/' | relative_url }}" aria-label="About {{ profile.name | escape }}">
+      <img src="{{ profile.avatar_small | default: profile.avatar | relative_url }}"
+           srcset="{{ profile.avatar_small | relative_url }} 480w, {{ profile.avatar_large | relative_url }} 800w"
+           sizes="(max-width: 680px) 23vw, (max-width: 1050px) 21vw, 224px"
+           width="1206" height="1641" fetchpriority="high" alt="Portrait of {{ profile.name | escape }}">
+    </a>
   </section>
 
   <nav class="home-jumps" aria-label="On this page"><span aria-hidden="true">On this page</span><a href="#projects-title">Projects</a><a href="#software-title">Software</a><a href="#experience-title">Experience</a><a href="#posts-title">Writing</a></nav>

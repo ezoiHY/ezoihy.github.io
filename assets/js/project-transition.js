@@ -23,7 +23,7 @@
     const focused = frames.find(item => item.contains(document.activeElement));
     if (focused) frames.unshift(focused);
     for (const frame of frames) {
-      const image = frame.querySelector('.project-visual img, .selected-project-image img, .hardware-image img, .archive-hardware-link img');
+      const image = frame.querySelector('.project-visual img, .selected-project-image img, .archive-hardware-link img');
       if (visible(image)) return image;
     }
     return null;

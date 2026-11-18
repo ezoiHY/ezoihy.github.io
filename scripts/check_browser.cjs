@@ -72,17 +72,41 @@ async function search(page) {
   await page.waitForFunction(() => document.querySelector('#search-dialog').open);
   await escapeSearch(page);
 }
+async function homePortrait(page) {
+  const hero = page.locator('.profile-section');
+  const portrait = hero.locator('.profile-portrait img');
+  assert.equal(await portrait.count(), 1);
+  await portrait.evaluate(img => img.decode());
+  const identity = await portrait.evaluate(img => ({
+    file: new URL(img.currentSrc).pathname.split('/').pop(),
+    alt: img.alt,
+    link: img.closest('a')?.pathname,
+  }));
+  assert.match(identity.file, /^portrait(?:-\d+)?\.webp$/);
+  assert.match(identity.alt, /Yu Han/i);
+  assert.equal(identity.link, '/about/');
+  const portraitCount = await hero.locator('img').evaluateAll(images =>
+    images.filter(img => /\/portrait(?:-\d+)?\.webp$/.test(new URL(img.currentSrc || img.src).pathname)).length);
+  assert.equal(portraitCount, 1, 'The hero contains a single portrait');
+
+  const photograph = await portrait.boundingBox();
+  const name = await hero.locator('h1').evaluate(heading => {
+    const range = document.createRange();
+    range.selectNodeContents(heading);
+    const {right, top, bottom} = range.getBoundingClientRect();
+    return {right, top, bottom};
+  });
+  assert.ok(photograph && photograph.width > 0 && photograph.height > 0);
+  assert.ok(photograph.x >= name.right - 1, 'Portrait must sit to the right of the name');
+  assert.ok(photograph.y < name.bottom && photograph.y + photograph.height > name.top,
+    'Portrait and name must share a row');
+
+  await portrait.click();
+  await page.waitForURL(origin + '/about/');
+  await page.goBack();
+  await page.waitForURL(origin + '/');
+}
 async function homePreview(page) {
-  const choices = page.locator('.hardware-picker button');
-  const plates = page.locator('.hardware-plate');
-  assert.equal(await plates.locator('.hardware-title:visible').count(), 1);
-  for (const index of [1, 0]) {
-    const button = choices.nth(index);
-    await button.press('Enter');
-    const visible = plates.locator('.hardware-title:visible');
-    assert.equal(await button.getAttribute('aria-pressed'), 'true');
-    assert.equal(await visible.getAttribute('href'), await plates.nth(index).locator('.hardware-image').getAttribute('href'));
-  }
   const rows = page.locator('.selected-project:has([data-quick-trigger])');
   const titles = await rows.locator('.selected-project-title').allTextContents();
   const trigger = rows.first().locator('[data-quick-trigger]');
@@ -225,6 +249,7 @@ async function projects(page) {
       });
       await page.evaluate(() => scrollTo(0, 0));
       if (enabled('search')) await check(`${name}: search keyboard and empty state`, () => search(page));
+      if (enabled('portrait')) await check(`${name}: right-hand portrait and About link`, () => homePortrait(page));
       if (enabled('quicklook')) await check(`${name}: project quick look and section navigation`, () => homePreview(page));
       if (enabled('theme')) await check(`${name}: theme toggle and persistence`, async () => {
         await page.locator('.theme-toggle').click();

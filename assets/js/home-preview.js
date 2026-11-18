@@ -21,30 +21,6 @@
   window.addEventListener('pageshow', scheduleUpdate);
   markSection();
 
-  const picker = document.querySelector('.hardware-picker');
-  if (picker) {
-    const choices = [...picker.querySelectorAll('button[aria-controls]')];
-    function selectPhotograph(selected, animate) {
-      for (const button of choices) {
-        const active = button === selected;
-        const plate = document.getElementById(button.getAttribute('aria-controls'));
-        button.setAttribute('aria-pressed', String(active));
-        plate.hidden = !active;
-        plate.classList.toggle('is-revealing', animate && active);
-      }
-    }
-    const restored = choices.find(button => document.getElementById(button.getAttribute('aria-controls')).dataset.projectUrl === history.state?.hardware);
-    if (restored) selectPhotograph(restored, false);
-    picker.hidden = false;
-    picker.addEventListener('click', event => {
-      const button = event.target.closest('button');
-      if (!choices.includes(button) || button.getAttribute('aria-pressed') === 'true') return;
-      selectPhotograph(button, true);
-      const hardware = document.getElementById(button.getAttribute('aria-controls')).dataset.projectUrl;
-      history.replaceState({ ...history.state, hardware }, '');
-    });
-  }
-
   const dialog = document.querySelector('#quick-look');
   if (!dialog || typeof dialog.showModal !== 'function') return;
   const projects = [...document.querySelectorAll('.selected-project')].map(row => ({
