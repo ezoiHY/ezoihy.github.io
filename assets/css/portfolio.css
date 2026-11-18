@@ -30,9 +30,9 @@
   .document-panel .page-heading > p { max-width:64ch; }
   .document-panel .breadcrumbs { margin-bottom:clamp(22px,3.4vw,37px); }
 }
-/* Overscan keeps the shoreline in frame. Two curved reflections move behind the portrait. */
+/* The coast sits behind the page. A viewport-sized pair of reflections travels across each reading surface. */
 .wallpaper-scene { position:absolute; inset:0; }
-.profile-reflections { display:none; }
+.coastal-field { display:none; }
 @media screen and (prefers-reduced-motion:no-preference) {
   :root {
     --coast-light:255 237 190;
@@ -61,35 +61,58 @@
     animation:coastal-light 8s ease-in-out -3s infinite alternate;
     animation-play-state:var(--scenery-play,running);
   }
-  :where([data-background="wallpaper"][data-wallpaper-motion]) .home-page .profile-section {
-    isolation:isolate; overflow:clip;
+  :where([data-background="wallpaper"][data-wallpaper-motion]) :is(.home-page.shell,.document-panel) {
+    position:relative; isolation:isolate;
   }
-  /* A stationary fade protects the text as the bright edges cross the portrait area. */
-  :where([data-background="wallpaper"][data-wallpaper-motion]) .profile-reflections {
-    display:block; position:absolute; inset:0; z-index:-1; pointer-events:none;
-    mask-image:linear-gradient(90deg,transparent 16%,rgb(0 0 0 / .16) 60%,#000 78%);
+  /* Only this decoration clips. Page navigation and reading outlines still stick to the viewport. */
+  :where([data-background="wallpaper"][data-wallpaper-motion]) .coastal-field {
+    display:block; position:absolute; inset:0; z-index:-1; overflow:clip;
+    border-radius:inherit; pointer-events:none;
+    --tide-mask:linear-gradient(105deg,#0009,rgb(0 0 0 / .30) 23%,rgb(0 0 0 / .50) 56%,#000 82%);
+    --tide-height:100svh;
   }
-  .profile-reflections::before,.profile-reflections::after {
-    content:""; position:absolute;
-    inset:-18% -18% -24% 28%;
-    transform-origin:73% 48%;
+  .home-page .coastal-field {
+    --upper-arc:72% 58% at 81% -23%;
+    --upper-edge:var(--ribbon-edge);
   }
-  .profile-reflections::before {
+  .coastal-reflections {
+    position:sticky; top:0; width:100%; height:min(100%,var(--tide-height));
+    overflow:clip; mask-image:var(--tide-mask);
+  }
+  .coastal-reflections::before,.coastal-reflections::after {
+    content:""; position:absolute; inset:-13% -16% -14%;
+    transform-origin:69% 45%;
+  }
+  .coastal-reflections::before {
     background:
-      radial-gradient(ellipse 86% 103% at 74% -26%,
-        transparent 71%,rgb(var(--ribbon-color) / .15) 78%,rgb(var(--ribbon-color) / .61) 85%,
-        rgb(var(--ribbon-edge) / .95) 89%,rgb(var(--ribbon-deep) / .37) 91%,transparent 98%),
-      radial-gradient(ellipse 71% 80% at 85% 45%,rgb(var(--ribbon-color) / .29),transparent 85%);
-    animation:coastal-ribbon 6.5s ease-in-out -2.5s infinite alternate;
+      radial-gradient(ellipse var(--upper-arc,81% 73% at 64% -24%),
+        transparent 67%,rgb(var(--ribbon-color) / .14) 77%,rgb(var(--ribbon-color) / .56) 85%,
+        rgb(var(--upper-edge,var(--ribbon-edge)) / .90) 89%,rgb(var(--ribbon-deep) / .37) 91%,transparent 99%),
+      radial-gradient(ellipse 63% 76% at 7% 138%,
+        transparent 72%,rgb(var(--ribbon-deep) / .20) 83%,rgb(var(--ribbon-color) / .40) 89%,
+        rgb(var(--ribbon-edge) / .56) 91%,transparent 98%);
+    animation:coastal-ribbon 8s ease-in-out -3s infinite alternate;
     animation-play-state:var(--scenery-play,running);
   }
-  .profile-reflections::after {
-    background:radial-gradient(ellipse 90% 115% at 69% 159%,
-      transparent 74%,rgb(var(--ribbon-deep) / .14) 84%,rgb(var(--ribbon-deep) / .47) 90%,
-      rgb(var(--ribbon-edge) / .78) 92%,rgb(var(--ribbon-color) / .32) 95%,transparent 100%);
-    animation:coastal-ripple 8.5s ease-in-out -4.5s infinite alternate;
+  .coastal-reflections::after {
+    background:
+      radial-gradient(ellipse 91% 105% at 83% 137%,
+        transparent 73%,rgb(var(--ribbon-deep) / .18) 82%,rgb(var(--ribbon-deep) / .44) 87%,
+        rgb(var(--ribbon-edge) / .82) 90%,rgb(var(--ribbon-color) / .34) 93%,transparent 100%),
+      radial-gradient(ellipse 65% 68% at 103% 15%,rgb(var(--ribbon-color) / .25),transparent 87%);
+    animation:coastal-ripple 10s ease-in-out -5s infinite alternate;
     animation-play-state:var(--scenery-play,running);
   }
+  .coastal-field--reading {
+    --tide-mask:linear-gradient(100deg,#0009,rgb(0 0 0 / .27) 22%,rgb(0 0 0 / .34) 70%,#000c);
+  }
+  /* Temper the brightest stroke on dark paper, including where long lines reach the right margin. */
+  :root[data-theme="dark"] .coastal-reflections {
+    opacity:.71;
+    --ribbon-edge:78 113 129;
+  }
+  :root[data-theme="dark"]:is([data-wallpaper-period="dawn"],[data-wallpaper-period="sunrise"],[data-wallpaper-period="sunset"]) .coastal-reflections { --ribbon-edge:133 99 95; }
+  :root[data-theme="dark"]:is([data-wallpaper-period="dusk"],[data-wallpaper-period="night"]) .coastal-reflections { --ribbon-edge:98 107 151; }
   @keyframes coastal-pan {
     from { transform:translate(-2.8%,1.05%) scale(1.085); }
     to { transform:translate(2.8%,-1.35%) scale(1.155); }
@@ -107,17 +130,24 @@
     to { transform:translate(-5%,-9%) rotate(-7deg); }
   }
   @media (max-width:680px) {
-    .profile-reflections::before,
-    .profile-reflections::after {
-      inset:-42px -20% auto 5%; height:215px;
-      mask-image:linear-gradient(#000 64%,transparent 100%);
+    .home-page .coastal-field { --upper-arc:71% 50% at 82% -23%; }
+    .coastal-field {
+      --tide-height:88svh;
+      --tide-mask:linear-gradient(100deg,#0008,#0005 30%,#0008 63%,#000e);
     }
+    .coastal-field--reading { --tide-mask:linear-gradient(100deg,#0009,#0004 29%,#0006 73%,#000a); }
+    .coastal-reflections {
+      /* Fade the end of the shorter mobile canvas into the rest of the paper. */
+      mask-image:var(--tide-mask),linear-gradient(#000 70%,transparent);
+      mask-composite:intersect;
+    }
+    .coastal-reflections::before,.coastal-reflections::after { inset:-8% -34% -12% -22%; }
   }
 }
 @media (prefers-contrast:more), (prefers-reduced-transparency:reduce), (forced-colors:active) {
   .wallpaper-scene { animation:none; }
   :root[data-background] .wallpaper-scene::after,
-  :root[data-background] .profile-reflections { display:none; animation:none; }
+  :root[data-background] .coastal-field { display:none; animation:none; }
 }
 .brand { display:inline-flex; align-items:center; gap:9px; font-size:18px; font-weight:400; }
 .brand-sign { width:30px; height:30px; flex:none; border-radius:9px; }

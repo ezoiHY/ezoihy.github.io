@@ -129,7 +129,7 @@ async function homePreview(page) {
 }
 function readWallpaperFrame() {
   const scene = document.querySelector('.wallpaper-scene');
-  const reflections = document.querySelector('.profile-reflections');
+  const reflections = document.querySelector('.main-shell .coastal-reflections');
   const frame = (element, pseudo) => {
     const style = getComputedStyle(element, pseudo);
     return [style.transform, style.opacity, style.backgroundPosition];
@@ -137,11 +137,48 @@ function readWallpaperFrame() {
   return {
     scenery: frame(scene),
     sceneryLight: frame(scene, '::after'),
-    ...(reflections && {
-      portraitLight: frame(reflections, '::before'),
-      portraitRipple: frame(reflections, '::after'),
-    }),
+    reflectedLight: frame(reflections, '::before'),
+    reflectedRipple: frame(reflections, '::after'),
   };
+}
+function readReflectionCanvas() {
+  const canvas = document.querySelector('.main-shell .coastal-reflections');
+  const paper = document.querySelector('.main-shell :is(.home-page, .document-panel)');
+  const rect = canvas.getBoundingClientRect();
+  const paints = pseudo => {
+    const style = getComputedStyle(canvas, pseudo);
+    return style.display !== 'none' && style.content !== 'none' && style.content !== 'normal' &&
+      style.backgroundImage !== 'none' && style.animationName !== 'none';
+  };
+  return {
+    canvasWidth: rect.width,
+    canvasHeight: rect.height,
+    paperWidth: paper.getBoundingClientRect().width,
+    visibleBands: rect.height > 0 && rect.width > 0 && paints('::before') && paints('::after'),
+    decorative: Boolean(canvas.closest('[aria-hidden="true"]')),
+    pointerEvents: getComputedStyle(canvas).pointerEvents,
+    viewport: innerWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  };
+}
+async function checkScrolledReflections(page) {
+  // Sample a long document after its first screen, then when its footer appears.
+  const canvas = page.locator('.main-shell .coastal-reflections');
+  const bounds = () => canvas.evaluate(element => {
+    const field = element.closest('.coastal-field').getBoundingClientRect();
+    const tile = element.getBoundingClientRect();
+    return { fieldTop: field.top, fieldBottom: field.bottom, top: tile.top, bottom: tile.bottom, height: innerHeight };
+  });
+  await canvas.evaluate(element => {
+    const field = element.closest('.coastal-field').getBoundingClientRect();
+    window.scrollTo({ top: window.scrollY + field.top + (field.height - innerHeight) / 2, behavior: 'instant' });
+  });
+  const middle = await bounds();
+  assert.ok(middle.fieldTop < 0 && middle.fieldBottom > middle.height, 'Reflections must cover the long document');
+  assert.ok(middle.top < middle.height / 2 && middle.bottom > middle.height / 2, 'Reflections must follow the reader');
+  await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+  const end = await bounds();
+  assert.ok(end.fieldBottom <= end.height && end.bottom <= end.fieldBottom + 1, 'Reflections must stop before the footer');
 }
 async function sampleWallpaper(page, moving, label) {
   // CSS pauses take effect on the next rendering update in WebKit and Blink.
@@ -171,7 +208,7 @@ async function wallpaperMotion(page) {
     }));
 
   assert.equal(await root.getAttribute('data-wallpaper-motion'), 'on');
-  assert.equal(await page.locator('.profile-reflections').count(), 1);
+  assert.equal(await page.locator('.main-shell .coastal-reflections').count(), 1);
   const boxes = await contentBoxes();
   assert.equal(boxes.length, 3);
   const movement = await sampleWallpaper(page, true, 'Default wallpaper');
@@ -387,6 +424,7 @@ async function projects(page) {
         await page.locator('[data-project-motion]').scrollIntoViewIfNeeded();
         assert.equal(await page.evaluate(() => performance.getEntriesByType('resource').filter(r => r.name.includes('.mp4')).length), 0);
         assert.equal(await page.locator('.wallpaper-layer').first().evaluate(e => getComputedStyle(e).transitionDuration), '0s');
+        await sampleWallpaper(page, false, 'Reduced motion on Projects');
         assert.equal(await page.locator('canvas').count(), 0);
       } finally { await context.close(); }
     });
@@ -400,10 +438,12 @@ async function projects(page) {
           panel: getComputedStyle(document.querySelector('.profile-section')).backgroundColor,
           color: getComputedStyle(document.querySelector('.biography')).color,
           wallpaper: getComputedStyle(document.querySelector('.desktop-wallpaper')).display,
+          reflectionsVisible: document.querySelector('.coastal-reflections').getClientRects().length > 0,
         }));
         assert.equal(print.panel, 'rgb(255, 255, 255)');
         assert.equal(print.color, 'rgb(17, 17, 17)');
         assert.equal(print.wallpaper, 'none');
+        assert.equal(print.reflectionsVisible, false);
         await page.screenshot({ path: path.join(output, 'dark-print.png') });
         await page.emulateMedia({ media: 'screen', contrast: 'more' });
         const opaqueMaterial = () => ({
@@ -443,6 +483,37 @@ async function projects(page) {
         await page.screenshot({ path: path.join(output, 'no-js.png'), fullPage: true });
       } finally { await context.close(); }
     });
+    if (enabled('layout')) await check('reflection canvas adapts from phone to widescreen', async () => {
+      const context = await browser.newContext();
+      const page = await context.newPage();
+      const result = {};
+      try {
+        for (const route of ['/', '/projects/', '/posts/hello-world/']) {
+          const widths = [390, 768, 1024, 1440, 1920];
+          await page.goto(origin + route, { waitUntil: 'networkidle' });
+          const sizes = [];
+          for (const width of widths) {
+            await page.setViewportSize({ width, height: 900 });
+            const size = await page.evaluate(readReflectionCanvas);
+            assert.ok(size.visibleBands, `${route} at ${width}px: missing reflections`);
+            assert.ok(size.decorative);
+            assert.equal(size.pointerEvents, 'none');
+            assert.ok(size.scrollWidth <= size.viewport, `${route} at ${width}px: horizontal overflow`);
+            assert.ok(size.paperWidth > 0 && size.paperWidth <= size.viewport);
+            sizes.push(size);
+            if (route === '/projects/' && (width === 390 || width === 1440)) await checkScrolledReflections(page);
+          }
+          assert.ok(sizes[1].canvasWidth > sizes[0].canvasWidth, `${route}: canvas must grow from phone to tablet`);
+          assert.ok(sizes[3].canvasWidth > sizes[1].canvasWidth, `${route}: canvas must adapt to desktop`);
+          assert.ok(sizes[4].canvasWidth >= sizes[3].canvasWidth, `${route}: canvas must accommodate wider screens`);
+          if (route === '/projects/') {
+            assert.ok(sizes[0].canvasHeight < sizes[3].canvasHeight, 'Long pages must use a shorter reflection area on phones');
+          }
+          result[route] = sizes;
+        }
+      } finally { await context.close(); }
+      return result;
+    });
     if (enabled('routes')) await check('320px: routes and horizontal overflow', async () => {
       const context = await browser.newContext({ viewport: { width: 320, height: 740 } });
       const page = await context.newPage();
@@ -458,6 +529,10 @@ async function projects(page) {
           result.push({ route, status: response.status(), ...info });
           assert.equal(response.status(), 200, route);
           assert.ok(info.scrollWidth <= info.width, `${route}: horizontal overflow ${info.scrollWidth}/${info.width}`);
+          const canvas = await page.evaluate(readReflectionCanvas);
+          assert.ok(canvas.visibleBands, `${route}: both reflection bands must render at 320px`);
+          assert.ok(canvas.decorative, `${route}: reflections must be hidden from assistive technology`);
+          assert.equal(canvas.pointerEvents, 'none');
         }
         await page.goto(origin, { waitUntil: 'networkidle' });
         await page.screenshot({ path: path.join(output, 'mobile-320.png'), fullPage: true });

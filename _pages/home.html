@@ -8,8 +8,8 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
 ---
 {% assign profile = site.data.profile %}
 <article class="home-page shell">
+  {% include coastal-field.liquid %}
   <section class="profile-section glass-panel" aria-labelledby="profile-name">
-    <div class="profile-reflections" aria-hidden="true"></div>
     <div class="profile-intro">
       <header class="profile-heading">
         <p class="profile-location">{% include icon.liquid name='pin' %}{{ profile.location | escape }}</p>

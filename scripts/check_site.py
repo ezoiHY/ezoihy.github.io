@@ -49,11 +49,21 @@ class Document(HTMLParser):
         self._search_text: list[str] | None = None
         self.has_html = False
         self.has_main = False
+        self.in_main_shell = False
+        self.reflection_count = 0
+        self.main_reflections = 0
 
     def handle_starttag(self, tag, attrs):
         attributes = dict(attrs)
         self.has_html |= tag == "html"
         self.has_main |= tag == "main"
+        classes = (attributes.get("class") or "").split()
+        if tag == "main":
+            self.in_main_shell = "main-shell" in classes
+        if "coastal-reflections" in classes:
+            self.reflection_count += 1
+            if self.in_main_shell:
+                self.main_reflections += 1
         identifier = attributes.get("id")
         if identifier:
             if identifier in self.ids:
@@ -83,6 +93,8 @@ class Document(HTMLParser):
             self._search_text.append(data)
 
     def handle_endtag(self, tag):
+        if tag == "main":
+            self.in_main_shell = False
         if tag == "script" and self._search_text is not None:
             self.search_blocks.append("".join(self._search_text))
             self._search_text = None
@@ -173,6 +185,9 @@ def main() -> int:
         doc = read_document(path)
         if not doc.has_html or not doc.has_main:
             fail(f"{label(path)}: missing full page layout (<html> or <main>)")
+        if doc.reflection_count != 1 or doc.main_reflections != 1:
+            fail(f"{label(path)}: expected one .coastal-reflections layer inside main.main-shell "
+                 f"(found {doc.reflection_count} total, {doc.main_reflections} inside main)")
         if UNRENDERED.search(raw):
             fail(f"{label(path)}: unresolved Liquid template syntax")
         if EXAMPLE_IDENTITY.search(raw):

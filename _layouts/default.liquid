@@ -84,6 +84,7 @@
       <nav id="mobile-nav" class="mobile-nav shell" aria-label="Mobile navigation" hidden>{% for item in site.data.navigation %}<a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% elsif page.nav_section == item.url %} aria-current="true"{% endif %}>{{ item.title }}</a>{% endfor %}</nav>
     </header>
     <main id="main" class="main-shell">{% if page.page_class == "home" %}{{ content }}{% else %}<div class="document-panel glass-panel">
+      {% include coastal-field.liquid %}
       <nav class="breadcrumbs shell" aria-label="Breadcrumb">
         <a class="breadcrumb-home" href="{{ '/' | relative_url }}">{% include icon.liquid name='home' %}<span>Home</span></a>
         <span aria-hidden="true">/</span>
