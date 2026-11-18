@@ -129,7 +129,7 @@ async function homePreview(page) {
 }
 function readWallpaperFrame() {
   const scene = document.querySelector('.wallpaper-scene');
-  const hero = document.querySelector('.home-page .profile-section');
+  const reflections = document.querySelector('.profile-reflections');
   const frame = (element, pseudo) => {
     const style = getComputedStyle(element, pseudo);
     return [style.transform, style.opacity, style.backgroundPosition];
@@ -137,7 +137,10 @@ function readWallpaperFrame() {
   return {
     scenery: frame(scene),
     sceneryLight: frame(scene, '::after'),
-    ...(hero && { portraitLight: frame(hero, '::before') }),
+    ...(reflections && {
+      portraitLight: frame(reflections, '::before'),
+      portraitRipple: frame(reflections, '::after'),
+    }),
   };
 }
 async function sampleWallpaper(page, moving, label) {
@@ -168,6 +171,7 @@ async function wallpaperMotion(page) {
     }));
 
   assert.equal(await root.getAttribute('data-wallpaper-motion'), 'on');
+  assert.equal(await page.locator('.profile-reflections').count(), 1);
   const boxes = await contentBoxes();
   assert.equal(boxes.length, 3);
   const movement = await sampleWallpaper(page, true, 'Default wallpaper');

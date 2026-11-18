@@ -30,55 +30,94 @@
   .document-panel .page-heading > p { max-width:64ch; }
   .document-panel .breadcrumbs { margin-bottom:clamp(22px,3.4vw,37px); }
 }
-/* The photograph and light move on separate layers. Copy and portrait stay on the page. */
+/* Overscan keeps the shoreline in frame. Two curved reflections move behind the portrait. */
 .wallpaper-scene { position:absolute; inset:0; }
+.profile-reflections { display:none; }
 @media screen and (prefers-reduced-motion:no-preference) {
-  :root { --coast-light:255 236 201; --coast-reflection:119 175 208; }
+  :root {
+    --coast-light:255 237 190;
+    --ribbon-deep:43 115 178;
+    --ribbon-color:65 190 204;
+    --ribbon-edge:203 253 241;
+  }
   :root:is([data-wallpaper-period="dawn"],[data-wallpaper-period="sunrise"],[data-wallpaper-period="sunset"]) {
-    --coast-light:255 205 158; --coast-reflection:218 165 135;
+    --coast-light:255 217 169;
+    --ribbon-deep:162 103 154; --ribbon-color:243 154 100; --ribbon-edge:255 231 176;
   }
   :root:is([data-wallpaper-period="dusk"],[data-wallpaper-period="night"]) {
-    --coast-light:169 193 234; --coast-reflection:127 153 203;
+    --coast-light:196 216 255;
+    --ribbon-deep:96 101 199; --ribbon-color:106 160 222; --ribbon-edge:204 238 255;
   }
   :root[data-wallpaper-motion="off"], :root[data-page-visible="false"] { --scenery-play:paused; }
   :where([data-background="wallpaper"][data-wallpaper-motion]) .wallpaper-scene {
-    animation:coastal-pan 23s ease-in-out -8s infinite alternate;
+    animation:coastal-pan 15s ease-in-out -6s infinite alternate;
     animation-play-state:var(--scenery-play,running);
   }
   :where([data-background="wallpaper"][data-wallpaper-motion]) .wallpaper-scene::after {
-    content:""; position:absolute; inset:-8%; pointer-events:none;
+    content:""; position:absolute; inset:-18%; pointer-events:none;
     background:
-      radial-gradient(ellipse 42% 34% at 22% 40%,rgb(var(--coast-light) / .44),transparent 85%),
-      radial-gradient(ellipse 34% 21% at 86% 55%,rgb(var(--coast-light) / .28),transparent 90%);
-    animation:coastal-light 13s ease-in-out -4s infinite alternate;
+      linear-gradient(113deg,transparent 9%,rgb(var(--coast-light) / .12) 18%,rgb(var(--coast-light) / .55) 24%,transparent 34% 55%,rgb(var(--coast-light) / .40) 67%,transparent 78%),
+      radial-gradient(ellipse 42% 36% at 23% 45%,rgb(var(--coast-light) / .42),transparent 82%);
+    animation:coastal-light 8s ease-in-out -3s infinite alternate;
     animation-play-state:var(--scenery-play,running);
   }
   :where([data-background="wallpaper"][data-wallpaper-motion]) .home-page .profile-section {
     isolation:isolate; overflow:clip;
   }
-  :where([data-background="wallpaper"][data-wallpaper-motion]) .home-page .profile-section::before {
-    content:""; position:absolute; z-index:-1; pointer-events:none;
-    inset:0 -6% 0 0;
-    background:radial-gradient(ellipse 62% 98% at 84% 18%,rgb(var(--coast-reflection) / .26),transparent 85%);
-    animation:coastal-reflection 13s ease-in-out -4s infinite alternate;
+  /* A stationary fade protects the text as the bright edges cross the portrait area. */
+  :where([data-background="wallpaper"][data-wallpaper-motion]) .profile-reflections {
+    display:block; position:absolute; inset:0; z-index:-1; pointer-events:none;
+    mask-image:linear-gradient(90deg,transparent 16%,rgb(0 0 0 / .16) 60%,#000 78%);
+  }
+  .profile-reflections::before,.profile-reflections::after {
+    content:""; position:absolute;
+    inset:-18% -18% -24% 28%;
+    transform-origin:73% 48%;
+  }
+  .profile-reflections::before {
+    background:
+      radial-gradient(ellipse 86% 103% at 74% -26%,
+        transparent 71%,rgb(var(--ribbon-color) / .15) 78%,rgb(var(--ribbon-color) / .61) 85%,
+        rgb(var(--ribbon-edge) / .95) 89%,rgb(var(--ribbon-deep) / .37) 91%,transparent 98%),
+      radial-gradient(ellipse 71% 80% at 85% 45%,rgb(var(--ribbon-color) / .29),transparent 85%);
+    animation:coastal-ribbon 6.5s ease-in-out -2.5s infinite alternate;
+    animation-play-state:var(--scenery-play,running);
+  }
+  .profile-reflections::after {
+    background:radial-gradient(ellipse 90% 115% at 69% 159%,
+      transparent 74%,rgb(var(--ribbon-deep) / .14) 84%,rgb(var(--ribbon-deep) / .47) 90%,
+      rgb(var(--ribbon-edge) / .78) 92%,rgb(var(--ribbon-color) / .32) 95%,transparent 100%);
+    animation:coastal-ripple 8.5s ease-in-out -4.5s infinite alternate;
     animation-play-state:var(--scenery-play,running);
   }
   @keyframes coastal-pan {
-    from { transform:translate(-1.1%,.55%) scale(1.055); }
-    to { transform:translate(1.25%,-.7%) scale(1.085); }
+    from { transform:translate(-2.8%,1.05%) scale(1.085); }
+    to { transform:translate(2.8%,-1.35%) scale(1.155); }
   }
   @keyframes coastal-light {
-    from { transform:translate(-4%,-1%); opacity:.36; }
-    to { transform:translate(5%,2%); opacity:.85; }
+    from { transform:translate(-10%,-1%) skewX(-4deg); opacity:.48; }
+    to { transform:translate(10%,2%) skewX(4deg); opacity:.91; }
   }
-  @keyframes coastal-reflection {
-    from { transform:translateX(-3%); opacity:.25; }
-    to { transform:translateX(3%); opacity:.85; }
+  @keyframes coastal-ribbon {
+    from { transform:translate(-7%,-10%) rotate(-9deg) scaleY(.91); }
+    to { transform:translate(6%,12%) rotate(8deg) scaleY(1.12); }
+  }
+  @keyframes coastal-ripple {
+    from { transform:translate(4%,10%) rotate(6deg); }
+    to { transform:translate(-5%,-9%) rotate(-7deg); }
+  }
+  @media (max-width:680px) {
+    .profile-reflections::before,
+    .profile-reflections::after {
+      inset:-42px -20% auto 5%; height:215px;
+      mask-image:linear-gradient(#000 64%,transparent 100%);
+    }
   }
 }
 @media (prefers-contrast:more), (prefers-reduced-transparency:reduce), (forced-colors:active) {
   .wallpaper-scene { animation:none; }
-  :root[data-background] .wallpaper-scene::after, :root[data-background] .home-page .profile-section::before { display:none; animation:none; }
+  :root[data-background] .wallpaper-scene::after,
+  :root[data-background] .profile-reflections { display:none; animation:none; }
 }
 .brand { display:inline-flex; align-items:center; gap:9px; font-size:18px; font-weight:400; }
 .brand-sign { width:30px; height:30px; flex:none; border-radius:9px; }
