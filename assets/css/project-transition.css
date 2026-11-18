@@ -1,0 +1,22 @@
+/* Do not capture the document: only the matched thumbnail and hero travel. */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+  :root { view-transition-name: none; }
+  ::view-transition { pointer-events: none; }
+  ::view-transition-group(project-image) {
+    animation-duration: 280ms;
+    animation-timing-function: cubic-bezier(.22, .72, .2, 1);
+  }
+  ::view-transition-image-pair(project-image) {
+    isolation: isolate;
+    overflow: clip;
+    border-radius: 10px;
+  }
+  ::view-transition-old(project-image),
+  ::view-transition-new(project-image) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: normal;
+  }
+  ::view-transition-old(project-image) { animation: none; }
+}

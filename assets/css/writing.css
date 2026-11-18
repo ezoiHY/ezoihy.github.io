@@ -1,0 +1,48 @@
+/* The outline uses the outer margin of the existing academic document. */
+.post-reading { display: flow-root; }
+.post-reading:has(.reading-index:not([hidden])) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(150px, 22%);
+  grid-template-areas: "prose outline";
+  align-items: start;
+  gap: 32px;
+}
+.post-reading .reading-prose { grid-area: prose; margin: 0; min-width: 0; max-width: 72ch; }
+.reading-index {
+  grid-area: outline;
+  position: sticky;
+  top: 20px;
+  border-inline-start: 1px solid var(--line);
+  padding-inline-start: 16px;
+  font-size: 13px;
+}
+.reading-index summary { cursor: pointer; color: var(--ink); font-weight: 600; }
+.reading-index ul { margin: 9px 0 0; padding: 0; list-style: none; }
+.reading-index li + li { margin-top: 6px; }
+.reading-prose h2[id] { scroll-margin-top: 28px; }
+.post-detail .article-end { flex-wrap: wrap; align-items: center; }
+.reading-neighbor small { display: block; color: var(--muted); font-size: 12px; }
+.recovery-links { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: center; }
+.recovery-links a { display: inline-flex; align-items: center; min-height: 44px; }
+.recovery-search { gap: 6px; min-height: 44px; }
+.recovery-search .icon { width: 16px; }
+@media (max-width: 680px) {
+  .post-reading:has(.reading-index:not([hidden])) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "outline" "prose";
+    gap: 20px;
+  }
+  .reading-index { position: static; padding-inline-start: 12px; }
+  .reading-index summary { display: list-item; min-height: 44px; padding-block: 10px; }
+  .reading-index a { display: inline-flex; align-items: center; min-height: 40px; }
+  .reading-index li + li { margin-top: 0; }
+  .reading-neighbor, .reading-archive-link { min-height: 44px; }
+}
+@media (max-width: 480px) {
+  .writing-archive .journal-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .writing-archive .journal-date { font-size: 12px; }
+}
+@media print {
+  .post-reading:has(.reading-index:not([hidden])) { display: block; }
+  .reading-index, .post-detail .article-end { display: none; }
+}

@@ -9,20 +9,21 @@ description: Harry Han's learning notes, project logs, and personal essays.
   <h1>Blog</h1>
   <p>Learning notes, project logs, and personal essays. <a href="{{ '/rss.xml' | relative_url }}">Subscribe via RSS</a></p>
 </header>
-<section class="shell page-content">
-  <div class="filter-bar" role="group" aria-label="Filter posts">
-    <button class="filter-button active" data-filter="all" aria-pressed="true">All <span>{{ site.posts | size }}</span></button>
-    {% for category in site.categories %}<button class="filter-button" data-filter="{{ category[0] | escape }}" aria-pressed="false">{{ category[0] }}</button>{% endfor %}
+<section class="shell page-content writing-archive">
+  <div class="filter-bar writing-filters" role="group" aria-label="Filter posts">
+    <button type="button" class="filter-button active" data-filter="all" aria-pressed="true">All <span>{{ site.posts | size }}</span></button>
+    {% assign categories = site.categories | sort %}
+    {% for category in categories %}<button type="button" class="filter-button" data-filter="{{ category[0] | escape }}" aria-pressed="false">{{ category[0] | escape }} <span>{{ category[1].size }}</span></button>{% endfor %}
   </div>
   <p class="sr-only" id="filter-status" aria-live="polite"></p>
   <div class="journal-list">
     {% for post in site.posts %}
-      <article class="journal-row" data-category="{{ post.categories | join: '|' | escape }}">
+      <article class="journal-row writing-entry" data-category="{{ post.categories | join: '|' | escape }}">
         <time class="journal-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
         <div class="journal-copy">
-          <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-          <p>{{ post.description }}</p>
-          <p class="entry-meta">{{ post.categories | join: ' / ' }}{% if post.tags.size > 0 %} · {{ post.tags | join: ', ' }}{% endif %}</p>
+          <h2><a data-post-link href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
+          <p>{{ post.description | escape }}</p>
+          <p class="entry-meta">{{ post.categories | join: ' / ' | escape }}{% if post.tags.size > 0 %} · {{ post.tags | join: ', ' | escape }}{% endif %}</p>
         </div>
       </article>
     {% endfor %}

@@ -16,7 +16,9 @@
       path.setAttribute('stroke', 'currentColor');
       path.setAttribute('vector-effect', 'non-scaling-stroke');
       svg.append(path);
-      return { node, button, slug, path };
+      const context = document.getElementById(button.getAttribute('aria-controls'));
+      if (!context) return null;
+      return { node, button, slug, path, context };
     }).filter(Boolean);
     if (!records.length) return;
     svg.setAttribute('aria-hidden', 'true');
@@ -44,7 +46,9 @@
         const highlighted = record.slug === active;
         record.node.classList.toggle('is-active', highlighted);
         record.path.classList.toggle('is-active', highlighted);
-        record.button.setAttribute('aria-pressed', String(record.slug === selected));
+        const expanded = record.slug === selected;
+        record.button.setAttribute('aria-expanded', String(expanded));
+        record.context.hidden = !expanded;
       });
     }
 
@@ -91,6 +95,22 @@
       if (!frame) frame = requestAnimationFrame(draw);
     }
 
+    function readFragment() {
+      const match = records.find(record => '#interest-' + record.slug === location.hash);
+      selected = match ? match.slug : null;
+      hovered = focused = null;
+      refresh();
+      scheduleDraw();
+    }
+
+    function selectTopic(slug) {
+      const fragment = slug ? '#interest-' + slug : '#research-interests';
+      if (location.hash !== fragment) history.pushState(history.state, '', fragment);
+      readFragment();
+    }
+    window.addEventListener('hashchange', readFragment);
+    window.addEventListener('popstate', readFragment);
+    window.addEventListener('pageshow', readFragment);
     records.forEach(({ node, button, slug }) => {
       node.addEventListener('pointerenter', () => {
         if (!finePointer.matches) return;
@@ -110,13 +130,11 @@
         });
       });
       button.addEventListener('click', () => {
-        selected = selected === slug ? null : slug;
-        refresh();
+        selectTopic(selected === slug ? null : slug);
       });
     });
     hub.addEventListener('click', () => {
-      selected = hovered = focused = null;
-      refresh();
+      selectTopic(null);
     });
     finePointer.addEventListener('change', event => {
       if (!event.matches) { hovered = null; refresh(); }
@@ -128,8 +146,8 @@
     window.addEventListener('resize', scheduleDraw, { passive: true });
     window.addEventListener('pageshow', scheduleDraw);
     document.fonts?.ready.then(scheduleDraw, () => {});
+    readFragment();
     draw();
-    refresh();
     root.classList.add('is-interactive');
     hub.disabled = false;
     records.forEach(({ button }) => { button.disabled = false; });

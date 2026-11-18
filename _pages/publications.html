@@ -5,19 +5,19 @@ permalink: /publications/
 searchable: true
 description: Yu Han (Harry)'s research interests and robotics projects, with separately attributed PAIRS Lab demonstrations of wrist sensing and block stacking.
 ---
-<header class="page-heading shell">
-  <h1>Research & Publications</h1>
-  <p>Research in dexterous manipulation, sensing, and embodied intelligence.</p>
-  <nav class="research-jumps" aria-label="On this page"><a href="#research-projects">Projects & demos</a><a href="#research-interests">Interests</a><a href="#lab-demos">PAIRS Lab</a><a href="#publications">Publications</a></nav>
+<header class="page-heading shell research-heading">
+  <h1>Research</h1>
+  <p>I work on how robots perceive hand motion, translate instructions into action, and adapt their grasp.</p>
+  <nav class="research-jumps folio-jumps" aria-label="On this page"><a href="#research-projects">Project demonstrations</a><a href="#research-interests">Research interests</a><a href="#lab-demos">PAIRS Lab</a><a href="#publications">Publications</a></nav>
 </header>
 <section class="shell page-content research-page">
   <section aria-labelledby="research-projects">
-    <div class="section-heading"><h2 id="research-projects">Projects & demos</h2><a href="{{ '/projects/' | relative_url }}">All projects</a></div>
+    <div class="section-heading"><h2 id="research-projects">Project demonstrations</h2><a href="{{ '/projects/' | relative_url }}">All projects {% include icon.liquid name='arrow' %}</a></div>
     <div class="research-projects">
       {% assign hand = site.projects | where: 'url', '/projects/monocular-hand-control/' | first %}
       {% assign quadruped = site.projects | where: 'url', '/projects/language-quadruped/' | first %}
-      {% include research-project.liquid project=hand media_label='Simulation screenshot' %}
-      {% include research-project.liquid project=quadruped media_label='Hardware demonstration' %}
+      {% include research-project.liquid project=hand media_label='Simulation' %}
+      {% include research-project.liquid project=quadruped media_label='Hardware' %}
     </div>
   </section>
   <section class="research-section" aria-labelledby="research-interests">
@@ -26,7 +26,7 @@ description: Yu Han (Harry)'s research interests and robotics projects, with sep
   </section>
   <section aria-labelledby="lab-demos">
     <h2 id="lab-demos">PAIRS Lab demonstrations</h2>
-    <div class="lab-demo-intro"><p>Selected demonstrations from <a href="https://pairslab.github.io/research/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a>, where I work as a research assistant. These are lab-level prototypes, presented separately from my own projects and publications.</p></div>
+    <div class="lab-demo-intro"><p>At HKUST(GZ), I work as a research assistant at <a href="https://pairslab.github.io/research/" target="_blank" rel="noopener noreferrer">PAIRS Lab</a>. The lab shares these two ongoing prototypes from its work on human sensing and manipulation.</p></div>
     <div class="lab-demo-grid">{% for demo in site.data.lab_demos %}{% include lab-demo.liquid demo=demo %}{% endfor %}</div>
   </section>
   <section class="publications-section" aria-labelledby="publications">
@@ -34,7 +34,7 @@ description: Yu Han (Harry)'s research interests and robotics projects, with sep
     <div class="publications">
       <div class="bibliography-content">{% bibliography %}</div>
       <div class="publication-empty">
-        <p>No publications are listed yet. See the <a href="{{ '/projects/' | relative_url }}">projects page</a> for related research and engineering work.</p>
+        <p>No personal publications are listed yet.</p><a href="{{ '/projects/?area=robotics' | relative_url }}">Explore robotics projects {% include icon.liquid name='arrow' %}</a>
       </div>
     </div>
   </section>

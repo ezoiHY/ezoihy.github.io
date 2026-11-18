@@ -2,6 +2,7 @@
   url: /
   icon: home
 - title: Research
+  aliases: Research publications papers
   url: /publications/
   icon: research
 - title: Projects
@@ -11,8 +12,10 @@
   url: /about/
   icon: person
 - title: Blog
+  aliases: Blog writing journal posts
   url: /posts/
   icon: pen
 - title: CV
+  aliases: CV curriculum vitae resume résumé
   url: /cv/
   icon: person

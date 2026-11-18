@@ -5,5 +5,14 @@ permalink: /papers/
 canonical_url: /publications/
 sitemap: false
 ---
-<section class="error-page shell"><h1>Publications</h1><p>Research and publications are now listed on the publications page.</p><a href="{{ '/publications/' | relative_url }}">View publications {% include icon.liquid name='arrow' %}</a></section>
-<script>window.location.replace({{ '/publications/' | relative_url | jsonify }});</script>
+<section class="shell papers-forward" aria-labelledby="papers-title">
+  <h1 id="papers-title">Publications</h1>
+  <p>The publication list is part of my research page, alongside project demonstrations and research interests.</p>
+  <a class="folio-action" href="{{ '/publications/#publications' | relative_url }}">View publications {% include icon.liquid name='arrow' %}</a>
+</section>
+<script>
+  const researchPage = new URL({{ '/publications/' | relative_url | jsonify }}, location.href);
+  researchPage.search = location.search;
+  researchPage.hash = location.hash || '#publications';
+  location.replace(researchPage.href);
+</script>

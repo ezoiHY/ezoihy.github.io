@@ -7,6 +7,7 @@
 {%- capture search_json -%}
 [
 {%- for item in search_items -%}
+  {%- assign nav_entry = site.data.navigation | where: 'url', item.url | first -%}
   {%- assign search_content = item.content -%}
   {%- assign template_tags = search_content | split: tag_open -%}
   {%- for tag in template_tags offset: 1 -%}
@@ -30,8 +31,25 @@
       {{ site.data.profile.research_interests | jsonify }} {{ site.data.lab_demos | jsonify }}
     {%- endif -%}
   {%- endcapture -%}
-  {"title":{{ item.title | jsonify }},"description":{{ item.description | default: item.excerpt | strip_html | normalize_whitespace | truncate: 220 | jsonify }},"url":{{ item.url | relative_url | jsonify }},"keywords":{{ item.tags | join: ' ' | append: ' ' | append: item.category | append: ' ' | append: item.categories | jsonify }},"text":{{ search_text | normalize_whitespace | jsonify }},"type":{% if item.collection == 'projects' %}"Project"{% elsif item.collection == 'posts' %}"Post"{% else %}"Page"{% endif %}}{% unless forloop.last %},{% endunless %}
+  {"title":{{ item.title | jsonify }},"aliases":{{ nav_entry.aliases | default: nav_entry.title | default: '' | jsonify }},"description":{{ item.description | default: item.excerpt | strip_html | normalize_whitespace | truncate: 220 | jsonify }},"url":{{ item.url | relative_url | jsonify }},"keywords":{{ item.tags | join: ' ' | append: ' ' | append: item.category | append: ' ' | append: item.categories | jsonify }},"text":{{ search_text | normalize_whitespace | jsonify }},"type":{% if item.collection == 'projects' %}"Project"{% elsif item.collection == 'posts' %}"Post"{% elsif item.url == '/publications/' %}"Research"{% else %}"Page"{% endif %}}{% unless forloop.last %},{% endunless %}
 {%- endfor -%}
+{%- for topic in site.data.profile.research_interests -%}
+  {%- assign slug = topic.title | slugify -%}
+  ,{"type":"Research","title":{{ topic.title | jsonify }},"description":{{ topic.description | jsonify }},"url":{{ '/publications/#interest-' | append: slug | relative_url | jsonify }},"keywords":"research interest","text":{{ topic.links | map: 'title' | join: ' ' | append: ' ' | append: topic.context | jsonify }}}
+{%- endfor -%}
+{%- for demo in site.data.lab_demos -%}
+  ,{"type":"Research","title":{{ demo.title | jsonify }},"description":{{ 'PAIRS Lab demonstration. ' | append: demo.description | jsonify }},"url":{{ '/publications/#' | append: demo.id | relative_url | jsonify }},"keywords":{{ demo.status | jsonify }}}
+{%- endfor -%}
+{%- assign comparable = site.projects | where_exp: 'item', 'item.design_choice and item.evidence' -%}
+{%- if comparable.size >= 2 -%}
+,{"type":"Page","title":"Compare projects","description":"Compare design choices, contributions and evidence for two projects.","url":{{ '/projects/#compare-projects' | relative_url | jsonify }},"aliases":"comparison side by side"}
+{%- endif -%}
+,{"type":"Page","title":"Curriculum vitae (PDF)","description":"Open the PDF version of Yu Han’s CV.","url":{{ '/assets/pdf/yu-han-cv.pdf' | relative_url | jsonify }},"aliases":"download résumé resume"}
+,{"type":"Page","title":"Contact Yu Han","description":{{ site.data.profile.email | append: ' · ' | append: site.data.profile.location | jsonify }},"url":{{ '/about/#contact' | relative_url | jsonify }},"keywords":"email github contact"}
+,{"type":"Page","title":"Research and industry experience","description":"Research appointments, internship, supervisors, and dates.","url":{{ '/about/#experience' | relative_url | jsonify }},"text":{{ site.data.profile.research_experience | jsonify | jsonify }}}
+,{"type":"Page","title":"Honors and awards","description":"Competition results and academic distinctions.","url":{{ '/about/#awards' | relative_url | jsonify }},"text":{{ site.data.profile.awards | jsonify | jsonify }}}
+,{"type":"Page","title":"Education","description":{{ site.data.profile.education.first.major | append: ' at ' | append: site.data.profile.education.first.institution | jsonify }},"url":{{ '/about/#education' | relative_url | jsonify }},"text":{{ site.data.profile.education | jsonify | jsonify }}}
+
 ]
 {%- endcapture -%}
 {{- search_json | replace: '<', '\u003c' -}}

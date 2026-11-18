@@ -2,11 +2,11 @@
 
 A personal academic website built with [al-folio](https://github.com/alshedivat/al-folio) v1 and Jekyll. It retains al-folio’s academic reading order, an approximately 930px text column, a right-hand portrait, and English content covering research, projects, publications, a CV, and personal writing.
 
-Selected projects presents all featured entries, with robotics rows followed by two compact software entries side by side on desktop. Each group uses descending `sort_year`, then descending `sort_priority` within a year; priority is an editorial tie-break, not an inferred date. The existing quadruped demo is playable directly from the homepage. Personal project videos load only after an explicit play action.
+Selected projects presents all featured entries, with robotics rows followed by two compact software entries side by side on desktop. Each group uses descending `sort_year`, then descending `sort_priority` within a year; priority is an editorial tie-break, not an inferred date. Quick look opens the original image and contribution in a native dialog, with keyboard and touch navigation. Supported browsers animate the visible image between the project list and its case study. The quadruped demo is playable directly from the homepage. Personal project videos load only after an explicit play action.
 
 The homepage has four independent glass panels: the concise profile, Selected projects, Research & industry experience, and Latest posts. Interior pages use one `document-panel`. Rows inside a panel do not create additional glass layers. Main navigation stays in normal document flow; a compact homepage section navigator remains available while scrolling. Home is explicit in desktop and mobile navigation. Interior pages provide a Home breadcrumb and a footer return link; About links to `/about/`. Project breadcrumbs retain the collection's filter context.
 
-Projects supports All / Robotics / Software, local keyword filtering, and Cards / List layouts. `area`, `q`, and `view` URL parameters make the selection shareable and preserve it through project details, continuation links, and return navigation. Project pages offer an image viewer with keyboard navigation, captions, original-size inspection, and ordinary original-image links without JavaScript. Longer descriptions receive a section outline.
+Projects supports All / Robotics / Software, local keyword filtering, and Cards / List layouts. `area`, `q`, and `view` URL parameters make the selection shareable and preserve it through project details, continuation links, and return navigation. Project pages offer an image viewer with keyboard navigation, captions, original-size inspection, and ordinary original-image links without JavaScript. Longer descriptions receive a section outline. Compare projects places two cases side by side and shares their design choices, contributions, and evidence through the URL.
 
 The Research page leads with two large personal project demonstrations, followed by a research-interest map, separately attributed PAIRS Lab demonstrations, and the publication list. The five map nodes keep their descriptions visible, highlight branches on selection, and link to relevant existing work. Lab demo metadata lives in `_data/lab_demos.yml`; its videos remain hosted by the lab, with the shared Play/Pause preview button and source links. Native video controls remain the no-JavaScript fallback.
 
@@ -39,6 +39,8 @@ bundle exec al-folio upgrade overrides audit
 ```
 
 Generated files are written to `_site/` and should not be committed. Gemfile and Gemfile.lock pin the dependencies; editing content does not require reinstalling them.
+
+The project comparison, research topics, CV, and their no-JavaScript fallbacks have a focused check in `node scripts/check_portfolio_flows.cjs`. Both browser checks support the same runtime overrides.
 
 Optional browser regression checks require a locally installed Playwright package and browser. With the preview running, use `SITE_URL=http://127.0.0.1:4000 node scripts/check_browser.cjs`. `PLAYWRIGHT_MODULE` and `BROWSER_EXECUTABLE` can select an existing installation; `AUDIT_OUTPUT` controls screenshots and reports (default `test-results/browser`). The script checks both themes, mobile layout, wallpaper settings, search, menu, filters, video, no-JavaScript navigation, and print/accessibility modes.
 

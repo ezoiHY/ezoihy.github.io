@@ -23,6 +23,7 @@ description: Yu Han (Harry)'s robotics projects and open-source software for cod
     <label class="project-search" for="project-search">{% include icon.liquid name='search' %}<span class="sr-only">Search projects</span><input id="project-search" type="search" placeholder="Search by title, topic, or tool…" autocomplete="off" maxlength="200"></label>
     <div class="project-result-row"><p id="filter-status" role="status">{{ site.projects.size }} projects</p><button type="button" data-project-reset hidden>Clear filters</button></div>
   </div>
+  {% include project-compare.liquid %}
   <div class="project-empty" hidden><h2>No projects found</h2><p>Try another keyword or clear the filters to see all projects.</p></div>
   <div class="project-grid">
     {% assign project_years = site.projects | group_by: 'sort_year' | sort: 'name' | reverse %}

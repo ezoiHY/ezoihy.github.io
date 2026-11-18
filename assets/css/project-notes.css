@@ -1,0 +1,73 @@
+/* These additions sit inside the existing al-folio project panels. */
+.project-compare {
+  margin: 0 0 20px;
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.project-compare summary { min-height: 44px; padding: 12px 0; cursor: pointer; color: var(--accent); font-weight: 550; font-size: 14px; }
+.project-compare[open] { padding-bottom: 13px; }
+.compare-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin: 3px 0 14px; }
+.compare-controls label { min-width: 0; color: var(--muted); font-size: 12px; }
+.compare-controls select, .project-viewer-picker select {
+  min-height: 42px;
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  background: var(--surface);
+  font: inherit;
+  font-size: 14px;
+}
+.compare-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; line-height: 1.55; }
+.compare-table th, .compare-table td { padding: 10px 10px 10px 0; text-align: left; vertical-align: top; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.compare-table tr > :first-child { width: 17%; }
+.compare-table tr > :last-child { padding-right: 0; }
+.compare-table tbody th { color: var(--muted); font-weight: 500; }
+.compare-table th a { font-size: 14px; }
+.compare-share { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.compare-share button { min-height: 40px; color: var(--accent); font-size: 13px; }
+.compare-share input { min-width: 0; flex: 1 1 180px; padding: 6px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--surface); font-size: 14px; }
+.comparison-record { border-top: 1px solid var(--line); padding: 10px 0; }
+.comparison-record h3 { margin-bottom: 4px; font-size: 15px; }
+.comparison-record p { font-size: 13px; line-height: 1.55; }
+.comparison-record p + p { margin-top: 4px; }
+.case-notes { margin: 26px 0; padding: 17px 20px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); }
+.case-notes h2 { margin: 0 0 12px; font-size: 18px; font-weight: 550; }
+.case-notes dl { margin: 0; }
+.case-notes dl > div { display: grid; grid-template-columns: 120px minmax(0,1fr); gap: 14px; padding: 9px 0; border-top: 1px solid var(--line); }
+.case-notes dt { color: var(--muted); font-size: 13px; }
+.case-notes dd { margin: 0; color: var(--ink); font-size: 14px; line-height: 1.6; }
+.case-measures { display: flex; gap: 8px 18px; flex-wrap: wrap; margin: 4px 0 10px; list-style: none; padding: 0; }
+.case-measures li { color: var(--muted); font-size: 12px; }
+.case-measures strong { color: var(--accent); font-weight: 600; font-size: 14px; margin-right: 4px; }
+.project-detail .project-tags a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line); }
+.project-detail .project-tags a:hover { text-decoration-color: currentColor; }
+.project-more li { min-width: 0; }
+.project-more .case-compare-link { display: inline-block; margin-top: 4px; font-size: 12px; }
+.project-figure .project-media-link { position: relative; }
+.project-figure .photo-open { position: absolute; right: 9px; bottom: 9px; padding: 4px 9px; font-size: 11px; font-weight: 550; color: #fff; background: #142333d9; border-radius: 20px; }
+.project-viewer-picker { max-width: min(100%, 320px); }
+.project-viewer-picker select { margin: 0; min-height: 40px; font-size: 13px; }
+@media (max-width: 620px) {
+  .compare-controls { gap: 8px; }
+  .compare-controls select, .project-viewer-picker select { min-height: 44px; font-size: 16px; }
+  .compare-table tr { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-top: 1px solid var(--line); }
+  .compare-table th, .compare-table td { border: 0; padding-block: 7px; }
+  .compare-table thead td { display: none; }
+  .compare-table tr > :first-child { width: auto; }
+  .compare-table tbody th { grid-column: 1 / -1; font-size: 12px; font-weight: 600; padding-bottom: 0; }
+  .compare-table thead, .compare-table tbody { display: block; }
+  .case-notes { padding: 14px; }
+  .case-notes dl > div { display: block; }
+  .case-notes dt { margin-bottom: 2px; }
+  .project-more .case-compare-link { display: inline-flex; align-items: center; }
+  .project-viewer-picker { width: 100%; max-width: none; }
+}
+@media print {
+  .project-compare, .case-compare-link, .project-figure .photo-open { display: none !important; }
+  .case-notes { break-inside: avoid; background: transparent; }
+}

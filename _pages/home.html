@@ -30,10 +30,10 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
     </figure>
     <section class="biography" aria-label="Biography">
       <div class="prose">
-        <p>I work on dexterous manipulation, multimodal sensing, and embodied intelligence, connecting mechanism design with perception and control. My projects span <a href="{{ '/projects/underactuated-hand/' | relative_url }}">adaptive hands</a>, motion retargeting, underwater robotics, and <a href="{{ '/projects/language-quadruped/' | relative_url }}">language-guided robots</a>.</p>
+        <p>I work on dexterous manipulation, multimodal sensing, and embodied intelligence, connecting mechanism design with perception and control. My projects span <a href="{{ '/projects/underactuated-hand/' | relative_url }}">adaptive hands</a>, <a href="{{ '/projects/monocular-hand-control/' | relative_url }}">motion retargeting</a>, underwater robotics, and <a href="{{ '/projects/language-quadruped/' | relative_url }}">language-guided robots</a>.</p>
         <p>I also build <a href="#software-title">open-source tools</a> for research and software development.</p>
       </div>
-      <div class="profile-links"><a class="profile-primary-link" href="#projects-title">View projects</a><a href="{{ '/about/' | relative_url }}">About & background</a><a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>Download CV (PDF)</a></div>
+      <div class="profile-links"><a class="profile-primary-link" href="#projects-title">View projects {% include icon.liquid name='arrow' %}</a><a href="{{ '/about/' | relative_url }}">About & background</a><a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>Download CV (PDF)</a></div>
     </section>
   </section>
 
@@ -67,13 +67,25 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
   </section>
 
   <section class="home-section glass-panel" aria-labelledby="experience-title">
-    <div class="section-heading"><h2 id="experience-title">Research & industry experience</h2></div>
+    <div class="section-heading"><h2 id="experience-title">Research & industry experience</h2><a href="{{ '/cv/#experience' | relative_url }}">Full CV</a></div>
     {% include experience-list.liquid compact=true %}
   </section>
 
   <section class="home-section glass-panel" aria-labelledby="posts-title">
     <div class="section-heading"><h2 id="posts-title">Latest posts</h2><a href="{{ '/posts/' | relative_url }}">All posts</a></div>
-    <div class="news-list">{% for post in site.posts limit: 3 %}<div class="news-row"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time><p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p></div>{% endfor %}</div>
-    <div class="contact-line"><a href="mailto:{{ profile.email }}" aria-label="Email">{% include icon.liquid name='mail' %}</a><a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">{% include icon.liquid name='github' %}</a><p>Feel free to get in touch about research and projects.</p></div>
+    <div class="news-list">{% for post in site.posts limit: 3 %}<div class="news-row"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %d, %Y' }}</time><div><p><a href="{{ post.url | relative_url }}">{{ post.title }}</a></p>{% if post.description %}<p class="news-summary">{{ post.description | escape }}</p>{% endif %}</div></div>{% endfor %}</div>
+    <div class="contact-line home-contact"><a href="mailto:{{ profile.email }}" aria-label="Email {{ profile.email }}">{% include icon.liquid name='mail' %}{{ profile.email }}</a><a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">{% include icon.liquid name='github' %}GitHub</a></div>
   </section>
 </article>
+<dialog id="quick-look" class="quick-dialog" aria-label="Project quick look">
+  <div class="quick-toolbar">
+    <div class="quick-pager" role="group" aria-label="Browse selected projects">
+      <button class="icon-button quick-prev" type="button" aria-label="Previous project">{% include icon.liquid name='arrow' %}</button>
+      <span data-quick-count aria-hidden="true"></span>
+      <button class="icon-button" data-quick-next type="button" aria-label="Next project">{% include icon.liquid name='arrow' %}</button>
+    </div>
+    <button class="icon-button" data-quick-close type="button" aria-label="Close quick look" autofocus>{% include icon.liquid name='close' %}</button>
+  </div>
+  <div class="quick-body" data-quick-body></div>
+  <span class="sr-only" data-quick-status role="status"></span>
+</dialog>

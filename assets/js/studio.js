@@ -224,36 +224,94 @@
   try {
     searchItems = JSON.parse(document.querySelector('#search-data')?.textContent || '[]').map(item => ({
       ...item,
-      fields: [item.title, item.description, item.keywords, item.text].map(normalizeSearch),
+      fields: [item.title, item.aliases, item.description, item.keywords, item.text].map(normalizeSearch),
     }));
   } catch { /* Keep other controls working. */ }
+  const scopeButtons = [...document.querySelectorAll('[data-search-type]')];
+  const navigationURLs = [...document.querySelectorAll('.desktop-nav a')].map(link => link.pathname);
+  const quickLinks = navigationURLs.map(url => searchItems.find(item => item.url === url)).filter(Boolean);
+  let searchType = 'all';
+
+  function setScope(type) {
+    searchType = type;
+    scopeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.searchType === type)));
+  }
+
   function renderSearch() {
     const query = normalizeSearch(searchInput.value).trim();
     const tokens = query.split(/\s+/).filter(Boolean);
-    const ranked = searchItems.filter(item => tokens.every(token => item.fields.some(field => field.includes(token))));
-    const score = item => tokens.reduce((sum, token) => sum + item.fields.reduce((weight, field, index) => weight + (field.includes(token) ? [8, 4, 2, 1][index] : 0), 0), item.fields[0].includes(query) ? 10 : 0);
-    if (tokens.length) ranked.sort((a, b) => score(b) - score(a));
-    const matches = ranked.slice(0, 12);
-    if (searchSummary) searchSummary.textContent = tokens.length
-      ? ranked.length > matches.length ? `Showing ${matches.length} of ${ranked.length} results` : `${ranked.length} ${ranked.length === 1 ? 'result' : 'results'}`
-      : 'Search projects, pages, and posts';
-    resultContainer.replaceChildren();
-    if (!matches.length) {
-      const empty = document.createElement('p'); empty.className = 'search-empty';
-      empty.textContent = 'No results. Try “robot”, “vision”, or “hand”.'; resultContainer.append(empty); return;
+    const quick = !tokens.length && searchType === 'all';
+    const candidates = quick ? quickLinks : searchItems.filter(item => searchType === 'all' || item.type === searchType);
+    const matches = candidates.filter(item => tokens.every(token => item.fields.some(field => field.includes(token))));
+    if (tokens.length) {
+      const weights = [10, 8, 4, 2, 1];
+      const score = item => tokens.reduce((sum, token) => sum + item.fields.reduce(
+        (weight, field, index) => weight + (field.includes(token) ? weights[index] : 0), 0
+      ), item.fields[0].includes(query) ? 10 : 0);
+      matches.sort((a, b) => score(b) - score(a));
     }
-    matches.forEach(item => {
-      const link = document.createElement('a'); link.className = 'search-result'; link.href = item.url;
-      const type = document.createElement('span'); type.className = 'result-type'; type.textContent = item.type;
+    searchSummary.textContent = quick ? 'Quick links' : matches.length + (matches.length === 1 ? ' result' : ' results');
+    resultContainer.replaceChildren();
+    resultContainer.scrollTop = 0;
+    if (!matches.length) {
+      const empty = document.createElement('div');
+      empty.className = 'search-empty';
+      empty.textContent = query ? 'No results for “' + searchInput.value.trim() + '”.' : 'No results in this section.';
+      const reset = document.createElement('button');
+      reset.type = 'button';
+      reset.textContent = searchType === 'all' ? 'Clear search' : 'Search all sections';
+      reset.addEventListener('click', () => {
+        if (searchType === 'all') searchInput.value = '';
+        setScope('all');
+        renderSearch();
+        searchInput.focus();
+      });
+      empty.append(reset);
+      resultContainer.append(empty);
+      return;
+    }
+    for (const item of matches) {
+      const link = document.createElement('a');
+      link.className = 'search-result';
+      link.href = item.url;
+      const type = document.createElement('span');
+      type.className = 'result-type';
+      type.textContent = item.type === 'Post' ? 'Writing' : item.type;
       const copy = document.createElement('div');
-      const title = document.createElement('strong'); title.textContent = item.title;
-      const description = document.createElement('p'); description.textContent = item.description;
-      copy.append(title, description); link.append(type, copy); resultContainer.append(link);
-    });
+      const title = document.createElement('strong');
+      title.textContent = item.title;
+      const description = document.createElement('p');
+      description.textContent = item.description;
+      copy.append(title, description);
+      link.append(type, copy);
+      resultContainer.append(link);
+    }
   }
+
+  scopeButtons.forEach(button => button.addEventListener('click', () => {
+    setScope(button.dataset.searchType);
+    renderSearch();
+  }));
+
+  // A section match on this document must release the modal's focus trap.
+  resultContainer?.addEventListener('click', event => {
+    const link = event.target.closest('a');
+    if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (link.pathname !== location.pathname || link.search !== location.search) return;
+    closeDialog(dialog, true);
+    if (!link.hash) return;
+    const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+    if (target) requestAnimationFrame(() => {
+      if (!target.hasAttribute('tabindex')) target.tabIndex = -1;
+      target.focus({ preventScroll: true });
+    });
+  });
+
   function openSearch() {
     if (!dialog || (dialog.open && !closingDialogs.has(dialog))) return;
-    closeMenu(); closeDialog(wallpaperDialog, true); searchInput.value = ''; renderSearch(); openDialog(dialog); document.body.classList.add('search-open'); searchInput.focus();
+    const other = document.querySelector('dialog[open]');
+    if (other && other !== dialog && other !== wallpaperDialog) other.close();
+    closeMenu(); closeDialog(wallpaperDialog, true); searchInput.value = ''; setScope('all'); renderSearch(); openDialog(dialog); document.body.classList.add('search-open'); searchInput.focus();
   }
   document.querySelectorAll('.search-trigger').forEach(button => button.addEventListener('click', openSearch));
   document.querySelector('.search-close')?.addEventListener('click', () => closeDialog(dialog));
@@ -282,6 +340,7 @@
   const filterButtons = document.querySelectorAll('[data-filter]');
   const cards = document.querySelectorAll('[data-category]');
   const explorer = document.querySelector('[data-project-explorer]');
+  const writingArchive = document.querySelector('.writing-archive');
   const projectQuery = document.querySelector('#project-search');
   const projectReset = document.querySelector('[data-project-reset]');
   const projectViews = document.querySelectorAll('[data-project-view]');
@@ -302,9 +361,23 @@
     const url = new URL(location.href);
     ['area', 'q', 'view'].forEach(key => { if (params.has(key)) url.searchParams.set(key, params.get(key)); else url.searchParams.delete(key); });
     if (mode && url.href !== location.href) history[mode === 'push' ? 'pushState' : 'replaceState'](null, '', url);
+    const compare = url.searchParams.get('compare');
+    if (compare && explorer.querySelector('#compare-projects[open]')) params.set('compare', compare);
     const query = params.toString();
     explorer.querySelectorAll('[data-project-link]').forEach(link => {
       link.href = link.closest('[data-project-url]').dataset.projectUrl + (query ? `?${query}` : '');
+    });
+  }
+  function syncWritingLocation(category, mode) {
+    const updateCategory = url => {
+      if (category === 'all') url.searchParams.delete('category');
+      else url.searchParams.set('category', category);
+      return url;
+    };
+    const url = updateCategory(new URL(location.href));
+    if (mode && url.href !== location.href) history[mode === 'push' ? 'pushState' : 'replaceState'](null, '', url);
+    writingArchive.querySelectorAll('[data-post-link]').forEach(link => {
+      link.href = updateCategory(new URL(link.href)).href;
     });
   }
   const moveFilter = movingIndicator(document.querySelector('.filter-bar'), 'motion-filter-indicator', () => document.querySelector('[data-filter].active'), true);
@@ -341,6 +414,8 @@
       explorer.querySelector('.project-empty').hidden = visible !== 0;
       projectReset.hidden = button.dataset.filter === 'all' && !projectQuery.value;
       syncProjectLocation(historyMode);
+    } else if (writingArchive) {
+      syncWritingLocation(button.dataset.filter, historyMode);
     }
   }
   filterButtons.forEach(button => button.addEventListener('click', () => {
@@ -360,6 +435,7 @@
       filterCards(document.querySelector(`[data-filter="${area}"]`), { motion: false });
     }
     restoreProjectLocation();
+    explorer.addEventListener('projectcomparisonchange', () => syncProjectLocation());
     window.addEventListener('popstate', restoreProjectLocation);
     projectQuery.addEventListener('input', () => filterCards(document.querySelector('[data-filter].active'), { motion: false, historyMode: 'replace' }));
     projectReset.addEventListener('click', () => {
@@ -372,14 +448,29 @@
       setProjectView(button.dataset.projectView);
       syncProjectLocation('push');
     }));
+  } else if (writingArchive) {
+    function restoreWritingLocation() {
+      const category = new URLSearchParams(location.search).get('category');
+      const button = [...filterButtons].find(item => item.dataset.filter === category);
+      filterCards(button || writingArchive.querySelector('[data-filter="all"]'), { motion: false, historyMode: 'replace' });
+    }
+    restoreWritingLocation();
+    window.addEventListener('popstate', restoreWritingLocation);
   }
   // A project opened from a filtered collection returns to that same collection.
   const returnParams = new URLSearchParams(location.search);
+  const compare = returnParams.get('compare');
+  const validPair = compare && /^[a-z0-9-]+,[a-z0-9-]+$/.test(compare) && new Set(compare.split(',')).size === 2;
   document.querySelectorAll('[data-project-return], [data-project-continue]').forEach(link => {
     const url = new URL(link.href);
     if (validAreas.includes(returnParams.get('area')) && returnParams.get('area') !== 'all') url.searchParams.set('area', returnParams.get('area'));
     if (returnParams.get('q')) url.searchParams.set('q', returnParams.get('q').slice(0, 200));
     if (returnParams.get('view') === 'list') url.searchParams.set('view', 'list');
+    // Explicit pair links keep their own comparison. Ordinary case links carry the reader's pair.
+    if (validPair && !url.searchParams.has('compare')) {
+      url.searchParams.set('compare', compare);
+      if (link.hasAttribute('data-project-return')) url.hash = 'compare-projects';
+    }
     link.href = url.href;
   });
   document.querySelectorAll('[data-copy]').forEach(button => {

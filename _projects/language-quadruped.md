@@ -2,6 +2,11 @@
 layout: project
 title: Voice-controlled quadruped with a local language model
 description: Connecting natural-language instructions to locomotion and interaction on a Unitree Go1.
+contribution: I deployed Qwen locally with Ollama and connected its outputs to the Go1 motion-control interface through an API.
+related_projects: [/projects/monocular-hand-control/, /projects/robotic-fish/]
+short_title: Voice-controlled Go1
+design_choice: Ollama runs Qwen locally. An API passes the model output to the Go1 motion-control interface.
+evidence: The hardware demonstration shows the Go1 walking toward the camera and rising onto its hind legs.
 category: Embodied Intelligence
 year: "2025"
 sort_year: 2025

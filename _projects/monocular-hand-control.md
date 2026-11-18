@@ -2,6 +2,11 @@
 layout: project
 title: Monocular RGB control of a robotic hand
 description: Retargeting human hand motion from RGB images to an articulated robotic hand in simulation.
+contribution: I developed a pipeline that reconstructs a human hand from monocular RGB input and retargets its motion to a simulated robotic hand.
+related_projects: [/projects/underactuated-hand/, /projects/language-quadruped/]
+short_title: RGB hand control
+design_choice: HaMeR reconstructs the hand from a single camera. Optimization-based inverse kinematics transfers its pose to a simulated hand.
+evidence: A SAPIEN screenshot pairs the tracked human gesture with the resulting robot pose. The code is available on GitHub.
 category: Vision & Control
 code_url: https://github.com/ezoiHY/Kinematic-Control-of-Robotic-Hands-Based-on-a-Monocular-RGB-Cammera
 year: "2026"

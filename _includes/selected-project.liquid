@@ -2,7 +2,7 @@
 {% assign project_cover = project.cover | default: project.image %}
 {% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}
 {% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}
-<article class="selected-project">
+<article class="selected-project" data-project-url="{{ project.url | relative_url }}">
   {% if project.video %}
     <div class="selected-project-image">{% include project-media.liquid project=project thumbnail=true %}</div>
   {% else %}
@@ -12,6 +12,20 @@
     <h4 class="selected-project-title"><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h4>
     <p class="project-meta">{{ project.year }} · {{ project.category }}</p>
     <p>{{ project.description }}</p>
-    <div class="selected-project-links"><a class="project-details-link" href="{{ project.url | relative_url }}">View project</a>{% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">Code</a>{% endif %}{% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Full demo</a>{% endif %}</div>
+    <div class="selected-project-links"><a class="project-details-link" href="{{ project.url | relative_url }}">View project</a>{% if project.image %}<button type="button" class="quick-trigger" data-quick-trigger aria-label="Quick look at {{ project.short_title | default: project.title | escape }}" aria-haspopup="dialog" aria-controls="quick-look" hidden>Quick look</button>{% endif %}{% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">Code</a>{% endif %}{% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Full demo</a>{% endif %}</div>
   </div>
+  {% if project.image %}
+    <template data-quick-content>
+      <figure class="quick-figure">
+        <img src="{{ project.image | relative_url }}" width="{{ project.image_width }}" height="{{ project.image_height }}" alt="{{ project.image_alt | escape }}">
+        {% if project.image_caption %}<figcaption>{{ project.image_caption | escape }}</figcaption>{% endif %}
+      </figure>
+      <div class="quick-copy">
+        <p class="project-meta">{{ project.category | escape }} · {{ project.year | escape }}</p>
+        <h2>{{ project.title | escape }}</h2>
+        <p>{{ project.contribution | default: project.description | escape }}</p>
+        <a class="quick-project-link" href="{{ project.url | relative_url }}">View full project {% include icon.liquid name='arrow' %}</a>
+      </div>
+    </template>
+  {% endif %}
 </article>

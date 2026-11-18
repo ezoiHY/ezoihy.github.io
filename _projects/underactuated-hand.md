@@ -2,6 +2,11 @@
 layout: project
 title: Pulley-free tendon-driven underactuated prosthetic hand
 description: A 304 g prosthetic hand using one actuator and a pulley-free tendon mechanism for adaptive grasping.
+contribution: I designed the pulley-free tendon mechanism and verified stable grasping and operation in wet and underwater conditions.
+related_projects: [/projects/monocular-hand-control/, /projects/robotic-fish/]
+short_title: Prosthetic hand
+design_choice: A pulley-free tendon transmission couples the fingers so one actuator can drive an adaptive grasp.
+evidence: The 304 g prototype grasped objects and operated in wet and underwater conditions.
 category: Mechanism Design
 year: "2024—2025"
 sort_year: 2024

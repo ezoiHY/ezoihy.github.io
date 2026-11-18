@@ -1,15 +1,20 @@
 <div class="research-map" data-research-map>
   <svg class="research-map-lines" aria-hidden="true" focusable="false"></svg>
-  <button class="research-map-hub" type="button" data-map-hub aria-label="Robotics: clear selection" title="Clear selection" disabled>
+  <button class="research-map-hub" type="button" data-map-hub aria-label="Robotics: show topic overview" disabled>
     <span class="research-map-hub-title">Robotics</span>
     <span class="research-map-hub-detail"><span>Perception</span><span>Learning</span><span>Action</span></span>
   </button>
   {% for interest in site.data.profile.research_interests %}
     {% assign interest_id = interest.title | slugify %}
     <article class="research-map-node" data-map-node="{{ interest_id }}" data-map-position="{{ forloop.index }}" aria-labelledby="interest-{{ interest_id }}">
-      <h3 id="interest-{{ interest_id }}"><button class="research-map-select" type="button" data-map-select="{{ interest_id }}" aria-pressed="false" disabled>{{ interest.title }}</button></h3>
+      <h3 id="interest-{{ interest_id }}"><button class="research-map-select" type="button" data-map-select="{{ interest_id }}" aria-expanded="true" aria-controls="context-{{ interest_id }}" disabled>{{ interest.title }}</button></h3>
       <p>{{ interest.description }}</p>
       {% if interest.links %}<div class="research-map-links">{% for link in interest.links %}<a href="{{ link.url | relative_url }}">{{ link.title }}</a>{% endfor %}</div>{% endif %}
+      <div class="research-map-context" id="context-{{ interest_id }}">
+        {% if interest.context %}<p>{{ interest.context }}</p>{% endif %}
+        {% if interest.context_link %}<a href="{{ interest.context_link.url | relative_url }}">{{ interest.context_link.title }}</a>{% endif %}
+        <a class="topic-permalink" href="#interest-{{ interest_id }}" aria-label="Permalink to {{ interest.title }}">Link to topic</a>
+      </div>
     </article>
   {% endfor %}
 </div>

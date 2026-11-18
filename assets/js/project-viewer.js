@@ -42,6 +42,16 @@
   const sizeButton = dialog.querySelector('[data-viewer-size]');
   const previous = dialog.querySelector('[data-viewer-previous]');
   const next = dialog.querySelector('[data-viewer-next]');
+  const picker = dialog.querySelector('[data-viewer-picker]');
+  if (links.length > 1) {
+    links.forEach((link, position) => {
+      const figure = link.closest('figure');
+      const heading = figure?.querySelector('figcaption')?.textContent.trim().split('. ')[0] || link.querySelector('img').alt;
+      picker.add(new Option(`${position + 1}. ${heading}`, String(position)));
+    });
+    picker.closest('label').hidden = false;
+    picker.addEventListener('change', () => show(picker.selectedIndex));
+  }
   let index = 0;
   let opener = null;
   let actualSize = false;
@@ -67,6 +77,7 @@
     image.src = link.href;
     original.href = link.href;
     counter.textContent = `Image ${index + 1} of ${links.length}`;
+    if (links.length > 1) picker.selectedIndex = index;
     caption.replaceChildren();
     if (sourceCaption) {
       sourceCaption.childNodes.forEach(node => caption.append(node.cloneNode(true)));
@@ -92,6 +103,7 @@
   dialog.querySelector('[data-viewer-close]').addEventListener('click', () => dialog.close());
   dialog.addEventListener('keydown', event => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    if (event.target === picker) return;
     // At actual size, arrow keys scroll the image when its viewport has focus.
     if (actualSize && document.activeElement === viewport) return;
     if (links.length > 1 && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {

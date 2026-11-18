@@ -2,6 +2,11 @@
 layout: project
 title: Hyadex
 description: A self-hosted workspace for coordinating Claude Code and Codex through a native macOS app.
+contribution: I built a self-hosted workspace that brings Claude Code and Codex into a shared conversation, with native approvals and inspectable code changes.
+related_projects: [/projects/papernas/]
+short_title: Hyadex
+design_choice: A native macOS client connects to a user-controlled server where Claude Code and Codex retain their own approval and execution paths.
+evidence: The repository and snapshot-mode screens show group discussions, changed files, and approval requests using sample data.
 category: Software
 code_url: https://github.com/ezoiHY/Hyadex
 year: "2026"

@@ -2,6 +2,11 @@
 layout: project
 title: Vision-guided biomimetic robotic fish
 description: Scene recognition and diver tracking for underwater human–robot collaboration.
+contribution: I developed the YOLOv8 scene-recognition module, worked on diver tracking, and helped improve the mechanical structure.
+related_projects: [/projects/underactuated-hand/, /projects/language-quadruped/]
+short_title: Robotic fish
+design_choice: A camera on the robotic fish supplies images for YOLOv8 scene recognition and diver tracking.
+evidence: The tank photograph shows the camera-equipped hardware. This national-level student innovation project is ongoing.
 category: Underwater Robotics
 year: "2025—present"
 sort_year: 2025

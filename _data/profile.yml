@@ -26,6 +26,8 @@ research_interests:
   - title: Dexterous manipulation
     label: Dexterous Manipulation
     description: Robotic hand control, human hand-motion retargeting, and adaptive grasping.
+    context: >-
+      My prosthetic hand uses one actuator and a pulley-free tendon transmission for adaptive grasping. In a separate simulation project, I used monocular RGB hand poses and inverse kinematics to control an articulated robotic hand.
     links:
       - title: Hand retargeting
         url: /projects/monocular-hand-control/
@@ -34,21 +36,32 @@ research_interests:
   - title: Multimodal sensing
     label: Multimodal Sensing
     description: Combining sensing modalities to inform robot perception and interaction.
+    context: >-
+      The PAIRS Lab wrist demonstration records muscle activity and inertial signals alongside hand gestures. It is a lab prototype that illustrates how different sensors can describe the same movement.
     links:
       - title: PAIRS Lab sensing demo
         url: /publications/#wrist-sensing
   - title: Force-aware robot learning
     label: Force-aware Robot Learning
     description: Learning to account for forces and physical interaction in robot behavior.
+    context: >-
+      My pulley-free hand distributes grasp forces through a mechanical transmission. That design motivates my interest in how a robot might learn from physical interaction. The hand project documents the mechanism and its grasp tests.
   - title: Human sensing
     label: Human Sensing
     description: Sensing human motion and behavior for human–robot interaction.
+    context: >-
+      I used RGB images to reconstruct human hand poses and retarget them to a robotic hand in simulation. The PAIRS Lab wrist prototype offers another view of hand gestures through muscle activity and inertial signals.
+    context_link:
+      title: RGB hand retargeting
+      url: /projects/monocular-hand-control/
     links:
       - title: PAIRS Lab wrist demo
         url: /publications/#wrist-sensing
   - title: Embodied intelligence
     label: Embodied Intelligence
     description: Connecting perception, learning, and action in physical robot systems.
+    context: >-
+      For the Unitree Go1, I connected a local Qwen model to the robot's motion-control interface. The project includes a demonstration of the physical robot responding to language-guided control.
     links:
       - title: Language-controlled quadruped
         url: /projects/language-quadruped/

@@ -307,7 +307,7 @@ test('absent, single-slide, and incomplete carousels remain static and readable'
 test('the published homepage keeps every selected project visible without carousel enhancement', () => {
   const template = fs.readFileSync(path.join(root, '_includes/selected-project.liquid'), 'utf8');
   const home = fs.readFileSync(path.join(root, '_pages/home.html'), 'utf8');
-  assert.match(template, /<article class="selected-project">/);
+  assert.match(template, /<article class="selected-project"(?:\s[^>]*)?>/);
   assert.doesNotMatch(template, /\b(?:hidden|inert|aria-hidden)\b[^>]*>\s*<div class="selected-project-copy"/);
   assert.match(template, /<h4 class="selected-project-title">\s*<a\b[^>]*href=/);
   assert.doesNotMatch(home, /data-project-carousel|data-carousel-controls|project-carousel\.js/);

@@ -1,0 +1,43 @@
+{% assign comparable = site.projects | where_exp: 'item', 'item.design_choice and item.evidence' %}
+{% if comparable.size >= 2 %}
+  {% assign left = comparable | where: 'url', '/projects/underactuated-hand/' | first | default: comparable.first %}
+  {% assign others = comparable | where_exp: 'item', 'item.url != left.url' %}
+  {% assign right = others | where: 'url', '/projects/monocular-hand-control/' | first | default: others.first %}
+  <details class="project-compare" id="compare-projects">
+    <summary>Compare projects</summary>
+    <div class="compare-controls" hidden>
+      {% for side in (1..2) %}
+        <label>{% if side == 1 %}First project{% else %}Second project{% endif %}
+          <select data-compare-select>
+            {% for item in comparable %}
+              <option value="{{ item.url | split: '/' | last | escape }}"{% if side == 1 and item.url == left.url %} selected{% elsif side == 2 and item.url == right.url %} selected{% endif %}>{{ item.short_title | default: item.title | escape }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      {% endfor %}
+    </div>
+    <table class="compare-table">
+      <caption class="sr-only">Project methods, contributions and evidence</caption>
+      <thead><tr><td></td><th scope="col"><a href="{{ left.url | relative_url }}">{{ left.short_title | default: left.title }}</a></th><th scope="col"><a href="{{ right.url | relative_url }}">{{ right.short_title | default: right.title }}</a></th></tr></thead>
+      <tbody>
+        <tr data-compare-field="designChoice"><th scope="row">Design choice</th><td>{{ left.design_choice }}</td><td>{{ right.design_choice }}</td></tr>
+        <tr data-compare-field="contribution"><th scope="row">My contribution</th><td>{{ left.contribution }}</td><td>{{ right.contribution }}</td></tr>
+        <tr data-compare-field="evidence"><th scope="row">Evidence</th><td>{{ left.evidence }}</td><td>{{ right.evidence }}</td></tr>
+      </tbody>
+    </table>
+    <div class="compare-share" hidden>
+      <button type="button" data-copy-comparison>Copy comparison link</button>
+      <input type="url" readonly hidden aria-label="Comparison link">
+    </div>
+    <p class="compare-status sr-only" role="status"></p>
+    <noscript>
+      <style>.project-compare .compare-table{display:none}</style>
+      {% for item in comparable %}
+        <article class="comparison-record">
+          <h3><a href="{{ item.url | relative_url }}">{{ item.short_title | default: item.title | escape }}</a></h3>
+          <p>{{ item.design_choice | escape }}</p><p>{{ item.evidence | escape }}</p>
+        </article>
+      {% endfor %}
+    </noscript>
+  </details>
+{% endif %}

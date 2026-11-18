@@ -2,7 +2,9 @@
 {% assign project_cover = project.cover | default: project.image %}
 {% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}
 {% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}
-<article class="project-card" data-category="{{ project.category | escape }}" data-project-area="{% if project.category == 'Software' %}software{% else %}robotics{% endif %}" data-project-url="{{ project.url | relative_url }}">
+<article class="project-card" data-category="{{ project.category | escape }}" data-project-area="{% if project.category == 'Software' %}software{% else %}robotics{% endif %}" data-project-url="{{ project.url | relative_url }}"
+  data-compare-key="{{ project.url | split: '/' | last | escape }}" data-short-title="{{ project.short_title | default: project.title | escape }}"
+  data-design-choice="{{ project.design_choice | escape }}" data-contribution="{{ project.contribution | escape }}" data-evidence="{{ project.evidence | escape }}">
   {% if project.video %}
     <div class="project-visual">{% include project-media.liquid project=project thumbnail=true %}</div>
   {% else %}

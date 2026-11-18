@@ -7,47 +7,63 @@ searchable: true
 description: Yu Han (Harry). Education at SCUT, research at PAIRS Lab and the Intelligent Structures Laboratory, a Huawei internship, and academic honors.
 ---
 {% assign profile = site.data.profile %}
-<header class="page-heading shell">
-  <h1>About</h1>
-  <p>{{ profile.name }} · {{ profile.role }}</p>
-</header>
-<section class="shell page-content">
-  <article class="about-story prose">
-    <img class="about-portrait" src="{{ profile.avatar_small | default: profile.avatar | relative_url }}" srcset="{{ profile.avatar_small | relative_url }} 480w, {{ profile.avatar_large | relative_url }} 800w" sizes="(max-width: 370px) 140px, (max-width: 680px) 110px, 155px" alt="{{ profile.name }}" width="1206" height="1641">
-    {% for paragraph in profile.bio %}{{ paragraph | markdownify }}{% endfor %}
-  </article>
-  <div class="social-links">
-    <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
-    <a href="mailto:{{ profile.email }}">{{ profile.email }}</a>
-    <button type="button" data-copy="{{ profile.email }}"><span>Copy email</span></button>
-    <a href="{{ '/cv/' | relative_url }}">View CV</a>
-    <a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>Download CV (PDF)</a>
-  </div>
-  <p id="copy-status" class="sr-only" aria-live="polite"></p>
-  <section class="about-section">
-    <h2>Education</h2>
-    {% for education in profile.education %}
-      <div class="education-entry">
-        <div class="dated-heading"><h3>{{ education.institution }}</h3><span class="date-leader" aria-hidden="true"></span><span class="entry-date">{{ education.period }}</span></div>
-        <p>{{ education.degree }} in {{ education.major }}</p>
-        {% if education.location %}<p class="entry-meta">{{ education.location }}</p>{% endif %}
+<article class="shell dossier">
+  <header class="dossier-intro">
+    <div class="dossier-identity">
+      <h1>{{ profile.name | escape }}</h1>
+      <p class="dossier-role">{{ profile.role | escape }}</p>
+      <div class="dossier-bio prose">{{ profile.bio.first | markdownify }}</div>
+      <div class="dossier-actions">
+        <a class="folio-action" href="{{ '/cv/' | relative_url }}">View CV {% include icon.liquid name='arrow' %}</a>
+        <a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>{% include icon.liquid name='download' %} Download PDF</a>
       </div>
-    {% endfor %}
+    </div>
+    <figure class="dossier-portrait">
+      <img src="{{ profile.avatar_small | default: profile.avatar | relative_url }}" srcset="{{ profile.avatar_small | relative_url }} 480w, {{ profile.avatar_large | relative_url }} 800w" sizes="(max-width: 650px) 155px, 260px" alt="Portrait of {{ profile.name | escape }}" width="1206" height="1641" fetchpriority="high">
+      <figcaption>{% include icon.liquid name='pin' %} {{ profile.location | escape }}</figcaption>
+    </figure>
+  </header>
+  <nav class="folio-jumps" aria-label="About page sections">
+    <a href="#background">Background</a><a href="#education">Education</a><a href="#experience">Experience</a><a href="#awards">Honors</a><a href="#contact">Contact</a>
+  </nav>
+  <section class="dossier-row" id="background">
+    <h2>Background</h2>
+    <div class="prose">{% for paragraph in profile.bio offset: 1 %}{{ paragraph | markdownify }}{% endfor %}
+      <p>I keep <a href="{{ '/posts/' | relative_url }}">notes on what I learn and build</a>. <a href="{{ '/posts/hello-world/' | relative_url }}">Why I started this blog</a> describes how I use them.</p>
+    </div>
   </section>
-  <section class="about-section" id="experience">
-    <h2>Research & industry experience</h2>
+  <section class="dossier-row" id="education">
+    <h2>Education</h2>
+    <div>{% for degree in profile.education %}
+      <div class="dossier-degree">
+        <p class="folio-date">{{ degree.period | escape }}</p>
+        <h3>{{ degree.institution | escape }}</h3>
+        <p>{{ degree.degree | escape }} in {{ degree.major | escape }}</p>
+        {% if degree.location %}<p class="entry-meta">{{ degree.location | escape }}</p>{% endif %}
+      </div>
+    {% endfor %}</div>
+  </section>
+  <section class="dossier-row" id="experience">
+    <h2>Experience</h2>
     {% include experience-list.liquid %}
   </section>
-  <section class="about-section">
-    <h2>Honors & awards</h2>
-    <ul class="award-list">
-      {% for award in profile.awards %}
-        <li class="award-item"><div class="dated-heading"><strong>{{ award.title }} · {{ award.distinction }}</strong>{% if award.year and award.year != '' %}<span class="date-leader" aria-hidden="true"></span><span class="entry-date">{{ award.year }}</span>{% endif %}</div>{% if award.description %}<p>{{ award.description }}</p>{% endif %}</li>
-      {% endfor %}
-    </ul>
+  <section class="dossier-row" id="awards">
+    <h2>Honors &amp; awards</h2>
+    <ul class="dossier-awards">{% for award in profile.awards %}
+      <li><div class="dossier-award-line"><h3>{{ award.title | escape }}</h3>{% if award.year %}<span class="folio-date">{{ award.year | escape }}</span>{% endif %}</div>
+        <p>{{ award.distinction | escape }}</p>{% if award.description %}<p class="entry-meta">{{ award.description | escape }}</p>{% endif %}
+      </li>
+    {% endfor %}</ul>
   </section>
-  <section class="about-section">
-    <h2>Writing</h2>
-    <p>I keep a <a href="{{ '/posts/' | relative_url }}">blog</a> for learning notes, project logs, and reflections. <a href="{{ '/posts/hello-world/' | relative_url }}">Why I started this blog</a> introduces what I hope to document.</p>
+  <section class="dossier-row" id="contact">
+    <h2>Contact</h2>
+    <div>
+      <a class="dossier-email" href="mailto:{{ profile.email | escape }}">{{ profile.email | escape }}</a>
+      <div class="dossier-actions">
+        <button type="button" data-copy="{{ profile.email | escape }}">{% include icon.liquid name='copy' %} <span>Copy email</span></button>
+        <a href="{{ profile.github | escape }}" target="_blank" rel="noopener noreferrer">{% include icon.liquid name='github' %} GitHub</a>
+      </div>
+      <p id="copy-status" class="sr-only" role="status"></p>
+    </div>
   </section>
-</section>
+</article>

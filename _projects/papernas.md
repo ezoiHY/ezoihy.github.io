@@ -2,6 +2,11 @@
 layout: project
 title: PaperNAS
 description: A self-hosted research workspace connecting paper reading, source evidence, and research records across Mac and web clients.
+contribution: I built a research workspace that connects paper reading and source evidence to persistent research records across Mac and web clients.
+related_projects: [/projects/hyadex/]
+short_title: PaperNAS
+design_choice: Mac and web clients share a FastAPI backend. PostgreSQL stores research records while content-addressed files retain source documents.
+evidence: The repository and demonstration screens show the paper library, document reading, and linked research records.
 category: Software
 code_url: https://github.com/ezoiHY/PaperNAS
 year: "2026"

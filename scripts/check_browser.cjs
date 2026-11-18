@@ -52,6 +52,15 @@ async function escapeSearch(page) {
 }
 async function search(page) {
   await page.locator('.search-trigger').click();
+  assert.equal(await page.locator('.search-result').count(), await page.locator('.desktop-nav a').count());
+  await page.locator('[data-search-type="Post"]').click();
+  await page.locator('#site-search').fill('zzzz-no-such-post');
+  await page.locator('.search-empty button').click();
+  assert.equal(await page.locator('[data-search-type="all"]').getAttribute('aria-pressed'), 'true');
+  await page.locator('[data-search-type="Research"]').click();
+  await page.locator('#site-search').fill('dexterous');
+  assert.ok(await page.locator('.search-result[href$="#interest-dexterous-manipulation"]').isVisible());
+  await page.locator('[data-search-type="Project"]').click();
   await page.locator('#site-search').fill('hand');
   assert.ok(await page.locator('.search-result').count());
   await page.locator('#site-search').press('ArrowDown');
@@ -62,6 +71,27 @@ async function search(page) {
   await page.keyboard.press('Control+k');
   await page.waitForFunction(() => document.querySelector('#search-dialog').open);
   await escapeSearch(page);
+}
+async function homePreview(page) {
+  const rows = page.locator('.selected-project:has([data-quick-trigger])');
+  const titles = await rows.locator('.selected-project-title').allTextContents();
+  const trigger = rows.first().locator('[data-quick-trigger]');
+  await trigger.click();
+  const dialog = page.locator('#quick-look[open]');
+  const title = dialog.locator('h2');
+  assert.equal(await title.textContent(), titles[0]);
+  await page.keyboard.press('ArrowLeft');
+  assert.equal(await title.textContent(), titles.at(-1));
+  await dialog.locator('[data-quick-next]').click();
+  assert.equal(await title.textContent(), titles[0]);
+  assert.equal(await dialog.locator('.quick-project-link').getAttribute('href'),
+    await rows.first().locator('.selected-project-title a').getAttribute('href'));
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => document.activeElement.matches('[data-quick-trigger]'));
+  const software = page.locator('.home-jumps a[href="#software-title"]');
+  await software.click();
+  await page.waitForFunction(() => document.querySelector('.home-jumps [aria-current]')?.hash === '#software-title');
+  await page.evaluate(() => window.scrollTo(0, 0));
 }
 async function wallpaper(page, name) {
   await page.locator('.background-toggle').click();
@@ -185,6 +215,7 @@ async function projects(page) {
       });
       await page.evaluate(() => scrollTo(0, 0));
       if (enabled('search')) await check(`${name}: search keyboard and empty state`, () => search(page));
+      if (enabled('quicklook')) await check(`${name}: project quick look and section navigation`, () => homePreview(page));
       if (enabled('theme')) await check(`${name}: theme toggle and persistence`, async () => {
         await page.locator('.theme-toggle').click();
         const next = scheme === 'light' ? 'dark' : 'light';

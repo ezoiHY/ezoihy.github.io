@@ -9,7 +9,7 @@ nav_section: /projects/
     <h1>{{ page.title }}</h1>
     <p>{{ page.description }}</p>
     <p class="entry-meta">{{ page.year }} · {{ page.category }}</p>
-    {% if page.tags.size > 0 %}<p class="project-tags">{{ page.tags | join: ' · ' }}</p>{% endif %}
+    {% if page.tags.size > 0 %}<p class="project-tags">{% for tag in page.tags %}<a href="{{ '/projects/' | relative_url }}?q={{ tag | url_encode }}" aria-label="Find projects about {{ tag | escape }}">{{ tag | escape }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</p>{% endif %}
     {% if page.code_url or page.video_source %}
       <nav class="profile-links" aria-label="Project resources">
         {% if page.code_url %}<a class="button" href="{{ page.code_url | escape }}" target="_blank" rel="noopener noreferrer">View code</a>{% endif %}
@@ -22,10 +22,21 @@ nav_section: /projects/
       {% if page.video %}
         {% include project-media.liquid project=page loading='eager' %}
       {% else %}
-        <a class="project-media-link" href="{{ page.image | relative_url }}" data-project-viewer aria-label="Enlarge project image"><img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title | escape }}" width="{{ page.image_width | default: 800 }}" height="{{ page.image_height | default: 560 }}"></a>
+        <a class="project-media-link" href="{{ page.image | relative_url }}" data-project-viewer aria-label="Enlarge project image"><img src="{{ page.image | relative_url }}" alt="{{ page.image_alt | default: page.title | escape }}" width="{{ page.image_width | default: 800 }}" height="{{ page.image_height | default: 560 }}"><span class="photo-open" aria-hidden="true">Enlarge ↗</span></a>
       {% endif %}
       <figcaption>{{ page.image_caption | default: 'Conceptual illustration, not a photograph of the project hardware' }}{% if page.video_source %} <a href="{{ page.video_source | escape }}" target="_blank" rel="noopener noreferrer">Watch the full demo on Bilibili</a>.{% elsif page.image_source %} <a href="{{ page.image_source | escape }}" target="_blank" rel="noopener noreferrer">View the original screenshot</a>.{% endif %}</figcaption>
     </figure>
+  {% endif %}
+  {% if page.contribution or page.design_choice or page.evidence %}
+    <section class="case-notes" aria-labelledby="engineering-notes">
+      <h2 id="engineering-notes">Engineering notes</h2>
+      {% if page.highlights %}<ul class="case-measures">{% for fact in page.highlights %}<li><strong>{{ fact.value | escape }}</strong>{{ fact.label | escape }}</li>{% endfor %}</ul>{% endif %}
+      <dl>
+        {% if page.contribution %}<div><dt>My contribution</dt><dd>{{ page.contribution | escape }}</dd></div>{% endif %}
+        {% if page.design_choice %}<div><dt>Design choice</dt><dd>{{ page.design_choice | escape }}</dd></div>{% endif %}
+        {% if page.evidence %}<div><dt>Evidence</dt><dd>{{ page.evidence | escape }}</dd></div>{% endif %}
+      </dl>
+    </section>
   {% endif %}
   <div class="prose page-content">{{ content }}</div>
   <footer class="project-continuation">
@@ -33,27 +44,19 @@ nav_section: /projects/
       <a href="{{ '/projects/' | relative_url }}" data-project-return>All projects</a>
       {% if site.data.profile.email %}<a href="mailto:{{ site.data.profile.email | escape }}">Email</a>{% endif %}
     </nav>
-    {% if page.category == 'Software' %}
-      {% assign continuation_projects = site.projects | where: 'category', 'Software' %}
-      {% assign continuation_heading = 'More research software' %}
-    {% else %}
-      {% assign continuation_projects = site.projects | where_exp: 'project', "project.category != 'Software'" %}
-      {% assign continuation_heading = 'More robotics projects' %}
-    {% endif %}
-    {% if continuation_projects.size > 1 %}
+    {% if page.related_projects.size > 0 %}
       <nav class="project-more" aria-labelledby="project-more-title">
-        <h2 id="project-more-title">{{ continuation_heading }}</h2>
+        <h2 id="project-more-title">Related projects</h2>
         <ul>
-          {% assign continuation_count = 0 %}
-          {% assign continuation_years = continuation_projects | group_by: 'sort_year' | sort: 'name' | reverse %}
-          {% for project_year in continuation_years %}
-            {% assign year_projects = project_year.items | sort: 'sort_priority' | reverse %}
-            {% for project in year_projects %}
-              {% if project.url != page.url and continuation_count < 2 %}
-                <li><a href="{{ project.url | relative_url }}" data-project-continue>{{ project.title }}</a><span>{{ project.year }} · {{ project.category }}</span></li>
-                {% assign continuation_count = continuation_count | plus: 1 %}
-              {% endif %}
-            {% endfor %}
+          {% for related_url in page.related_projects %}
+            {% assign project = site.projects | where: 'url', related_url | first %}
+            {% if project %}
+              <li>
+                <a href="{{ project.url | relative_url }}" data-project-continue>{{ project.title | escape }}</a>
+                <span>{{ project.year }} · {{ project.category }}</span>
+                {% if page.design_choice and project.design_choice %}<a class="case-compare-link" data-project-return href="{{ '/projects/' | relative_url }}?compare={{ page.url | split: '/' | last }},{{ project.url | split: '/' | last }}#compare-projects" aria-label="Compare this project with {{ project.short_title | default: project.title | escape }}">Compare these projects</a>{% endif %}
+              </li>
+            {% endif %}
           {% endfor %}
         </ul>
       </nav>
@@ -63,6 +66,7 @@ nav_section: /projects/
 <dialog id="project-viewer" class="project-viewer" aria-label="Project image viewer">
   <div class="project-viewer-toolbar">
     <p class="project-viewer-count" aria-live="polite" aria-atomic="true"></p>
+    <label class="project-viewer-picker" hidden><span class="sr-only">Choose an image</span><select data-viewer-picker></select></label>
     <div class="project-viewer-actions">
       <button type="button" data-viewer-size aria-pressed="false">Actual size</button>
       <a data-viewer-original target="_blank" rel="noopener noreferrer">Open original</a>
