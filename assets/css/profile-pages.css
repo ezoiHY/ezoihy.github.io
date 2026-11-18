@@ -162,3 +162,36 @@
   .dossier-row { break-inside:avoid; }
   .cv-document .cv-content .post-title { font-size:26pt; }
 }
+
+/* Portrait and credentials retain a common left reading edge with the case studies. */
+.dossier-intro { grid-template-columns:minmax(0,1fr) minmax(178px,31%); gap:clamp(30px,6vw,75px); }
+.dossier-identity h1, .cv-document .cv-content .post-title { font-size:clamp(40px,5.7vw,68px); line-height:1; font-weight:560; letter-spacing:-.058em; }
+.dossier-intro .dossier-bio p { font-size:clamp(15px,1.65vw,18px); line-height:1.58; }
+.dossier-portrait img { border-radius:4px; aspect-ratio:4/4.8; box-shadow:none; }
+.dossier-portrait figcaption { justify-content:flex-start; font:500 11px/1.5 var(--mono); }
+.dossier .folio-jumps { margin-top:clamp(24px,4vw,42px); }
+.dossier-row { padding-block:clamp(27px,4vw,46px); }
+.dossier-row h2, .cv-document .card-title { font-size:clamp(24px,3.2vw,34px); letter-spacing:-.04em; line-height:1.1; }
+.dossier-identity .folio-action, .cv-downloads .folio-action { border-radius:5px; padding-inline:15px; }
+.dossier .dossier-role { margin:13px 0 18px; font-size:15px; font-weight:580; }
+.dossier .dossier-email { font-size:clamp(22px,3vw,32px); }
+.cv-document { grid-template-columns:minmax(0,1fr) 160px; gap:clamp(24px,5vw,60px); }
+.cv-document .cv-content .post-header { padding-bottom:18px; margin-bottom:6px; }
+.cv-document .cv-sidebar { border-left:1px solid var(--line); padding-left:18px; }
+.cv-document .cv-content .post-description { max-width:54ch; font-size:17px; }
+.cv-document .cv-content .card { padding-block:24px; border-radius:0; }
+.cv-document .cv-content .card > table td:first-child { width:118px; }
+@media(max-width:700px) {
+  .cv-document .cv-sidebar { border:none; padding:0; }
+  .cv-document .cv-content .post-header { padding-bottom:0; }
+  .dossier-intro { grid-template-columns:minmax(0,1fr) 133px; gap:8px 20px; }
+}
+@media(max-width:550px) {
+  .dossier-intro { grid-template-columns:minmax(0,1fr) 102px; }
+  .dossier-intro .dossier-role { margin:0; }
+  .dossier-identity h1 { font-size:clamp(28px,7.7vw,40px); }
+  .cv-document .cv-content .card > table td:first-child { width:89px; }
+}
+@media print {
+  .cv-document .cv-content .post-title { font-size:26pt; }
+}

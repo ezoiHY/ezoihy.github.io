@@ -5,6 +5,12 @@
   const { home, projects } = document.currentScript.dataset;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
+  function visible(image) {
+    const bounds = image?.getBoundingClientRect();
+    return bounds?.width > 0 && bounds.height > 0 && bounds.bottom > 0 && bounds.top < innerHeight &&
+      bounds.right > 0 && bounds.left < innerWidth;
+  }
+
   function matchingImage(other) {
     if (document.querySelector('dialog[open]')) return null;
     if (other.pathname === home || other.pathname === projects) {
@@ -12,9 +18,15 @@
       return document.querySelector('.project-detail .project-figure img');
     }
     if (document.querySelector('[data-project-explorer][data-view="list"]')) return null;
-    const card = [...document.querySelectorAll('[data-project-url]')]
-      .find(item => item.dataset.projectUrl === other.pathname);
-    return card?.querySelector('.project-visual img, .selected-project-image img');
+    const frames = [...document.querySelectorAll('[data-project-url]')]
+      .filter(item => item.dataset.projectUrl === other.pathname);
+    const focused = frames.find(item => item.contains(document.activeElement));
+    if (focused) frames.unshift(focused);
+    for (const frame of frames) {
+      const image = frame.querySelector('.project-visual img, .selected-project-image img, .hardware-image img, .archive-hardware-link img');
+      if (visible(image)) return image;
+    }
+    return null;
   }
 
   function pair(transition, entry) {
@@ -23,10 +35,7 @@
     // Navigation still finishes. Observe that rejection before deciding to skip.
     transition.ready.catch(() => {});
     const image = entry?.url && !reduced.matches ? matchingImage(new URL(entry.url)) : null;
-    const bounds = image?.getBoundingClientRect();
-    if (!bounds || !bounds.width || !bounds.height ||
-        bounds.bottom <= 0 || bounds.top >= innerHeight ||
-        bounds.right <= 0 || bounds.left >= innerWidth) {
+    if (!visible(image)) {
       transition.skipTransition();
       return;
     }

@@ -5,10 +5,13 @@ nav_section: /projects/
 <link rel="stylesheet" href="{{ '/assets/css/project-viewer.css' | relative_url }}">
 <script src="{{ '/assets/js/project-viewer.js' | relative_url }}" defer></script>
 <article class="project-detail shell">
+  {% assign image_height = page.image_height | default: 1 | at_least: 1 %}
+  {% assign image_ratio = page.image_width | default: 1 | times: 1.0 | divided_by: image_height %}
+  <div class="case-front{% if image_ratio >= 1.5 or page.image == nil %} case-front-wide{% endif %}">
   <header class="page-heading detail-heading">
+    <p class="entry-meta case-date">{{ page.category | escape }} <span>{{ page.year | replace: '—', '–' }}</span></p>
     <h1>{{ page.title }}</h1>
     <p>{{ page.description }}</p>
-    <p class="entry-meta">{{ page.year }} · {{ page.category }}</p>
     {% if page.tags.size > 0 %}<p class="project-tags">{% for tag in page.tags %}<a href="{{ '/projects/' | relative_url }}?q={{ tag | url_encode }}" aria-label="Find projects about {{ tag | escape }}">{{ tag | escape }}</a>{% unless forloop.last %} · {% endunless %}{% endfor %}</p>{% endif %}
     {% if page.code_url or page.video_source %}
       <nav class="profile-links" aria-label="Project resources">
@@ -27,10 +30,12 @@ nav_section: /projects/
       <figcaption>{{ page.image_caption | default: 'Conceptual illustration, not a photograph of the project hardware' }}{% if page.video_source %} <a href="{{ page.video_source | escape }}" target="_blank" rel="noopener noreferrer">Watch the full demo on Bilibili</a>.{% elsif page.image_source %} <a href="{{ page.image_source | escape }}" target="_blank" rel="noopener noreferrer">View the original screenshot</a>.{% endif %}</figcaption>
     </figure>
   {% endif %}
+  </div>
   {% if page.contribution or page.design_choice or page.evidence %}
     <section class="case-notes" aria-labelledby="engineering-notes">
-      <h2 id="engineering-notes">Engineering notes</h2>
+      <div class="case-notes-key"><h2 id="engineering-notes">Engineering notes</h2>
       {% if page.highlights %}<ul class="case-measures">{% for fact in page.highlights %}<li><strong>{{ fact.value | escape }}</strong>{{ fact.label | escape }}</li>{% endfor %}</ul>{% endif %}
+      </div>
       <dl>
         {% if page.contribution %}<div><dt>My contribution</dt><dd>{{ page.contribution | escape }}</dd></div>{% endif %}
         {% if page.design_choice %}<div><dt>Design choice</dt><dd>{{ page.design_choice | escape }}</dd></div>{% endif %}

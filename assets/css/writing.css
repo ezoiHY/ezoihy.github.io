@@ -46,3 +46,36 @@
   .post-reading:has(.reading-index:not([hidden])) { display: block; }
   .reading-index, .post-detail .article-end { display: none; }
 }
+
+.writing-heading { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.8fr); align-items:end; gap:clamp(20px,5vw,64px); }
+.writing-heading > div p { font-size:clamp(17px,2vw,22px); color:var(--muted); line-height:1.42; }
+.writing-heading > div a { display:inline-flex; align-items:center; gap:6px; min-height:38px; font-size:13px; }
+.writing-heading .icon { width:14px; height:14px; }
+.writing-archive .writing-filters { margin-bottom:0; }
+.writing-archive .journal-row {
+  grid-template-columns:minmax(100px,19%) minmax(0,1fr);
+  align-items:baseline;
+  gap:clamp(16px,4vw,42px);
+  padding-block:clamp(24px,4.3vw,43px);
+}
+.writing-archive .journal-date { color:var(--muted); }
+.writing-archive .journal-row h2 { margin:0 0 9px; font-size:clamp(26px,3.4vw,36px); font-weight:550; line-height:1.12; letter-spacing:-.043em; }
+.writing-archive .journal-row h2 a { color:var(--ink); }
+.writing-archive .journal-copy > p { max-width:65ch; }
+.writing-archive .journal-copy .entry-meta { margin-top:12px; color:var(--muted); font:500 11px/1.5 var(--mono); }
+.post-detail .detail-heading { padding-bottom:clamp(22px,4vw,36px); border-bottom:1px solid var(--line); margin-bottom:clamp(23px,3vw,35px); }
+.post-detail .detail-heading h1 { max-width:22ch; }
+.post-detail .post-deck { max-width:55ch; color:var(--ink); font-size:clamp(17px,2.1vw,23px); line-height:1.43; }
+.post-byline { display:flex; align-items:baseline; gap:4px 19px; flex-wrap:wrap; margin-top:16px; font-size:13px; }
+.post-byline time, .post-detail .post-tags { color:var(--muted); font:500 11px/1.55 var(--mono); }
+.post-detail .reading-prose h2 { font-size:clamp(23px,2.8vw,30px); line-height:1.16; letter-spacing:-.032em; }
+.post-detail .reading-prose p, .post-detail .reading-prose li { line-height:1.74; }
+.post-reading:has(.reading-index:not([hidden])) { gap:clamp(20px,4.4vw,50px); grid-template-columns:minmax(0,1fr) minmax(136px,20%); }
+.post-detail .reading-index { padding-inline-start:15px; }
+.post-detail .article-end { margin-top:36px; padding-top:24px; }
+@media(max-width:680px) {
+  .writing-heading { grid-template-columns:minmax(0,1fr); gap:10px; }
+  .writing-archive .journal-row { grid-template-columns:minmax(0,1fr); gap:8px; }
+  .post-reading:has(.reading-index:not([hidden])) { grid-template-columns:minmax(0,1fr); }
+  .post-detail .reading-prose p { line-height:1.68; }
+}

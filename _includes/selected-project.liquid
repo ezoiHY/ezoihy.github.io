@@ -9,10 +9,15 @@
     <a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
   {% endif %}
   <div class="selected-project-copy">
-    <h4 class="selected-project-title"><a href="{{ project.url | relative_url }}">{{ project.title }}</a></h4>
-    <p class="project-meta">{{ project.year }} · {{ project.category }}</p>
-    <p>{{ project.description }}</p>
-    <div class="selected-project-links"><a class="project-details-link" href="{{ project.url | relative_url }}">View project</a>{% if project.image %}<button type="button" class="quick-trigger" data-quick-trigger aria-label="Quick look at {{ project.short_title | default: project.title | escape }}" aria-haspopup="dialog" aria-controls="quick-look" hidden>Quick look</button>{% endif %}{% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">Code</a>{% endif %}{% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Full demo</a>{% endif %}</div>
+    <p class="project-meta"><span>{{ project.category | escape }}</span><span>{{ project.year | escape }}</span></p>
+    <h4 class="selected-project-title"><a href="{{ project.url | relative_url }}">{{ project.title | escape }}</a></h4>
+    <p class="work-description">{{ project.description | escape }}</p>
+    <div class="selected-project-links">
+      <a class="project-details-link" href="{{ project.url | relative_url }}">View project {% include icon.liquid name='arrow' %}</a>
+      {% if project.image %}<button type="button" class="quick-trigger" data-quick-trigger aria-label="Quick look at {{ project.short_title | default: project.title | escape }}" aria-haspopup="dialog" aria-controls="quick-look" hidden>Quick look</button>{% endif %}
+      {% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">Code</a>{% endif %}
+      {% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Full demo</a>{% endif %}
+    </div>
   </div>
   {% if project.image %}
     <template data-quick-content>

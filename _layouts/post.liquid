@@ -5,15 +5,11 @@ nav_section: /posts/
 <article class="post-detail shell">
   <header class="page-heading detail-heading">
     <h1>{{ page.title | escape }}</h1>
-    <p class="entry-meta">
-      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%Y.%m.%d' }}</time> ·
-      <a href="{{ '/about/' | relative_url }}">{{ site.data.profile.name | escape }}</a>
-      {% for category in page.categories %}
-        {% if forloop.first %} · {% else %} / {% endif %}
-        <a data-post-category="{{ category | escape }}" href="{{ '/posts/' | relative_url }}?category={{ category | url_encode }}" aria-label="Browse {{ category | escape }} posts">{{ category | escape }}</a>
-      {% endfor %}
-    </p>
-    {% if page.description %}<p>{{ page.description | escape }}</p>{% endif %}
+    {% if page.description %}<p class="post-deck">{{ page.description | escape }}</p>{% endif %}
+    <div class="post-byline"><a href="{{ '/about/' | relative_url }}">{{ site.data.profile.name | escape }}</a>
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%b %-d, %Y' }}</time>
+      {% for category in page.categories %}<a data-post-category="{{ category | escape }}" href="{{ '/posts/' | relative_url }}?category={{ category | url_encode }}" aria-label="Browse {{ category | escape }} posts">{{ category | escape }}</a>{% endfor %}
+    </div>
     {% if page.tags.size > 0 %}<p class="entry-meta post-tags"><span class="sr-only">Topics: </span>{{ page.tags | join: ' · ' | escape }}</p>{% endif %}
   </header>
   <div class="post-reading">

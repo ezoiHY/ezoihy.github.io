@@ -71,3 +71,107 @@
   .project-compare, .case-compare-link, .project-figure .photo-open { display: none !important; }
   .case-notes { break-inside: avoid; background: transparent; }
 }
+
+/* The archive opens with a real hardware photograph, then the working index. */
+.project-archive-heading {
+  display:grid;
+  grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  align-items:center;
+  gap:clamp(26px,5vw,62px);
+  margin-bottom:clamp(32px,5vw,52px);
+}
+.project-archive-heading > div p { max-width:33ch; margin-top:16px; color:var(--muted); font-size:clamp(16px,1.7vw,20px); line-height:1.52; }
+.archive-hardware { margin:0; }
+.archive-hardware img { width:100%; aspect-ratio:1.91; object-fit:cover; object-position:center 43%; border-radius:3px; }
+.archive-hardware figcaption, .case-front .project-figure figcaption { color:var(--muted); font:500 11px/1.55 var(--mono); }
+.archive-hardware figcaption { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding-top:8px; }
+.project-explorer .project-browser-controls { margin-bottom:8px; }
+.project-explorer .project-compare { background:transparent; border:0; border-block:1px solid var(--line); border-radius:0; padding-inline:0; margin-block:12px 24px; }
+.project-explorer .project-grid { column-gap:clamp(20px,3.4vw,38px); row-gap:34px; }
+.project-explorer:not([data-view="list"]) .project-card {
+  border:none;
+  border-bottom:1px solid var(--line);
+  border-radius:0;
+  background:transparent;
+  box-shadow:none;
+  padding-bottom:11px;
+}
+.project-explorer .project-card .project-visual { border-radius:3px; }
+.project-explorer:not([data-view="list"]) .project-copy { padding:17px 0 0; }
+.project-explorer .project-copy .project-card-title { font-size:clamp(21px,2.5vw,30px); line-height:1.12; letter-spacing:-.038em; font-weight:550; margin-bottom:9px; }
+.project-explorer .project-card-title a { color:var(--ink); }
+.project-explorer .project-copy .project-meta { color:var(--muted); font:500 11px/1.55 var(--mono); }
+.project-explorer .project-copy p:not(.project-meta) { max-width:58ch; line-height:1.58; }
+.project-explorer .project-card-links { padding-top:8px; }
+.project-explorer .tag-list { gap:3px 12px; }
+.project-explorer .tag-list span { border:0; border-radius:0; padding:0; }
+.project-explorer .figure-note { max-width:78ch; margin:25px 0 0; font-size:12px; }
+.project-explorer[data-view="list"] .project-copy .project-card-title { font-size:clamp(18px,2vw,24px); }
+.project-explorer[data-view="list"] .project-card { gap:clamp(18px,3.5vw,36px); }
+.case-front { display:grid; grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr); align-items:center; gap:clamp(20px,4vw,44px); }
+.case-front .detail-heading, .case-front .project-figure { min-width:0; margin:0; }
+.case-front .detail-heading > h1 { line-height:1.04; letter-spacing:-.052em; overflow-wrap:break-word; }
+.case-front .case-date { display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; color:var(--accent); font:500 11px/1.5 var(--mono); margin:0 0 13px; }
+.case-front .case-date span { color:var(--muted); }
+.case-front .detail-heading > p:not(.entry-meta):not(.project-tags) { font-size:clamp(16px,1.8vw,20px); line-height:1.5; max-width:56ch; }
+.case-front .project-tags { font-size:12px; }
+.case-front .project-figure { width:100%; max-width:none; }
+.case-front .project-figure img, .case-front .project-figure .project-motion { border-radius:4px; }
+.case-front .project-figure figcaption { text-align:left; margin:8px 0 0; }
+.case-front .project-figure .photo-open { border-radius:4px; }
+.case-front-wide { grid-template-columns:1fr; gap:22px; }
+.case-front-wide .detail-heading { max-width:78ch; }
+.case-front-wide .project-figure { max-width:100%; }
+.case-front-wide .project-figure img { width:100%; height:auto; }
+.project-detail .case-notes {
+  display:grid;
+  grid-template-columns:minmax(0,.8fr) minmax(0,1.45fr);
+  gap:clamp(18px,4vw,46px);
+  margin:clamp(26px,5vw,52px) 0;
+  padding:22px 0 12px;
+  border:0;
+  border-top:2px solid var(--ink);
+  border-radius:0;
+  background:transparent;
+}
+.case-notes-key h2 { font-size:clamp(23px,3vw,32px); line-height:1.08; letter-spacing:-.04em; }
+.case-notes-key .case-measures { display:grid; gap:12px; margin:19px 0 0; }
+.case-notes-key .case-measures li { line-height:1.38; }
+.case-notes-key .case-measures strong { display:block; color:var(--accent); font-size:clamp(18px,2vw,24px); letter-spacing:-.025em; }
+.case-notes dl > div { grid-template-columns:100px minmax(0,1fr); }
+.case-notes dl > div:first-child { padding-top:0; border-top:0; }
+.project-detail > .prose { max-width:72ch; margin-inline:auto; }
+.project-detail .project-screenshot { width:min(100%,930px); }
+.project-detail .project-outline { background:transparent; border-radius:0; }
+.project-detail .project-continuation { margin-top:40px; }
+@media(min-width:701px) {
+  /* Bookend paired entries with a full row when the last item would stand alone. */
+  .project-explorer:not([data-view="list"]) .project-card:is(:nth-child(1 of :not([hidden])), :nth-last-child(1 of :not([hidden])):nth-child(even of :not([hidden]))) {
+    grid-column:1/-1;
+    display:grid;
+    grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+    align-items:center;
+    gap:clamp(24px,4vw,43px);
+    padding-bottom:25px;
+  }
+  .project-explorer:not([data-view="list"]) .project-card:is(:nth-child(1 of :not([hidden])), :nth-last-child(1 of :not([hidden])):nth-child(even of :not([hidden]))) .project-copy { padding:0; }
+}
+@media(max-width:700px) {
+  .case-front { grid-template-columns:1fr; gap:17px; }
+  .project-archive-heading { grid-template-columns:minmax(0,1fr); gap:16px; }
+  .project-archive-heading > div p { margin-top:9px; max-width:44ch; }
+  .archive-hardware img { aspect-ratio:2.1; }
+  .project-detail .case-notes { grid-template-columns:1fr; gap:18px; }
+  .case-notes-key .case-measures { display:flex; gap:10px 20px; margin:8px 0 0; }
+  .project-explorer[data-view="list"] .project-card { gap:12px; }
+}
+@media print {
+  .project-archive-heading { display:block; }
+  .archive-hardware { max-width:320px; }
+  .case-front, .project-detail .case-notes { display:block; }
+  .case-front .project-figure { max-width:120mm; margin:10px auto; }
+}
+
+.archive-hardware-link { display:block; }
+.archive-hardware figcaption a { display:inline-flex; align-items:center; gap:4px; }
+.archive-hardware figcaption .icon { width:13px; height:13px; }

@@ -1,0 +1,28 @@
+{% assign hardware_projects = '' | split: '' %}
+{% for entry in page.hardware %}
+  {% assign item = site.projects | where: 'url', entry.url | first %}
+  {% if item.image %}{% assign hardware_projects = hardware_projects | push: item %}{% endif %}
+{% endfor %}
+{% if hardware_projects.size > 0 %}
+  <div class="hardware-showcase" aria-label="Project photographs" role="group">
+    {% for item in hardware_projects %}
+      <figure class="hardware-plate" data-project-url="{{ item.url | relative_url }}" id="hardware-{{ forloop.index }}" {% unless forloop.first %}hidden{% endunless %}>
+        <a class="hardware-image" href="{{ item.url | relative_url }}" aria-label="Explore {{ item.short_title | default: item.title | escape }}" tabindex="-1">
+          <img src="{{ item.image | relative_url }}" alt="{{ item.image_alt | escape }}" width="{{ item.image_width }}" height="{{ item.image_height }}" {% if forloop.first %}fetchpriority="high"{% else %}loading="lazy"{% endif %}>
+        </a>
+        <figcaption>
+          <a class="hardware-title" href="{{ item.url | relative_url }}">{{ item.short_title | default: item.title | escape }} {% include icon.liquid name='external' %}</a>
+          {% assign feature = page.hardware | where: 'url', item.url | first %}
+          {% if feature.caption %}<p>{{ feature.caption | escape }}</p>{% endif %}
+        </figcaption>
+      </figure>
+    {% endfor %}
+    {% if hardware_projects.size > 1 %}
+      <div class="hardware-picker" role="group" aria-label="Choose a hardware photograph" hidden>
+        {% for item in hardware_projects %}
+          <button type="button" aria-label="Show {{ item.short_title | default: item.title | escape }}" title="{{ item.short_title | default: item.title | escape }}" aria-controls="hardware-{{ forloop.index }}" aria-pressed="{{ forloop.first }}"><img src="{{ item.cover | default: item.image | relative_url }}" alt="" width="48" height="36"></button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}

@@ -73,6 +73,16 @@ async function search(page) {
   await escapeSearch(page);
 }
 async function homePreview(page) {
+  const choices = page.locator('.hardware-picker button');
+  const plates = page.locator('.hardware-plate');
+  assert.equal(await plates.locator('.hardware-title:visible').count(), 1);
+  for (const index of [1, 0]) {
+    const button = choices.nth(index);
+    await button.press('Enter');
+    const visible = plates.locator('.hardware-title:visible');
+    assert.equal(await button.getAttribute('aria-pressed'), 'true');
+    assert.equal(await visible.getAttribute('href'), await plates.nth(index).locator('.hardware-image').getAttribute('href'));
+  }
   const rows = page.locator('.selected-project:has([data-quick-trigger])');
   const titles = await rows.locator('.selected-project-title').allTextContents();
   const trigger = rows.first().locator('[data-quick-trigger]');

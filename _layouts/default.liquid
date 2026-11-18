@@ -29,7 +29,10 @@
     {% if page.url == '/posts/' or page.collection == 'posts' or page.url == '/404.html' %}
       <link rel="stylesheet" href="{{ '/assets/css/writing.css' | relative_url }}">
     {% endif %}
-    {% if page.url == '/' %}<script src="{{ '/assets/js/home-preview.js' | relative_url }}" defer></script>{% endif %}
+    {% if page.url == '/' %}
+      <link rel="stylesheet" href="{{ '/assets/css/home-work.css' | relative_url }}">
+      <script src="{{ '/assets/js/home-preview.js' | relative_url }}" defer></script>
+    {% endif %}
     {% if page.url == '/' or page.url == '/projects/' or page.layout == 'project' %}
       {% comment %}Match images after the main document has been parsed, before the first paint.{% endcomment %}
       <link rel="expect" href="#site-footer" blocking="render" media="(prefers-reduced-motion: no-preference) and (scripting: enabled)">
@@ -54,7 +57,7 @@
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="header-wrap">
       <div class="site-header shell">
-        <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title | escape }} home" title="Back to home"><strong>{{ site.first_name | escape }} {{ site.last_name | escape }}</strong> (Harry)</a>
+        <a class="brand" href="{{ '/' | relative_url }}" aria-label="{{ site.title | escape }} home" title="Back to home"><img class="brand-sign" src="{{ '/assets/img/favicon.svg' | relative_url }}" width="30" height="30" alt=""><span><strong>{{ site.first_name | escape }} {{ site.last_name | escape }}</strong> (Harry)</span></a>
         <nav class="desktop-nav" aria-label="Main navigation">
           {% for item in site.data.navigation %}<a href="{{ item.url | relative_url }}"{% if page.url == item.url %} class="active" aria-current="page"{% elsif page.nav_section == item.url %} class="active" aria-current="true"{% endif %}>{{ item.title }}</a>{% endfor %}
         </nav>

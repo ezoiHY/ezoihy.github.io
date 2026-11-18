@@ -1,0 +1,262 @@
+/* The lead study has room for both camera views. Later projects use a contact sheet. */
+.work-block {
+  --work-matte: #e8edf3;
+  --work-plate: #f0f3f7;
+  --work-dark: #122239;
+  margin-block-start: clamp(48px, 7vw, 84px);
+}
+:root[data-theme="dark"] .work-block {
+  --work-matte: #1b2b40;
+  --work-plate: #152132;
+  --work-dark: #0d1728;
+}
+.work-section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-block-end: 24px;
+}
+.work-section-heading :is(h2, h3) {
+  color: var(--ink);
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 640;
+  line-height: 1.08;
+  letter-spacing: -.052em;
+}
+.work-section-heading > a,
+.work-block .project-details-link {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+}
+.work-section-heading > a { flex-shrink: 0; }
+.work-section-heading .icon,
+.work-block .project-details-link .icon { width: 15px; height: 15px; }
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px 21px;
+}
+.work-grid .selected-project {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: stretch;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+}
+.work-grid .selected-project-image {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  border-radius: 11px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--work-matte);
+}
+.work-grid .selected-project-image > img { width: 100%; height: 100%; object-fit: contain; }
+.work-grid .selected-project-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding-top: 15px;
+}
+.work-grid .project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 9px;
+  align-items: baseline;
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 550;
+  color: var(--muted);
+  letter-spacing: .012em;
+}
+.work-grid .project-meta span + span {
+  padding-inline-start: 9px;
+  border-inline-start: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.work-grid .selected-project-title {
+  margin: 0 0 7px;
+  color: var(--ink);
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 620;
+  line-height: 1.19;
+  letter-spacing: -.035em;
+  text-wrap: pretty;
+}
+.work-grid .selected-project-title a { color: inherit; }
+.work-grid .work-description {
+  margin: 0;
+  padding-bottom: 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.work-grid .selected-project-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 13px;
+  margin: auto 0 0;
+}
+.work-grid .selected-project-links > :is(a, button) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 12px;
+}
+.work-grid .selected-project-links > [hidden] { display: none; }
+.work-grid .project-details-link {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.work-grid .quick-trigger { color: var(--ink); }
+.work-robotics .selected-project:first-child {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr);
+  gap: 0;
+  background: var(--work-plate);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+}
+.work-robotics .selected-project:first-child .selected-project-image {
+  min-height: 252px;
+  height: 100%;
+  aspect-ratio: auto;
+  padding: clamp(14px, 2.4vw, 28px);
+  border: 0;
+  border-radius: 14px 0 0 14px;
+  background-color: var(--work-dark);
+  background-image: radial-gradient(circle, #afcce329 .75px, transparent .9px);
+  background-size: 12px 12px;
+}
+.work-robotics .selected-project:first-child .selected-project-copy {
+  justify-content: center;
+  padding: clamp(20px, 3vw, 33px);
+}
+.work-robotics .selected-project:first-child .selected-project-title {
+  font-size: clamp(24px, 2.9vw, 34px);
+  line-height: 1.1;
+  letter-spacing: -.045em;
+}
+.work-robotics .selected-project:first-child .selected-project-links { margin-top: 0; }
+.work-software { margin-top: clamp(40px, 6vw, 70px); }
+.work-software .work-section-heading h3 { font-size: clamp(26px, 3vw, 36px); }
+.work-software .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.work-software .selected-project-image {
+  aspect-ratio: 1.85;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  padding: 14px;
+  place-items: center;
+  background: var(--work-plate);
+}
+.work-software .selected-project-image img {
+  width: auto;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  filter: drop-shadow(0 3px 7px #09172b19);
+}
+.work-index {
+  display: grid;
+  grid-template-columns: minmax(0, .47fr) minmax(0, 1fr);
+  gap: 20px clamp(25px, 5vw, 68px);
+  padding-top: clamp(24px, 3vw, 35px);
+  border-top: 1px solid var(--line);
+}
+.work-index .work-section-heading { display: block; margin: 0; }
+.work-index .work-section-heading h2 { font-size: clamp(28px, 3.2vw, 38px); }
+.work-index .work-section-heading > a { margin-top: 7px; }
+.work-index .experience-entry,
+.work-index .news-row {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  padding: 17px 0;
+}
+.work-index .experience-entry:first-child,
+.work-index .news-row:first-child { border-top: 0; padding-top: 2px; }
+.work-index .experience-entry:last-child,
+.work-index .news-row:last-child { padding-bottom: 0; }
+.work-index .dated-heading { justify-content: space-between; }
+.work-index .date-leader { display: none; }
+.work-index .dated-heading h3,
+.work-index .news-row h3 { font-size: 19px; font-weight: 600; letter-spacing: -.026em; }
+.work-index .dated-heading h3 a,
+.work-index .news-row h3 a { color: var(--ink); }
+.work-index :is(.experience-role, .entry-meta, .news-summary) {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.work-index .news-row { grid-template-columns: 102px minmax(0, 1fr); gap: 12px; }
+.work-index .news-row time,
+.work-index .entry-date { line-height: 1.5; font-family: inherit; font-size: 12px; font-variant-numeric: tabular-nums; }
+.work-index .home-contact { grid-column: 1 / -1; margin: 26px 0 0; }
+@media (hover: hover) {
+  .work-grid .selected-project-title a:hover,
+  .work-index .dated-heading h3 a:hover,
+  .work-index .news-row h3 a:hover { color: var(--accent); }
+}
+@media (max-width: 760px) {
+  .work-grid { gap: 24px 16px; }
+  .work-section-heading { margin-bottom: 16px; }
+  .work-robotics .selected-project:first-child .selected-project-copy { padding: 20px; }
+  .work-index { grid-template-columns: minmax(154px, .4fr) minmax(0, 1fr); gap: 20px; }
+  .work-index .news-row { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (min-width: 621px) and (max-width: 800px) {
+  .work-robotics .work-grid { grid-template-columns: minmax(0, 1fr); }
+  .work-robotics .selected-project:not(:first-child) {
+    display: grid;
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: 20px;
+  }
+  .work-robotics .selected-project:not(:first-child) .selected-project-copy { padding: 0; }
+}
+@media (max-width: 620px) {
+  .work-block { margin-top: 46px; }
+  .work-grid,
+  .work-software .work-grid,
+  .work-robotics .selected-project:first-child,
+  .work-index { grid-template-columns: minmax(0, 1fr); }
+  .work-grid,
+  .work-software .work-grid { gap: 26px; }
+  .work-robotics .selected-project:first-child .selected-project-image {
+    aspect-ratio: 2.15;
+    min-height: 0;
+    border-radius: 14px 14px 0 0;
+  }
+  .work-robotics .selected-project:first-child .selected-project-copy { padding: 18px 19px 8px; }
+  .work-index .work-section-heading { display: flex; align-items: baseline; }
+  .work-index .work-section-heading > a { margin-top: 0; }
+  .work-grid .selected-project-copy { padding-top: 12px; }
+  .work-index .dated-heading { flex-direction: row; flex-wrap: wrap; }
+  .work-index .home-contact { margin-top: 14px; }
+}
+@media (max-width: 390px) {
+  .work-section-heading { flex-wrap: wrap; gap: 0 12px; }
+}
+@media print {
+  .work-block { margin-top: 24px; }
+  .work-section-heading :is(h2, h3) { font-size: 21pt; }
+  .work-grid .selected-project { break-inside: avoid; }
+  .work-grid .selected-project-links,
+  .work-section-heading > a { display: none; }
+  .work-robotics .selected-project:first-child .selected-project-image { background: none; }
+}

@@ -5,9 +5,18 @@ permalink: /projects/
 searchable: true
 description: Yu Han (Harry)'s robotics projects and open-source software for coding-agent collaboration and research workflows, including Hyadex and PaperNAS.
 ---
-<header class="page-heading shell">
-  <h1>Projects</h1>
-  <p>Robotics projects and open-source tools for coding and research.</p>
+{% assign fish = site.projects | where: 'url', '/projects/robotic-fish/' | first %}
+<header class="page-heading shell project-archive-heading">
+  <div>
+    <h1>Projects</h1>
+    <p>Robotic hands, underwater perception, and language-driven control, alongside the software I build for research.</p>
+  </div>
+  {% if fish %}
+    <figure class="archive-hardware" data-project-url="{{ fish.url | relative_url }}">
+      <a class="archive-hardware-link" href="{{ fish.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ fish.image | relative_url }}" alt="{{ fish.image_alt | escape }}" width="{{ fish.image_width }}" height="{{ fish.image_height }}" fetchpriority="high"></a>
+      <figcaption><a href="{{ fish.url | relative_url }}">{{ fish.short_title | escape }} {% include icon.liquid name='external' %}</a><span>{{ fish.year | replace: '—', '–' }}</span></figcaption>
+    </figure>
+  {% endif %}
 </header>
 <section class="shell page-content project-explorer" data-project-explorer>
   {% assign software_count = site.projects | where: 'category', 'Software' | size %}
