@@ -19,7 +19,8 @@ description: Harry Han's learning notes, project logs, and personal essays.
   <div class="journal-list">
     {% for post in site.posts %}
       <article class="journal-row writing-entry" data-category="{{ post.categories | join: '|' | escape }}">
-        <time class="journal-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time>
+        {% assign reading_minutes = post.content | number_of_words | divided_by: 200 | at_least: 1 %}
+        <p class="journal-date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%Y.%m.%d' }}</time><small>{{ reading_minutes }} min read</small></p>
         <div class="journal-copy">
           <h2><a data-post-link href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
           <p>{{ post.description | escape }}</p>

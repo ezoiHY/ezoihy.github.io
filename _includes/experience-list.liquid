@@ -1,6 +1,6 @@
 <ul class="experience-list">
   {% for experience in site.data.profile.research_experience %}
-    <li class="experience-entry">
+    <li class="experience-entry" data-trajectory-key="exp-{{ experience.institution_short | default: experience.institution | slugify }}">
       <div class="dated-heading">
         <h3>{% if experience.institution_url %}<a href="{{ experience.institution_url }}">{% endif %}{% if include.compact %}{{ experience.institution_short }}{% else %}{{ experience.institution }}{% endif %}{% if experience.institution_url %}</a>{% endif %}</h3>
         <span class="date-leader" aria-hidden="true"></span>

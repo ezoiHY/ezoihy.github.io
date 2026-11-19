@@ -1,0 +1,9 @@
+{%- comment -%}
+  Spec readout shown over a project image on hover: the measured highlights, or the first tags.
+  Pass highlights_only=true where the tags are already printed beside the image.
+{%- endcomment -%}
+{%- if include.project.highlights -%}
+<span class="project-hud" aria-hidden="true">{% for fact in include.project.highlights limit: 2 %}<span><b>{{ fact.value | escape }}</b> {{ fact.label | downcase | escape }}</span>{% endfor %}</span>
+{%- elsif include.highlights_only != true and include.project.tags.size > 0 -%}
+<span class="project-hud" aria-hidden="true"><span>{{ include.project.tags | slice: 0, 3 | join: ' · ' | escape }}</span></span>
+{%- endif -%}

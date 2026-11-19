@@ -1,0 +1,162 @@
+/* Trajectory: a timeline drawn from the dated entries in _data/profile.yml.
+   Loaded on the homepage and About page. The chart is aria-hidden; the lists stay the record. */
+.trajectory {
+  --prelude: 11%;
+  --main-start: 15.5%;
+  --row: 31px;
+  position: relative;
+  padding-top: 24px;
+  color: var(--muted);
+  font: 500 10.5px/1.25 var(--mono);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+.trajectory-axis { position: absolute; inset: 0 0 auto; height: 24px; }
+.trajectory-year,
+.trajectory-now-label,
+.trajectory-prelude-year { position: absolute; top: 3px; white-space: nowrap; }
+.trajectory-year { left: calc(var(--main-start) + (100% - var(--main-start)) * var(--at) / 100); padding-left: 5px; }
+.trajectory-prelude-year { left: 0; width: var(--prelude); text-align: center; }
+.trajectory-now-label {
+  left: calc(var(--main-start) + (100% - var(--main-start)) * var(--now) / 100);
+  translate: -50% 0;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--reading-surface, var(--surface));
+  color: var(--accent);
+  font-weight: 600;
+  z-index: 1;
+}
+.trajectory-rows {
+  position: relative;
+  padding-block: 4px 3px;
+  border-block: 1px solid var(--line);
+  background-image:
+    repeating-linear-gradient(135deg, color-mix(in srgb, var(--line) 75%, transparent) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px calc(100% / var(--years, 5)));
+  background-size: var(--prelude) 100%, calc(100% - var(--main-start)) 100%;
+  background-position: left top, right top;
+  background-repeat: no-repeat;
+}
+/* The break between the compressed prelude and the linear scale. */
+.trajectory-rows::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: calc((var(--prelude) + var(--main-start)) / 2 - 5px);
+  width: 10px;
+  height: 13px;
+  background: linear-gradient(115deg, transparent 36%, var(--soft) 36% 44%, transparent 44% 56%, var(--soft) 56% 64%, transparent 64%);
+  opacity: .8;
+}
+.trajectory-rows::after {
+  content: "";
+  position: absolute;
+  top: -5px;
+  bottom: 0;
+  left: calc(var(--main-start) + (100% - var(--main-start)) * var(--now) / 100);
+  width: 1px;
+  background: linear-gradient(var(--accent), color-mix(in srgb, var(--accent) 15%, transparent));
+}
+.trajectory-row { position: relative; height: var(--row); }
+.trajectory-span,
+.trajectory-mark { position: absolute; bottom: 9px; transition: opacity 220ms ease; }
+.trajectory-span {
+  left: calc(var(--main-start) + (100% - var(--main-start)) * var(--from) / 100);
+  width: calc((100% - var(--main-start)) * (var(--to) - var(--from)) / 100);
+  height: 2px;
+  color: var(--soft);
+}
+.trajectory-span.is-prelude { left: calc(var(--prelude) * var(--from) / 100); width: calc(var(--prelude) * (var(--to) - var(--from)) / 100); }
+.trajectory-span.is-research { color: var(--accent); }
+.trajectory-span.is-industry { color: var(--amber); height: 4px; bottom: 8px; }
+.trajectory-span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: currentColor;
+  transform-origin: left center;
+}
+.trajectory-span.is-planned::after { background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 8px); opacity: .75; }
+.trajectory-span.is-soft-start::after { mask-image: linear-gradient(90deg, transparent, #000 min(22px, 35%)); }
+.trajectory-span.is-soft-end::after { mask-image: linear-gradient(270deg, transparent, #000 min(22px, 35%)); }
+.trajectory-span.is-soft-start.is-soft-end::after { mask-image: linear-gradient(90deg, transparent, #000 min(22px, 30%), #000 calc(100% - min(22px, 30%)), transparent); }
+.trajectory-span.is-ongoing::before {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border: solid currentColor;
+  border-width: 1.5px 1.5px 0 0;
+  transform: translateY(-50%) rotate(45deg);
+}
+.trajectory-label {
+  position: absolute;
+  left: 0;
+  bottom: 7px;
+  color: var(--ink);
+  font-size: 11px;
+  white-space: nowrap;
+  transition: color 220ms ease;
+}
+/* The compressed prelude is narrow, so its label sits under the line. */
+.trajectory-span.is-prelude .trajectory-label { left: 0; bottom: auto; top: 7px; color: var(--muted); }
+.trajectory-span.is-end-anchored .trajectory-label { left: auto; right: 0; }
+.trajectory-note { color: var(--muted); }
+.trajectory-mark { left: calc(var(--main-start) + (100% - var(--main-start)) * var(--at) / 100); bottom: 6px; display: flex; gap: 5px; translate: -50% 0; }
+.trajectory-mark i { width: 6px; height: 6px; border-radius: 1px; background: var(--amber); transform: rotate(45deg); }
+.trajectory-row-label { position: absolute; left: 0; bottom: 4px; color: var(--muted); }
+.trajectory.has-focus :is(.trajectory-span:not(.is-active), .trajectory-mark) { opacity: .22; }
+.trajectory-span.is-active .trajectory-label { color: var(--accent); }
+.trajectory-span.is-industry.is-active .trajectory-label { color: var(--amber); }
+.reveal-ready .trajectory .trajectory-span::after { transform: scaleX(0); transition: transform 1100ms var(--ease-out-soft) calc(var(--draw, 0) * 110ms + 150ms); }
+.reveal-ready .trajectory :is(.trajectory-label, .trajectory-row-label, .trajectory-mark i),
+.reveal-ready .trajectory .trajectory-span.is-ongoing::before { opacity: 0; transition: opacity 500ms ease calc(var(--draw, 0) * 110ms + 450ms), color 220ms ease; }
+.reveal-ready .trajectory.is-revealed .trajectory-span::after { transform: none; }
+.reveal-ready .trajectory.is-revealed :is(.trajectory-label, .trajectory-row-label, .trajectory-mark i),
+.reveal-ready .trajectory.is-revealed .trajectory-span.is-ongoing::before { opacity: 1; }
+.trajectory-row:nth-child(2) { --draw: 1; }
+.trajectory-row:nth-child(3) { --draw: 2; }
+.trajectory-row:nth-child(4) { --draw: 3; }
+.trajectory-row:nth-child(n + 5) { --draw: 4; }
+/* Scrubber: the pointer reads a date off the axis. */
+.trajectory-scrub {
+  position: absolute;
+  top: 18px;
+  bottom: 0;
+  left: var(--scrub-x, 0);
+  width: 1px;
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+.trajectory-scrub span {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  translate: -50% 0;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--surface);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.trajectory.is-scrubbing .trajectory-scrub { opacity: 1; }
+.trajectory.is-scrubbing .trajectory-now-label { opacity: 0; }
+.experience-entry { transition: opacity 220ms ease; }
+.experience-list:has(.is-linked) .experience-entry:not(.is-linked) { opacity: .5; }
+.experience-entry.is-linked h3 a { color: var(--accent); }
+@media (max-width: 620px) {
+  .trajectory { --prelude: 13%; --main-start: 19%; --row: 29px; font-size: 10px; }
+  .trajectory-label { font-size: 10.5px; }
+}
+@media print {
+  .trajectory, .dossier-row:has(.trajectory) { display: none !important; }
+}
+.dossier-timeline { min-width: 0; }
+.trajectory-caption { margin: 12px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }

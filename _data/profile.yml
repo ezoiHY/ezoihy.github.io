@@ -68,6 +68,7 @@ research_interests:
 education:
   - institution: South China University of Technology
     institution_en: South China University of Technology
+    institution_short: SCUT
     degree: Bachelor's Degree
     major: Robotics Engineering
     status: expected graduation in 2027
@@ -83,6 +84,8 @@ research_experience:
     group: PAIRS Lab
     group_url: https://pairslab.github.io/
     period: "2026–present"
+    start_date: "2026"
+    end_date: present
     supervisor: Prof. Fangqiang Ding
     supervisor_url: https://fangqiangding.com/
     type: academic
@@ -92,6 +95,8 @@ research_experience:
     role: Undergraduate Research
     group: Intelligent Structures Laboratory
     period: "2024–2026"
+    start_date: "2024"
+    end_date: "2026"
     supervisor: Prof. Yunquan Li
     supervisor_url: https://www2.scut.edu.cn/wusie/2022/0122/c25374a459098/page.htm
     type: academic
@@ -101,7 +106,15 @@ research_experience:
     group: Digital Twin Laboratory
     department: GTS Department, ICT BG
     period: "Jul.–Sep. 2026"
+    start_date: "2026-07"
+    end_date: "2026-09"
     type: industry
+# Verified in the biography (six years of informatics, 2016–2022). Used by the homepage timeline.
+background:
+  - title: Informatics training and competitions
+    short_title: Informatics
+    start_date: "2016"
+    end_date: "2022"
 # Retained project summaries. Institutional appointments are in research_experience.
 experiences:
   - year: "2026"

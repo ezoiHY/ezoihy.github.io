@@ -6,9 +6,9 @@
   data-compare-key="{{ project.url | split: '/' | last | escape }}" data-short-title="{{ project.short_title | default: project.title | escape }}"
   data-design-choice="{{ project.design_choice | escape }}" data-contribution="{{ project.contribution | escape }}" data-evidence="{{ project.evidence | escape }}">
   {% if project.video %}
-    <div class="project-visual">{% include project-media.liquid project=project thumbnail=true %}</div>
+    <div class="project-visual">{% include project-media.liquid project=project thumbnail=true %}{% include project-hud.liquid project=project highlights_only=true %}</div>
   {% else %}
-    <a class="project-visual" href="{{ project.url | relative_url }}" data-project-link tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
+    <a class="project-visual" href="{{ project.url | relative_url }}" data-project-link tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy">{% include project-hud.liquid project=project highlights_only=true %}</a>
   {% endif %}
   <div class="project-copy"><h2 class="project-card-title"><a href="{{ project.url | relative_url }}" data-project-link>{{ project.title }}</a></h2><p class="project-meta">{{ project.year }} · {{ project.category }}</p><p>{{ project.description }}</p><div class="tag-list">{% for tag in project.tags limit: 3 %}<span>{{ tag }}</span>{% endfor %}</div><div class="project-card-links"><a href="{{ project.url | relative_url }}" data-project-link>View project</a>{% if project.code_url %}<a href="{{ project.code_url | escape }}" target="_blank" rel="noopener noreferrer">Code</a>{% endif %}{% if project.video_source %}<a href="{{ project.video_source | escape }}" target="_blank" rel="noopener noreferrer">Full demo</a>{% endif %}</div></div>
 </article>

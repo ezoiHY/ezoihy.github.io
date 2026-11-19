@@ -67,7 +67,9 @@
 .post-detail .detail-heading h1 { max-width:22ch; }
 .post-detail .post-deck { max-width:55ch; color:var(--ink); font-size:clamp(17px,2.1vw,23px); line-height:1.43; }
 .post-byline { display:flex; align-items:baseline; gap:4px 19px; flex-wrap:wrap; margin-top:16px; font-size:13px; }
-.post-byline time, .post-detail .post-tags { color:var(--muted); font:500 11px/1.55 var(--mono); }
+.post-byline time, .post-byline .post-reading-time, .post-detail .post-tags { color:var(--muted); font:500 11px/1.55 var(--mono); }
+.writing-archive .journal-date { margin:0; }
+.writing-archive .journal-date small { margin-top:3px; font-size:10.5px; }
 .post-detail .reading-prose h2 { font-size:clamp(23px,2.8vw,30px); line-height:1.16; letter-spacing:-.032em; }
 .post-detail .reading-prose p, .post-detail .reading-prose li { line-height:1.74; }
 .post-reading:has(.reading-index:not([hidden])) { gap:clamp(20px,4.4vw,50px); grid-template-columns:minmax(0,1fr) minmax(136px,20%); }

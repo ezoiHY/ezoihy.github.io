@@ -22,102 +22,28 @@
 .research-projects .research-project-copy h3 { font-size:20px; }
 .research-projects .research-project-links { gap:8px 16px; }
 
-/* All descriptions remain readable; branches organize related interests. */
-.research-map {
-  position:relative;
-  isolation:isolate;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 132px minmax(0,1fr);
-  grid-template-rows:repeat(6,minmax(52px,auto));
-  gap:12px 28px;
-  padding-block:8px;
-}
-.research-map-lines { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:-1; }
-.research-map-lines path { fill:none; stroke:color-mix(in srgb,var(--accent) 30%,var(--line)); stroke-width:1.5; transition:stroke var(--motion-fast),opacity var(--motion-fast); }
-.research-map-lines path.is-active { stroke:var(--accent); stroke-width:2; }
-.research-map[data-active] .research-map-lines path:not(.is-active) { opacity:.45; }
-.research-map-hub {
-  grid-column:2;
-  grid-row:1 / -1;
-  align-self:center;
-  width:132px;
-  min-height:132px;
-  padding:18px 10px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  background:var(--surface);
-  text-align:center;
-  color:var(--ink);
-  cursor:default;
-}
-.research-map-hub-title { display:block; font-size:18px; font-weight:500; }
-.research-map-hub-detail { display:block; margin-top:7px; color:var(--muted); font-size:11px; line-height:1.5; }
-.research-map-hub-detail > span { display:block; }
-.research-map-node {
-  min-width:0;
-  padding:10px 17px 13px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:var(--surface);
-  transition:border-color var(--motion-fast),box-shadow var(--motion-fast);
-}
-.research-map-node[data-map-position="1"] { grid-column:1; grid-row:1 / 3; }
-.research-map-node[data-map-position="2"] { grid-column:3; grid-row:2 / 4; }
-.research-map-node[data-map-position="3"] { grid-column:1; grid-row:3 / 5; }
-.research-map-node[data-map-position="4"] { grid-column:3; grid-row:4 / 6; }
-.research-map-node[data-map-position="5"] { grid-column:1; grid-row:5 / 7; }
-.research-map-node.is-active { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent); }
-.research-map-select {
-  position:relative;
-  display:block;
-  width:100%;
-  min-height:44px;
-  padding:7px 16px 7px 0;
-  color:var(--ink);
-  font-size:16px;
-  line-height:1.4;
-  font-weight:500;
-  text-align:left;
-  cursor:default;
-}
-.research-map-select[aria-pressed="true"] { color:var(--accent); }
-.research-map-select[aria-pressed="true"]::after { content:""; position:absolute; right:0; top:calc(50% - 3px); width:6px; height:6px; border-radius:50%; background:var(--accent); }
-.research-map.is-interactive :is(.research-map-select,.research-map-hub) { cursor:pointer; }
-.research-map-node p {
-  margin:0;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.65;
-}
-.research-map-links { display:flex; flex-wrap:wrap; column-gap:16px; margin-top:7px; font-size:12px; }
-.research-map-links a { display:inline-flex; align-items:center; min-height:30px; }
-
 @media (max-width:760px) {
   .research-page .research-projects { grid-template-columns:1fr; gap:28px; }
   .research-projects .research-project + .research-project { padding-top:24px; border-top:1px solid var(--line); }
   .research-projects .research-project-copy { padding-top:14px; }
   .research-projects .research-project-copy h3 { font-size:19px; }
-  .research-map { display:flex; flex-direction:column; align-items:stretch; gap:16px; padding:4px 0 4px 26px; }
-  .research-map-hub { align-self:flex-start; width:auto; min-height:0; padding:12px 18px; border-radius:12px; }
-  .research-map-hub-detail { margin-top:3px; font-size:12px; }
-  .research-map-hub-detail > span { display:inline; }
-  .research-map-hub-detail > span + span::before { content:" · "; }
-  .research-map-node { padding:10px 16px 12px; }
-  .research-map-node p { font-size:14px; }
-  .research-map-links { margin-top:4px; }
-  .research-map-links a { min-height:44px; }
-}
-
-@media (prefers-reduced-motion:reduce) {
-  .research-map-lines path,.research-map-node { transition:none; }
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
 
 @media print {
   .research-page .research-projects { display:block; }
   .research-projects .research-project + .research-project { margin-top:22px; }
-  .research-map { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:none; gap:16px; padding:0; }
-  .research-map-hub,.research-map-lines { display:none; }
-  .research-map-node { grid-column:auto !important; grid-row:auto !important; break-inside:avoid; box-shadow:none !important; }
+  
+  
+  
 }
 
 .research-heading > p { max-width:55ch; font-size:clamp(17px,2.3vw,21px); line-height:1.5; }
@@ -136,33 +62,13 @@
 .method-specs dd { margin:0; font-weight:600; }
 .research-projects .research-project-links { gap:3px 15px; margin-top:1px; }
 .research-project-links a { display:inline-flex; align-items:center; min-height:44px; }
-.research-map.is-interactive .research-map-select::after {
-  content:"";
-  position:absolute;
-  right:1px;
-  top:calc(50% - 5px);
-  width:6px;
-  height:6px;
-  border:solid var(--accent);
-  border-width:0 1.5px 1.5px 0;
-  transform:rotate(45deg);
-}
-.research-map.is-interactive .research-map-select[aria-expanded="true"]::after { transform:rotate(225deg); top:calc(50% - 1px); }
-.research-map-node:has(.research-map-select[aria-expanded="true"]:enabled) { border-color:var(--accent); }
-.research-map-context { margin-top:6px; border-top:1px solid var(--line); padding-top:10px; }
-.research-map-context p { color:var(--ink); line-height:1.6; }
-.research-map-context a { display:inline-flex; align-items:center; min-height:40px; margin-right:12px; font-size:12px; }
-.research-map-context .topic-permalink { text-decoration:underline; text-underline-offset:3px; color:var(--muted); }
+
 .research-page .publication-empty { border-left:3px solid var(--accent); padding:12px 16px; background:var(--hover); }
 .research-page .publication-empty p { margin:0; }
 .research-page .publication-empty a { margin-bottom:-6px; font-size:13px; }
 @media(max-width:510px) {
   .research-page .section-heading { flex-wrap:wrap; gap:0 10px; }
-  .research-map-context a { min-height:44px; }
-}
-@media print {
-  .research-map-context[hidden] { display:block !important; }
-  .research-map-context .topic-permalink { display:none; }
+  
 }
 
 .research-heading-text {
@@ -182,10 +88,7 @@
 .research-projects .research-project-copy h3, .research-page .lab-demo-copy h3 { font-size:clamp(22px,2.9vw,32px); line-height:1.12; font-weight:550; letter-spacing:-.038em; }
 .research-projects .research-project-copy h3 a { color:var(--ink); }
 .research-projects .research-project-links a { border:0; background:none; padding-inline:0; }
-.research-map-hub { border-radius:50%; box-shadow:inset 0 0 0 5px var(--hover); }
-.research-map-node { border-radius:4px; box-shadow:none; padding:10px 15px 12px; }
-.research-map-select { font-size:17px; line-height:1.25; font-weight:600; letter-spacing:-.02em; }
-.research-map-node.is-active { box-shadow:inset 3px 0 var(--accent); }
+
 .research-page .publication-empty { border-radius:0; }
 @media(min-width:761px) {
   .research-page .research-projects { grid-template-columns:minmax(0,1.21fr) minmax(0,.79fr); gap:clamp(23px,3.8vw,38px); }
@@ -201,7 +104,236 @@
 @media(max-width:760px) {
   .research-heading-text { display:block; }
   .research-heading-text > p { margin-top:11px; }
-  .research-map-hub { border-radius:6px; }
+  
   .research-projects .research-project-media:has(> a) { aspect-ratio:auto; }
   .research-projects .research-project-media > a > img { height:auto; }
+}
+
+/* Research interests: five topics around a sense–learn–act core, joined by light filaments.
+   Cards stay readable without JavaScript; the core's orbit, pulses and chords are enhancements
+   that pause off screen and disappear with reduced motion. */
+.research-map {
+  --map-hub:168px;
+  --map-line:color-mix(in srgb,var(--accent) 30%,var(--line));
+  --map-card-highlight:rgb(255 255 255 / .7);
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) var(--map-hub) minmax(0,1fr);
+  grid-template-rows:repeat(6,minmax(52px,auto));
+  gap:14px 30px;
+  padding-block:10px;
+}
+:root[data-theme="dark"] .research-map { --map-card-highlight:rgb(255 255 255 / .05); }
+/* A faint engineering field gathers around the core. */
+.research-map::before {
+  content:""; position:absolute; inset:-18px -10px; z-index:-2; pointer-events:none;
+  background-image:radial-gradient(circle,color-mix(in srgb,var(--ink) 20%,transparent) .8px,transparent 1.3px);
+  background-size:16px 16px; background-position:center;
+  mask-image:radial-gradient(ellipse 44% 56% at 50% 50%,#000,rgb(0 0 0 / .4) 55%,transparent 82%);
+}
+.research-map-lines { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:-1; }
+.research-map-lines path { fill:none; }
+.map-branch { stroke:var(--map-line); stroke-width:1.25; transition:stroke var(--motion-fast) ease-out,stroke-width var(--motion-fast) ease-out,opacity var(--motion-standard) ease-out; }
+.map-branch.is-active { stroke:var(--accent); stroke-width:1.75; filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent) 55%,transparent)); }
+.research-map[data-active] .map-branch:not(.is-active) { opacity:.38; }
+.map-pulse {
+  stroke:var(--accent); stroke-width:2.25; stroke-linecap:round; opacity:0;
+  stroke-dasharray:22px calc(var(--len,400) * 1px); stroke-dashoffset:22px;
+  filter:drop-shadow(0 0 3px color-mix(in srgb,var(--accent) 70%,transparent));
+}
+.map-chord { stroke:var(--accent); stroke-width:1.5; stroke-dasharray:1.5 5; stroke-linecap:round; opacity:0; transition:opacity var(--motion-standard) ease-out; }
+.map-chord.is-active { opacity:.85; }
+/* A linked card names the shared work on a small tab, outside the flow so nothing moves. */
+.map-shared {
+  position:absolute; top:-11px; right:16px; z-index:3; max-width:calc(100% - 32px);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  padding:2px 9px; border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line)); border-radius:999px;
+  background:var(--surface); color:var(--accent); font:500 10.5px/1.5 var(--mono);
+  opacity:0; translate:0 4px; pointer-events:none;
+  transition:opacity var(--motion-standard) ease-out,translate var(--motion-standard) var(--motion-ease);
+}
+.research-map-node.is-linked > .map-shared { opacity:1; translate:0 0; }
+
+/* The core: a tick ring, the loop track with three stations, and a signal that
+   lights perception, learning and action in turn. */
+.research-map-hub {
+  grid-column:2; grid-row:1 / -1; align-self:center; justify-self:center;
+  position:relative; display:grid; place-content:center; justify-items:center; gap:5px;
+  width:var(--map-hub); aspect-ratio:1; padding:0;
+  border:1px solid color-mix(in srgb,var(--accent) 24%,var(--line)); border-radius:50%;
+  background:radial-gradient(circle at 50% 34%,color-mix(in srgb,var(--accent) 10%,var(--surface)),var(--surface) 72%);
+  box-shadow:0 14px 40px -12px color-mix(in srgb,var(--accent) 32%,transparent),inset 0 1px 0 var(--map-card-highlight);
+  color:var(--ink); text-align:center; cursor:default;
+  transition:border-color var(--motion-fast) ease-out,box-shadow var(--motion-standard) ease-out;
+}
+.hub-dial { position:absolute; inset:7px; border-radius:50%; pointer-events:none; --track:14px; }
+.hub-dial::before {
+  content:""; position:absolute; inset:0; border-radius:50%;
+  background:repeating-conic-gradient(from -.6deg,color-mix(in srgb,var(--ink) 26%,transparent) 0 1.2deg,transparent 1.2deg 7.5deg);
+  mask:radial-gradient(closest-side,transparent calc(100% - 5px),#000 calc(100% - 4.5px));
+}
+.hub-track { position:absolute; inset:var(--track); border-radius:50%; box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 26%,transparent); }
+.hub-orbit { position:absolute; inset:var(--track); border-radius:50%; }
+.hub-sweep {
+  position:absolute; inset:-1px; border-radius:50%;
+  background:conic-gradient(transparent 0 64%,color-mix(in srgb,var(--accent) 10%,transparent) 76%,color-mix(in srgb,var(--accent) 62%,transparent) 98%,var(--accent));
+  mask:radial-gradient(closest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));
+}
+.hub-head { position:absolute; top:-3.5px; left:50%; width:6px; height:6px; margin-left:-3px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent),0 0 10px var(--accent); }
+.hub-station {
+  position:absolute; left:50%; top:50%; width:7px; height:7px; margin:-3.5px 0 0 -3.5px; border-radius:50%;
+  background:var(--surface); box-shadow:0 0 0 1.5px color-mix(in srgb,var(--accent) 70%,var(--line));
+  transform:rotate(calc(var(--i) * 120deg)) translateY(calc(var(--map-hub) / -2 + 7px + var(--track)));
+}
+.research-map-hub-title { position:relative; font-size:17px; font-weight:620; letter-spacing:-.025em; line-height:1.1; }
+.research-map-hub-detail { position:relative; display:grid; gap:1px; color:var(--muted); font:500 9.5px/1.5 var(--mono); letter-spacing:.07em; text-transform:uppercase; }
+.research-map-hub-detail > span { display:block; }
+.research-map.is-interactive .research-map-hub { cursor:pointer; }
+@media (hover:hover) and (pointer:fine) {
+  .research-map.is-interactive .research-map-hub:hover { border-color:color-mix(in srgb,var(--accent) 55%,var(--line)); box-shadow:0 18px 46px -12px color-mix(in srgb,var(--accent) 45%,transparent),inset 0 1px 0 var(--map-card-highlight); }
+}
+
+/* Cards: an icon, an index, the topic and its evidence. */
+.research-map-node {
+  position:relative; min-width:0;
+  padding:16px 18px 15px;
+  border:1px solid color-mix(in srgb,var(--line) 88%,transparent);
+  border-radius:14px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--surface) 94%,var(--accent)),var(--surface) 42%);
+  box-shadow:inset 0 1px 0 var(--map-card-highlight),0 12px 30px -22px color-mix(in srgb,var(--ink) 55%,transparent);
+  transition:border-color .24s ease,box-shadow .3s ease;
+}
+.research-map-node[data-map-position="1"] { grid-column:1; grid-row:1 / 3; }
+.research-map-node[data-map-position="2"] { grid-column:3; grid-row:2 / 4; }
+.research-map-node[data-map-position="3"] { grid-column:1; grid-row:3 / 5; }
+.research-map-node[data-map-position="4"] { grid-column:3; grid-row:4 / 6; }
+.research-map-node[data-map-position="5"] { grid-column:1; grid-row:5 / 7; }
+.map-node-head { display:grid; grid-template-columns:38px minmax(0,1fr); grid-template-rows:auto auto; column-gap:12px; align-items:center; margin-bottom:9px; }
+.map-node-icon {
+  grid-row:1 / 3; display:grid; place-items:center; width:38px; height:38px; border-radius:11px;
+  color:var(--accent); background:color-mix(in srgb,var(--accent) 10%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 20%,transparent);
+  transition:background .24s ease,color .24s ease,opacity .24s ease;
+}
+.map-node-icon .icon { width:20px; height:20px; }
+.map-node-index { margin:0; color:var(--muted); font:500 10.5px/1.3 var(--mono); letter-spacing:.08em; }
+.map-node-head h3 { margin:0; min-width:0; }
+.research-map-select {
+  position:relative; display:block; width:100%; min-height:30px; padding:2px 22px 2px 0;
+  color:var(--ink); font-size:16.5px; line-height:1.25; font-weight:620; letter-spacing:-.022em; text-align:left; cursor:default;
+}
+.research-map.is-interactive .research-map-select { cursor:pointer; }
+.research-map.is-interactive .research-map-select::after {
+  content:""; position:absolute; right:3px; top:calc(50% - 5px); width:6px; height:6px;
+  border:solid var(--accent); border-width:0 1.5px 1.5px 0; transform:rotate(45deg);
+  transition:transform var(--motion-standard) var(--motion-ease),top var(--motion-standard) var(--motion-ease);
+}
+.research-map.is-interactive .research-map-select[aria-expanded="true"]::after { transform:rotate(225deg); top:calc(50% - 1px); }
+.map-node-description { margin:0; color:var(--muted); font-size:14px; line-height:1.6; }
+.research-map-links { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.research-map-links a {
+  display:inline-flex; align-items:center; gap:6px; min-height:30px; padding:0 12px; border-radius:999px;
+  background:color-mix(in srgb,var(--accent) 9%,transparent); color:var(--accent); font-size:12px; font-weight:560; text-decoration:none;
+  transition:background var(--motion-fast) ease-out;
+}
+.research-map-links a::after { content:"→"; font-size:11px; transition:translate var(--motion-standard) var(--motion-ease); }
+@media (hover:hover) {
+  .research-map-links a:hover { background:color-mix(in srgb,var(--accent) 16%,transparent); text-decoration:none; }
+  .research-map-links a:hover::after { translate:2px 0; }
+}
+/* Ports where the filaments meet each card; shown once the connections are drawn. */
+.research-map-node > .map-port {
+  position:absolute; top:50%; z-index:2; width:9px; height:9px; margin-top:-4.5px; border-radius:50%;
+  background:var(--surface); box-shadow:0 0 0 1.5px var(--map-line); pointer-events:none; opacity:0;
+  transition:background .24s ease,box-shadow .24s ease;
+}
+.research-map.is-interactive .research-map-node > .map-port { opacity:1; }
+.research-map-node:is([data-map-position="1"],[data-map-position="3"],[data-map-position="5"]) > .map-port { right:-5px; }
+.research-map-node:is([data-map-position="2"],[data-map-position="4"]) > .map-port { left:-5px; }
+.research-map-node.is-active {
+  border-color:color-mix(in srgb,var(--accent) 70%,var(--line));
+  box-shadow:inset 0 1px 0 var(--map-card-highlight),0 0 0 1px color-mix(in srgb,var(--accent) 30%,transparent),0 18px 40px -24px color-mix(in srgb,var(--accent) 70%,transparent);
+}
+.research-map-node.is-active .map-node-icon { color:var(--surface); background:var(--accent); }
+.research-map-node.is-active > .map-port { background:var(--accent); box-shadow:0 0 0 1.5px var(--accent),0 0 0 5px color-mix(in srgb,var(--accent) 20%,transparent); }
+.research-map-node.is-linked { border-color:color-mix(in srgb,var(--accent) 40%,var(--line)); }
+.research-map-node.is-linked > .map-port { box-shadow:0 0 0 1.5px var(--accent); }
+/* Other topics recede through their decoration only; their text keeps full contrast. */
+.research-map[data-active] .research-map-node:not(.is-active):not(.is-linked) { border-color:color-mix(in srgb,var(--line) 70%,transparent); box-shadow:inset 0 1px 0 var(--map-card-highlight); }
+.research-map[data-active] .research-map-node:not(.is-active):not(.is-linked) :is(.map-node-icon,.map-port) { opacity:.5; }
+.research-map-node:has(.research-map-select[aria-expanded="true"]:enabled) { border-color:var(--accent); }
+.research-map-context { margin-top:12px; padding-top:12px; border-top:1px solid var(--line); }
+.research-map-context p { margin:0 0 4px; color:var(--ink); font-size:14px; line-height:1.6; }
+.research-map-context a { display:inline-flex; align-items:center; min-height:36px; margin-right:12px; font-size:12px; }
+.research-map-context .topic-permalink { color:var(--muted); text-decoration:underline; text-underline-offset:3px; }
+
+@media (prefers-reduced-motion:no-preference) {
+  /* The signal circles the loop once every 12 s; each station and its word light as it passes. */
+  .research-map.is-visible .hub-orbit { animation:hub-orbit 12s linear infinite; }
+  .research-map.is-visible .hub-station { animation:hub-station 12s linear infinite; animation-delay:calc(var(--i) * 4s - 12s); }
+  .research-map.is-visible .research-map-hub-detail > span { animation:hub-word 12s linear infinite; animation-delay:calc(var(--i) * 4s - 12s); }
+  /* Pulses leave the core one branch at a time; the active branch streams. */
+  .research-map.is-visible .map-pulse { animation:map-pulse 9s cubic-bezier(.45,0,.2,1) infinite; animation-delay:calc(var(--branch,0) * 1.8s); }
+  .research-map.is-visible .map-pulse.is-active { animation:map-stream 2.4s cubic-bezier(.45,0,.2,1) infinite; }
+  .research-map.is-interactive .research-map-context:not([hidden]) { animation:map-context 360ms var(--ease-out-soft,cubic-bezier(.16,1,.3,1)) both; }
+  /* Linked topics: the dashes flow along the orbit while the link is shown. */
+  .research-map.is-visible .map-chord.is-active { animation:map-chord-flow 1.6s linear infinite; }
+}
+@keyframes map-chord-flow { to { stroke-dashoffset:-13px; } }
+@keyframes hub-orbit { to { transform:rotate(1turn); } }
+@keyframes hub-station {
+  0%,3% { background:var(--accent); box-shadow:0 0 0 1.5px var(--accent),0 0 0 5px color-mix(in srgb,var(--accent) 18%,transparent),0 0 12px var(--accent); }
+  24%,100% { background:var(--surface); box-shadow:0 0 0 1.5px color-mix(in srgb,var(--accent) 70%,var(--line)); }
+}
+@keyframes hub-word { 0%,4% { color:var(--accent); } 26%,100% { color:var(--muted); } }
+@keyframes map-pulse {
+  0% { stroke-dashoffset:22px; opacity:0; }
+  2% { opacity:1; }
+  22% { opacity:.9; }
+  26%,100% { stroke-dashoffset:calc(var(--len,400) * -1px); opacity:0; }
+}
+@keyframes map-stream {
+  0% { stroke-dashoffset:22px; opacity:0; }
+  6% { opacity:1; }
+  64% { opacity:.9; }
+  74%,100% { stroke-dashoffset:calc(var(--len,400) * -1px); opacity:0; }
+}
+@keyframes map-context { from { opacity:0; translate:0 -4px; } }
+
+@media (max-width:760px) {
+  .research-map { display:flex; flex-direction:column; align-items:stretch; gap:14px; padding:4px 0 4px 26px; }
+  .research-map::before { inset:-10px -6px; mask-image:linear-gradient(90deg,#000,transparent 70%); opacity:.7; }
+  .research-map-hub {
+    display:grid; grid-template-columns:56px minmax(0,1fr); grid-template-areas:"dial title" "dial detail";
+    align-items:center; justify-items:start; align-self:stretch; column-gap:14px; row-gap:2px;
+    width:auto; aspect-ratio:auto; padding:12px 16px 12px 12px; border-radius:16px; text-align:left;
+    --map-hub:56px;
+  }
+  .hub-dial { position:relative; inset:auto; grid-area:dial; width:56px; height:56px; --track:8px; }
+  .hub-dial::before { mask:radial-gradient(closest-side,transparent calc(100% - 3.5px),#000 calc(100% - 3px)); }
+  .hub-station { width:5px; height:5px; margin:-2.5px 0 0 -2.5px; transform:rotate(calc(var(--i) * 120deg)) translateY(-20px); }
+  .hub-head { width:5px; height:5px; margin-left:-2.5px; top:-3px; }
+  .research-map-hub-title { grid-area:title; align-self:end; font-size:16px; }
+  .research-map-hub-detail { grid-area:detail; align-self:start; display:flex; flex-wrap:wrap; gap:0 6px; font-size:9.5px; }
+  .research-map-hub-detail > span + span::before { content:"→ "; color:var(--soft); }
+  .research-map-node { padding:15px 16px 14px; }
+  .research-map-node > .map-port { left:-5px !important; right:auto !important; }
+  .research-map-select { min-height:44px; }
+  .research-map-links a { min-height:40px; }
+  .map-chord { display:none; }
+}
+@media (max-width:510px) {
+  .research-map-context a { min-height:44px; }
+}
+@media (prefers-contrast:more), (forced-colors:active) {
+  .research-map::before,.map-pulse,.hub-sweep,.hub-head { display:none; }
+  .research-map-node { background:var(--surface); }
+}
+@media print {
+  .research-map { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:none; gap:16px; padding:0; }
+  .research-map::before,.research-map-hub,.research-map-lines,.map-port,.map-shared { display:none !important; }
+  .research-map-node { grid-column:auto !important; grid-row:auto !important; break-inside:avoid; box-shadow:none !important; background:none; }
+  .research-map-context[hidden] { display:block !important; }
+  .research-map-context .topic-permalink { display:none; }
 }

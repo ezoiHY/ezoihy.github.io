@@ -121,8 +121,8 @@
     wallpaperMotion.disabled = !available;
     motionHint.hidden = available;
     motionHint.textContent = available ? '' : hidden
-      ? 'Turn on the wallpaper to animate the scenery.'
-      : 'Your display preferences keep the scenery still.';
+      ? 'Turn on the wallpaper to animate its light.'
+      : 'Your display preferences keep the light still.';
   }
   function updateBackgroundUI() {
     const enabled = root.dataset.background !== 'solid';
@@ -210,10 +210,28 @@
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#191c21' : '#fafbfc');
   }
   updateThemeUI();
-  themeButton?.addEventListener('click', () => {
-    root.dataset.theme = currentTheme() === 'dark' ? 'light' : 'dark';
-    try { localStorage.setItem('harry-theme', root.dataset.theme); } catch { /* Still works in memory. */ }
+  function applyTheme(theme) {
+    root.dataset.theme = theme;
+    try { localStorage.setItem('harry-theme', theme); } catch { /* Still works in memory. */ }
     updateThemeUI();
+  }
+  // The new palette expands from the toggle. Without View Transitions or with reduced
+  // motion, the theme changes at once.
+  themeButton?.addEventListener('click', () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    if (reducedMotion.matches || document.hidden || typeof document.startViewTransition !== 'function') { applyTheme(next); return; }
+    const bounds = themeButton.getBoundingClientRect();
+    const x = bounds.left + bounds.width / 2;
+    const y = bounds.top + bounds.height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.classList.add('theme-transition');
+    let transition;
+    try { transition = document.startViewTransition(() => applyTheme(next)); } catch { root.classList.remove('theme-transition'); applyTheme(next); return; }
+    transition.ready.then(() => root.animate(
+      { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+      { duration: 560, easing: motionEase, pseudoElement: '::view-transition-new(root)' },
+    )).catch(() => {});
+    transition.finished.finally(() => root.classList.remove('theme-transition'));
   });
   colorScheme.addEventListener('change', () => {
     let saved;
@@ -269,6 +287,66 @@
   const navigationURLs = [...document.querySelectorAll('.desktop-nav a')].map(link => link.pathname);
   const quickLinks = navigationURLs.map(url => searchItems.find(item => item.url === url)).filter(Boolean);
   let searchType = 'all';
+  // Commands share the result list. Each one either follows a link or runs a page action.
+  const commandData = dialog?.dataset || {};
+  const announce = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
+  const pageAddress = document.querySelector('link[rel="canonical"]')?.href || location.href;
+  const commands = [
+    { title: 'Copy email address', detail: commandData.email, keywords: 'email mail contact copy address', available: Boolean(commandData.email),
+      run: () => announce('site:copy', { text: commandData.email, message: 'Email address copied' }) },
+    { title: 'Copy link to this page', detail: new URL(pageAddress).pathname, keywords: 'copy link url share address page permalink', available: true,
+      run: () => announce('site:copy', { text: pageAddress, message: 'Page link copied' }) },
+    { title: 'Download CV (PDF)', detail: 'yu-han-cv.pdf', keywords: 'cv resume résumé curriculum vitae pdf download', href: commandData.cv, download: true },
+    { title: () => currentTheme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme', detail: finePointer.matches ? 'Shortcut: T' : 'Light or dark appearance', keywords: 'theme dark light mode appearance colour color', available: Boolean(themeButton),
+      run: () => themeButton.click() },
+    { title: () => root.dataset.background === 'solid' ? 'Show the Big Sur wallpaper' : 'Use a solid background', detail: 'Wallpaper and time settings', keywords: 'wallpaper background scenery solid big sur photo', available: Boolean(wallpaperDialog),
+      run: () => setBackground(root.dataset.background === 'solid') },
+    { title: 'Open GitHub profile', detail: (commandData.github || '').replace(/^https?:\/\//, ''), keywords: 'github code repositories source', href: commandData.github, external: true },
+    { title: 'Subscribe via RSS', detail: 'rss.xml', keywords: 'rss atom feed subscribe', href: commandData.rss },
+    { title: 'Show keyboard shortcuts', detail: 'Shortcut: ?', keywords: 'keyboard shortcuts keys hotkeys help', available: finePointer.matches && Boolean(document.querySelector('#shortcuts-dialog')),
+      run: () => announce('site:shortcuts') },
+  ].filter(command => command.run ? command.available : Boolean(command.href));
+  const commandTitle = command => typeof command.title === 'function' ? command.title() : command.title;
+  function matchingCommands(tokens) {
+    if (searchType !== 'all') return [];
+    if (!tokens.length) return commands;
+    return commands.filter(command => {
+      const text = normalizeSearch(`${commandTitle(command)} ${command.keywords} ${command.detail || ''}`);
+      return tokens.every(token => text.includes(token));
+    });
+  }
+  function commandElement(command) {
+    const element = document.createElement(command.href ? 'a' : 'button');
+    element.className = 'search-result';
+    element.dataset.kind = 'action';
+    if (command.href) {
+      element.href = command.href;
+      if (command.download) element.setAttribute('download', '');
+      if (command.external) { element.target = '_blank'; element.rel = 'noopener noreferrer'; }
+    } else {
+      element.type = 'button';
+    }
+    const type = document.createElement('span');
+    type.className = 'result-type';
+    type.textContent = 'Action';
+    const copy = document.createElement('div');
+    const title = document.createElement('strong');
+    title.textContent = commandTitle(command);
+    copy.append(title);
+    if (command.detail) {
+      const detail = document.createElement('p');
+      detail.textContent = command.detail;
+      copy.append(detail);
+    }
+    element.append(type, copy);
+    element.addEventListener('click', event => {
+      closeDialog(dialog, true);
+      if (!command.run) return;
+      event.preventDefault();
+      requestAnimationFrame(() => command.run());
+    });
+    return element;
+  }
 
   function setScope(type) {
     searchType = type;
@@ -281,6 +359,7 @@
     const quick = !tokens.length && searchType === 'all';
     const candidates = quick ? quickLinks : searchItems.filter(item => searchType === 'all' || item.type === searchType);
     const matches = candidates.filter(item => tokens.every(token => item.fields.some(field => field.includes(token))));
+    const actions = matchingCommands(tokens);
     if (tokens.length) {
       const weights = [10, 8, 4, 2, 1];
       const score = item => tokens.reduce((sum, token) => sum + item.fields.reduce(
@@ -288,10 +367,11 @@
       ), item.fields[0].includes(query) ? 10 : 0);
       matches.sort((a, b) => score(b) - score(a));
     }
-    searchSummary.textContent = quick ? 'Quick links' : matches.length + (matches.length === 1 ? ' result' : ' results');
+    const total = matches.length + actions.length;
+    searchSummary.textContent = quick ? 'Quick links and commands' : total + (total === 1 ? ' result' : ' results');
     resultContainer.replaceChildren();
     resultContainer.scrollTop = 0;
-    if (!matches.length) {
+    if (!total) {
       const empty = document.createElement('div');
       empty.className = 'search-empty';
       empty.textContent = query ? 'No results for “' + searchInput.value.trim() + '”.' : 'No results in this section.';
@@ -308,6 +388,9 @@
       resultContainer.append(empty);
       return;
     }
+    // A command named by the query leads; other matching commands follow the content.
+    const leading = tokens.length ? actions.filter(command => normalizeSearch(commandTitle(command)).includes(query)) : [];
+    leading.forEach(command => resultContainer.append(commandElement(command)));
     for (const item of matches) {
       const link = document.createElement('a');
       link.className = 'search-result';
@@ -324,6 +407,15 @@
       link.append(type, copy);
       resultContainer.append(link);
     }
+    const trailing = actions.filter(command => !leading.includes(command));
+    if (quick && trailing.length) {
+      const group = document.createElement('p');
+      group.className = 'search-group';
+      group.setAttribute('aria-hidden', 'true');
+      group.textContent = 'Commands';
+      resultContainer.append(group);
+    }
+    trailing.forEach(command => resultContainer.append(commandElement(command)));
   }
 
   scopeButtons.forEach(button => button.addEventListener('click', () => {
@@ -363,11 +455,11 @@
   searchInput?.addEventListener('input', renderSearch);
   searchInput?.addEventListener('keydown', event => {
     if (event.key === 'Escape') { event.preventDefault(); closeDialog(dialog); return; }
-    if (event.key === 'ArrowDown') { event.preventDefault(); resultContainer.querySelector('a')?.focus(); }
-    if (event.key === 'Enter') resultContainer.querySelector('a')?.click();
+    if (event.key === 'ArrowDown') { event.preventDefault(); resultContainer.querySelector('.search-result')?.focus(); }
+    if (event.key === 'Enter') resultContainer.querySelector('.search-result')?.click();
   });
   resultContainer?.addEventListener('keydown', event => {
-    const links = [...resultContainer.querySelectorAll('a')];
+    const links = [...resultContainer.querySelectorAll('.search-result')];
     const index = links.indexOf(document.activeElement);
     if (event.key === 'ArrowDown' && index >= 0) { event.preventDefault(); links[Math.min(index + 1, links.length - 1)]?.focus(); }
     if (event.key === 'ArrowUp' && index >= 0) { event.preventDefault(); if (index === 0) searchInput.focus(); else links[index - 1]?.focus(); }

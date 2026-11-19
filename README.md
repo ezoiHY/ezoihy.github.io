@@ -6,9 +6,11 @@ Selected projects presents all featured entries, with a lead robotics study, thr
 
 The homepage places the profile, projects, experience, and writing on one continuous reading surface. Interior pages retain the 930px document column. Main navigation stays in normal document flow; a compact homepage section navigator remains available while scrolling. Home is explicit in desktop and mobile navigation. Interior pages provide a Home breadcrumb and a footer return link; About links to `/about/`. Project breadcrumbs retain the collection's filter context.
 
+A quiet layer of details sits on top of that structure. The homepage shows the current time in Guangzhou, a tracking reticle over the portrait for pointer users, numbered section headings whose facts come from the data, and spec readouts over project images drawn from each project's measured `highlights`. Experience opens with a timeline built from the dated entries in `_data/profile.yml`; the About page repeats it above Education. Hovering an appointment highlights its bar, and the pointer reads dates off the axis. Search doubles as a command palette (copy the email or page link, download the CV, switch theme or wallpaper, open GitHub or RSS), and keyboard shortcuts cover search (⌘K or /), navigation (G then a letter), theme (T) and a shortcut list (?). The footer carries a site map, contact links, the local time and a build date. Long pages show a reading-progress line, prose headings offer copyable section links, posts list their reading time, and the 404 page has a small three-link arm that reaches for the pointer. See [motion design](docs/MOTION-DESIGN.md#details-layer--november-19-2026).
+
 Projects supports All / Robotics / Software, local keyword filtering, and Cards / List layouts. `area`, `q`, and `view` URL parameters make the selection shareable and preserve it through project details, continuation links, and return navigation. Project pages offer an image viewer with keyboard navigation, captions, original-size inspection, and ordinary original-image links without JavaScript. Longer descriptions receive a section outline. Compare projects places two cases side by side and shares their design choices, contributions, and evidence through the URL.
 
-The Research page leads with two large personal project demonstrations, followed by a research-interest map, separately attributed PAIRS Lab demonstrations, and the publication list. The five map nodes keep their descriptions visible, highlight branches on selection, and link to relevant existing work. Lab demo metadata lives in `_data/lab_demos.yml`; its videos remain hosted by the lab, with the shared Play/Pause preview button and source links. Native video controls remain the no-JavaScript fallback.
+The Research page leads with two large personal project demonstrations, followed by a research-interest map, separately attributed PAIRS Lab demonstrations, and the publication list. The five map nodes sit around a small sense–learn–act core, keep their descriptions visible, highlight branches on selection, link to relevant existing work, and show which topics share the same project or demo. Lab demo metadata lives in `_data/lab_demos.yml`; its videos remain hosted by the lab, with the shared Play/Pause preview button and source links. Native video controls remain the no-JavaScript fallback.
 
 On November 16, 2026, the owner requested muted automatic looping for these two lab demos, replacing their earlier explicit-play-only behavior. With JavaScript, each starts when at least 10% visible and the page is visible, and both may play together. They pause offscreen or when the page is hidden; a visitor's explicit pause persists until manual playback. Reduced motion disables automatic playback, and a Play demo button remains available if the browser blocks autoplay. See [content maintenance](docs/CONTENT.md#research-page-and-lab-demonstrations).
 
@@ -35,6 +37,7 @@ Content edits trigger regeneration. Restart the server after changing `_config.y
 JEKYLL_ENV=production bundle exec jekyll build
 python3 scripts/check_site.py
 node scripts/check_wallpaper.cjs
+node scripts/check_light.cjs
 bundle exec al-folio upgrade overrides audit
 ```
 
@@ -58,7 +61,12 @@ Optional browser regression checks require a locally installed Playwright packag
 | `_bibliography/papers.bib` | Verified publication entries in BibTeX |
 | `assets/img/` | Portrait, project source photographs, AI-assisted covers, screenshots, retained conceptual illustrations, and original Big Sur wallpaper frames |
 | `assets/css/studio.css` | Layout, glass materials, and motion |
-| `assets/js/studio.js` | Theme, background preference, search, and other controls |
+| `assets/js/studio.js` | Theme (with its expanding reveal), background preference, search and commands, and other controls |
+| `assets/css/craft.css`, `assets/js/craft.js` | Details layer: first-visit intro, local clock, footer, toast, shortcuts, reading progress, scroll-linked media, spec readouts, section links |
+| `_includes/trajectory.liquid`, `assets/css/trajectory.css` | Timeline on the homepage and About page, drawn from `_data/profile.yml` |
+| `_includes/project-hud.liquid` | Hover spec readout for project images |
+| `assets/js/reach.js` | The 404 page's inverse-kinematics arm |
+| `assets/js/light.js` | Sun position from Apple's solar metadata, pointer response for reflections and the glass edge |
 | `assets/js/project-viewer.js`, `assets/css/project-viewer.css` | Detail-page image viewing and long-description outlines |
 | `assets/css/research.css` | Research-page demonstration and interests layout |
 | `assets/js/research-map.js` | Research-map connections, focus and selection |
@@ -108,7 +116,7 @@ See GitHub's [custom domain documentation](https://docs.github.com/en/pages/conf
 
 ## Appearance and performance
 
-New visitors see the original Big Sur landscape behind a light/dark document theme. The coast pans as bands of light move across the scenery. Two curved reflections follow the viewport inside each page and take their colors from the selected time of day. They frame the homepage portrait, spread across the project archive, and soften behind long-form writing and the CV. The wallpaper panel includes an **Animate scenery** switch and remembers the choice across pages. The toolbar also supports a solid background and manual time previews. Photography stays behind near-opaque reading surfaces, so the theme and text contrast remain consistent. Header and footer use a small CSS blur only in wallpaper mode. No optical engine, GPU canvas, scroll sampler, or duplicated wallpaper is loaded.
+New visitors see the original Big Sur landscape behind a light/dark document theme. Following Apple's motion and materials guidance, the photograph holds still and only its light moves. `assets/js/light.js` places one sun from the frames' own solar metadata (`assets/img/big-sur/apple-solar.json`) at the wallpaper time: sunrise light enters from the land on the right, sunset light from the ocean on the left, and midday light is diffuse. That sun lights the sky over the photograph, a soft pool and a glossy sheen inside each reading surface, and the specular edge of the glass toolbar and section navigator. Each layer drifts and breathes on its own long period, phased from the clock so the light continues from page to page; a mouse or pen nudges the reflections and the toolbar edge. On the first page of a visit the scenery settles into place, then stays still. Dragging the wallpaper time moves the sun live. The wallpaper panel includes an **Animate light** switch and remembers the choice across pages. The toolbar also supports a solid background and manual time previews. Photography stays behind near-opaque reading surfaces, so the theme and text contrast remain consistent. Header and footer use a small CSS blur only in wallpaper mode. No optical engine, GPU canvas, scroll sampler, or duplicated wallpaper is loaded.
 
 `assets/js/wallpaper.js` loads only the selected frame, using a 960px WebP on mobile or 1600px on desktop. It is deferred and requests decorative images at low priority. There is no next-scene prefetch. The minute timer pauses while hidden, in solid mode, or during a manual time selection. CSS owns the short crossfade; reduced motion disables it. Reduced transparency or increased contrast makes every reading surface opaque.
 

@@ -52,7 +52,13 @@ async function escapeSearch(page) {
 }
 async function search(page) {
   await page.locator('.search-trigger').click();
-  assert.equal(await page.locator('.search-result').count(), await page.locator('.desktop-nav a').count());
+  // The empty state lists the main navigation first, then the commands.
+  assert.equal(await page.locator('.search-result:not([data-kind="action"])').count(), await page.locator('.desktop-nav a').count());
+  assert.ok(await page.locator('.search-result[data-kind="action"]').count() >= 5);
+  // A command named by the query leads the results.
+  await page.locator('#site-search').fill('switch to');
+  assert.match(await page.locator('.search-result').first().innerText(), /Switch to (dark|light) theme/);
+  await page.locator('#site-search').fill('');
   await page.locator('[data-search-type="Post"]').click();
   await page.locator('#site-search').fill('zzzz-no-such-post');
   await page.locator('.search-empty button').click();
@@ -188,7 +194,8 @@ async function sampleWallpaper(page, moving, label) {
   await page.waitForTimeout(moving ? 1100 : 450);
   const after = await page.evaluate(readWallpaperFrame);
   for (const layer of Object.keys(before)) {
-    if (moving) assert.notDeepEqual(after[layer], before[layer], `${label}: ${layer} must move`);
+    // The photograph is a stationary frame of reference; only its light moves.
+    if (moving && layer !== 'scenery') assert.notDeepEqual(after[layer], before[layer], `${label}: ${layer} must move`);
     else assert.deepEqual(after[layer], before[layer], `${label}: ${layer} must stay still`);
   }
   return { before, after };
@@ -394,7 +401,8 @@ async function projects(page) {
       if (enabled('theme')) await check(`${name}: theme toggle and persistence`, async () => {
         await page.locator('.theme-toggle').click();
         const next = scheme === 'light' ? 'dark' : 'light';
-        assert.equal(await page.locator('html').getAttribute('data-theme'), next);
+        // A View Transition applies the theme on the next frame.
+        await page.waitForFunction(theme => document.documentElement.dataset.theme === theme, next, { timeout: 2000 });
         await page.reload({ waitUntil: 'networkidle' });
         assert.equal(await page.locator('html').getAttribute('data-theme'), next);
         await page.locator('.theme-toggle').click();

@@ -29,6 +29,12 @@ jobs:
         run: bundle exec jekyll build --trace
       - name: Check pages and local links
         run: python3 scripts/check_site.py
+      - name: Run script unit checks
+        run: |
+          node scripts/check_wallpaper.cjs
+          node scripts/check_light.cjs
+          node scripts/check_glass.cjs
+          node scripts/check_project_carousel.cjs
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

@@ -2,11 +2,12 @@
 {% assign project_cover = project.cover | default: project.image %}
 {% assign project_cover_width = project.cover_width | default: project.image_width | default: 800 %}
 {% assign project_cover_height = project.cover_height | default: project.image_height | default: 560 %}
+{% capture project_hud %}{% include project-hud.liquid project=project %}{% endcapture %}
 <article class="selected-project" data-project-url="{{ project.url | relative_url }}">
   {% if project.video %}
-    <div class="selected-project-image">{% include project-media.liquid project=project thumbnail=true %}</div>
+    <div class="selected-project-image">{% include project-media.liquid project=project thumbnail=true %}{{ project_hud }}</div>
   {% else %}
-    <a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy"></a>
+    <a class="selected-project-image" href="{{ project.url | relative_url }}" tabindex="-1" aria-hidden="true"><img src="{{ project_cover | relative_url }}" alt="" width="{{ project_cover_width }}" height="{{ project_cover_height }}" loading="lazy">{{ project_hud }}</a>
   {% endif %}
   <div class="selected-project-copy">
     <p class="project-meta"><span>{{ project.category | escape }}</span><span>{{ project.year | escape }}</span></p>

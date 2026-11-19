@@ -41,6 +41,8 @@ Apple's `apple_desktop:solar` XMP property contains a Base64-encoded binary plis
 | 6 | Warm sunset | 0° / 270° |
 | 7 | Purple dusk and clouds | −9° / 280° |
 
+The site's light model (`assets/js/light.js`) uses these altitudes and azimuths, each placed at the middle of its wallpaper period, to position the sun's light over the photograph, the reading panels and the glass toolbar. The values are copied into the script; the JSON is not loaded at runtime.
+
 The visual sequence through a day is **1 → 2 → 3 → 0 → 4 → 5 → 6 → 7 → 1**. The source metadata specifies solar coordinates, **not fixed clock times**. The website's browser-local time schedule is a separate adaptation, not Apple's original location-dependent desktop scheduling. All eight exports were visually inspected together to verify their scene, order, and distinct lighting states.
 
 ### Reproduction

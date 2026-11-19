@@ -7,12 +7,14 @@ searchable: true
 description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and research assistant at PAIRS Lab, HKUST(GZ). Robotics projects, research tools, and CV.
 ---
 {% assign profile = site.data.profile %}
+{% assign selected = site.projects | where: 'featured', true %}
+{% assign selected_years = selected | map: 'sort_year' | sort %}
 <article class="home-page shell">
   {% include coastal-field.liquid %}
   <section class="profile-section glass-panel" aria-labelledby="profile-name">
     <div class="profile-intro">
       <header class="profile-heading">
-        <p class="profile-location">{% include icon.liquid name='pin' %}{{ profile.location | escape }}</p>
+        <p class="profile-location">{% include icon.liquid name='pin' %}<span>{{ profile.location | escape }}</span><span class="local-clock" data-local-clock data-timezone="{{ site.timezone }}" data-place="{{ profile.location | split: ',' | first | escape }}" hidden><span class="local-clock-sep" aria-hidden="true">·</span><time>--:--</time><span class="local-clock-label">local time</span></span></p>
         <h1 id="profile-name">Yu Han <span>(Harry)</span></h1>
       </header>
       <div class="biography">
@@ -32,6 +34,12 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
            srcset="{{ profile.avatar_small | relative_url }} 480w, {{ profile.avatar_large | relative_url }} 800w"
            sizes="(max-width: 680px) 23vw, (max-width: 1050px) 21vw, 224px"
            width="1206" height="1641" fetchpriority="high" alt="Portrait of {{ profile.name | escape }}">
+      <span class="portrait-tracker" aria-hidden="true">
+        <span class="tracker-corner" data-corner="tl"></span><span class="tracker-corner" data-corner="tr"></span><span class="tracker-corner" data-corner="bl"></span><span class="tracker-corner" data-corner="br"></span>
+        <span class="tracker-scan"></span>
+        <span class="tracker-reticle"></span>
+        <span class="tracker-label"><span class="tracker-dot"></span>Tracking <span data-tracker-readout>x 0.50 y 0.42</span></span>
+      </span>
     </a>
   </section>
 
@@ -39,10 +47,12 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
 
   <section class="home-section work-block" aria-labelledby="projects-title">
     <div class="work-section-heading">
-      <h2 id="projects-title">Selected projects</h2>
+      <div class="section-title">
+        <p class="section-index"><span class="section-number">01</span><span class="section-rule" aria-hidden="true"></span>{{ selected_years.first }}–{{ selected_years.last }} · {{ selected.size }} projects</p>
+        <h2 id="projects-title">Selected projects</h2>
+      </div>
       <a href="{{ '/projects/' | relative_url }}">All projects {% include icon.liquid name='arrow' %}</a>
     </div>
-    {% assign selected = site.projects | where: 'featured', true %}
     {% assign robotics = selected | where_exp: 'project', "project.category != 'Software'" %}
     {% assign software = selected | where: 'category', 'Software' %}
 
@@ -72,23 +82,29 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
     </div>
   </section>
 
-  <section class="home-section work-block work-index" aria-labelledby="experience-title">
+  <section class="home-section work-block work-index work-path" aria-labelledby="experience-title">
     <div class="work-section-heading">
+      <p class="section-index"><span class="section-number">02</span><span class="section-rule" aria-hidden="true"></span>{{ profile.background.first.start_date | default: '2023' }} – now</p>
       <h2 id="experience-title">Experience</h2>
       <a href="{{ '/cv/#experience' | relative_url }}">Full CV {% include icon.liquid name='arrow' %}</a>
     </div>
-    {% include experience-list.liquid compact=true %}
+    <div class="work-path-body">
+      {% include trajectory.liquid %}
+      {% include experience-list.liquid compact=true %}
+    </div>
   </section>
 
   <section class="home-section work-block work-index" aria-labelledby="posts-title">
     <div class="work-section-heading">
+      <p class="section-index"><span class="section-number">03</span><span class="section-rule" aria-hidden="true"></span>{{ site.posts | size }} {% if site.posts.size == 1 %}post{% else %}posts{% endif %}</p>
       <h2 id="posts-title">Writing</h2>
       <a href="{{ '/posts/' | relative_url }}">All posts {% include icon.liquid name='arrow' %}</a>
     </div>
     <div class="news-list">
       {% for post in site.posts limit: 3 %}
+        {% assign reading_minutes = post.content | number_of_words | divided_by: 200 | at_least: 1 %}
         <article class="news-row">
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %-d, %Y' }}</time>
+          <p class="news-date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%b %-d, %Y' }}</time><span>{{ reading_minutes }} min read</span></p>
           <div>
             <h3><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h3>
             {% if post.description %}<p class="news-summary">{{ post.description | escape }}</p>{% endif %}
@@ -98,6 +114,7 @@ description: Yu Han (Harry), Robotics Engineering undergraduate at SCUT and rese
     </div>
     <nav class="contact-line home-contact" aria-label="Contact links">
       <a href="mailto:{{ profile.email }}" aria-label="Email {{ profile.email }}">{% include icon.liquid name='mail' %}{{ profile.email }}</a>
+      <button type="button" class="copy-chip" data-copy-text="{{ profile.email | escape }}" data-copy-message="Email address copied" hidden>{% include icon.liquid name='copy' %}<span>Copy</span></button>
       <a href="{{ profile.github }}" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">{% include icon.liquid name='github' %}GitHub</a>
     </nav>
   </section>

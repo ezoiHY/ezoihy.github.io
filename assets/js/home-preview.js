@@ -1,7 +1,26 @@
 (() => {
+  const jumpBar = document.querySelector('.home-jumps');
   const jumps = [...document.querySelectorAll('.home-jumps a')].map(link => ({
     link, heading: document.getElementById(link.hash.slice(1)),
   })).filter(item => item.heading);
+  // One pill slides between sections; the current link keeps its own state without it.
+  const pill = jumpBar && document.createElement('div');
+  if (pill) {
+    pill.className = 'home-jumps-pill';
+    pill.setAttribute('aria-hidden', 'true');
+    jumpBar.append(pill);
+    jumpBar.classList.add('has-pill');
+  }
+  let marked = null;
+  function placePill(item) {
+    if (!pill) return;
+    if (!item) { pill.classList.remove('is-visible'); return; }
+    const bar = jumpBar.getBoundingClientRect();
+    const rect = item.link.getBoundingClientRect();
+    pill.style.setProperty('--pill-x', `${(rect.left - bar.left - jumpBar.clientLeft).toFixed(1)}px`);
+    pill.style.setProperty('--pill-w', `${rect.width.toFixed(1)}px`);
+    pill.classList.add('is-visible');
+  }
   let scheduled = false;
   function markSection() {
     scheduled = false;
@@ -11,7 +30,9 @@
       if (item === current) item.link.setAttribute('aria-current', 'location');
       else item.link.removeAttribute('aria-current');
     }
+    if (current !== marked) { marked = current; placePill(current); }
   }
+  if ('ResizeObserver' in window && jumpBar) new ResizeObserver(() => placePill(marked)).observe(jumpBar);
   function scheduleUpdate() {
     if (!scheduled) requestAnimationFrame(markSection);
     scheduled = true;

@@ -1,0 +1,119 @@
+{%- comment -%}
+  A visual summary of the dated entries in _data/profile.yml (background, education,
+  research_experience and awards). The list beside it remains the accessible record.
+  The background years are compressed on the left; the main axis runs by month from the
+  first year of study to the latest end date or the build year, whichever is later.
+  Year-only dates snap to whole years and draw soft edges; month dates are exact.
+  Each honor is one diamond, grouped in the middle of its year.
+  "Now" is the build date. Positions are percentages of each zone (0–100).
+{%- endcomment -%}
+{%- assign profile = site.data.profile -%}
+{%- assign now_year = site.time | date: '%Y' | plus: 0 -%}
+{%- assign now_month = site.time | date: '%m' | plus: 0 -%}
+{%- comment -%}Main axis: first study year to the latest dated end (or now).{%- endcomment -%}
+{%- assign axis_start = now_year -%}
+{%- assign axis_end = now_year -%}
+{%- for degree in profile.education -%}
+  {%- assign y = degree.start_date | slice: 0, 4 | plus: 0 -%}{%- if y < axis_start -%}{%- assign axis_start = y -%}{%- endif -%}
+  {%- assign y = degree.end_date | slice: 0, 4 | plus: 0 -%}{%- if y > axis_end -%}{%- assign axis_end = y -%}{%- endif -%}
+{%- endfor -%}
+{%- for experience in profile.research_experience -%}
+  {%- assign y = experience.start_date | slice: 0, 4 | plus: 0 -%}{%- if y > 0 and y < axis_start -%}{%- assign axis_start = y -%}{%- endif -%}
+  {%- unless experience.end_date == 'present' -%}{%- assign y = experience.end_date | slice: 0, 4 | plus: 0 -%}{%- if y > axis_end -%}{%- assign axis_end = y -%}{%- endif -%}{%- endunless -%}
+{%- endfor -%}
+{%- assign axis_years = axis_end | minus: axis_start | plus: 1 -%}
+{%- assign axis_months = axis_years | times: 12 -%}
+{%- comment -%}Prelude: the background years, compressed.{%- endcomment -%}
+{%- assign prelude_start = 9999 -%}
+{%- assign prelude_end = 0 -%}
+{%- for item in profile.background -%}
+  {%- assign y = item.start_date | slice: 0, 4 | plus: 0 -%}{%- if y < prelude_start -%}{%- assign prelude_start = y -%}{%- endif -%}
+  {%- assign y = item.end_date | slice: 0, 4 | plus: 0 -%}{%- if y > prelude_end -%}{%- assign prelude_end = y -%}{%- endif -%}
+{%- endfor -%}
+{%- assign prelude_months = prelude_end | minus: prelude_start | plus: 1 | times: 12 -%}
+{%- assign now_m = now_year | minus: axis_start | times: 12 | plus: now_month | minus: 0.5 -%}
+{%- assign now_x = now_m | times: 100.0 | divided_by: axis_months | round: 2 -%}
+<div class="trajectory" data-trajectory data-axis-start="{{ axis_start }}" data-axis-years="{{ axis_years }}"{% if profile.background.size > 0 %} data-prelude="{{ prelude_start }}–{{ prelude_end }}"{% endif %} aria-hidden="true" style="--now:{{ now_x }};--years:{{ axis_years }}">
+  <div class="trajectory-axis">
+    {%- if profile.background.size > 0 -%}<span class="trajectory-prelude-year">{{ prelude_start }}–{{ prelude_end | slice: 2, 2 }}</span>{%- endif -%}
+    {%- assign last_offset = axis_years | minus: 1 -%}
+    {%- for offset in (0..last_offset) -%}
+      {%- assign tick = offset | times: 12 | times: 100.0 | divided_by: axis_months | round: 2 -%}
+      <span class="trajectory-year" style="--at:{{ tick }}">{{ axis_start | plus: offset }}</span>
+    {%- endfor -%}
+    <span class="trajectory-now-label">Now</span>
+  </div>
+  <div class="trajectory-rows">
+    <div class="trajectory-row">
+      {%- for item in profile.background -%}
+        {%- assign start_y = item.start_date | slice: 0, 4 | plus: 0 -%}
+        {%- assign end_y = item.end_date | slice: 0, 4 | plus: 0 -%}
+        {%- assign from = start_y | minus: prelude_start | times: 12 | times: 100.0 | divided_by: prelude_months | round: 2 -%}
+        {%- assign to = end_y | minus: prelude_start | plus: 1 | times: 12 | times: 100.0 | divided_by: prelude_months | round: 2 -%}
+        <span class="trajectory-span is-study is-prelude is-soft-start is-soft-end" style="--from:{{ from }};--to:{{ to }}"><span class="trajectory-label">{{ item.short_title | default: item.title | escape }}</span></span>
+      {%- endfor -%}
+      {%- for degree in profile.education -%}
+        {%- assign start_y = degree.start_date | slice: 0, 4 | plus: 0 -%}
+        {%- assign end_y = degree.end_date | slice: 0, 4 | plus: 0 -%}
+        {%- assign from = start_y | minus: axis_start | times: 12 | times: 100.0 | divided_by: axis_months | round: 2 -%}
+        {%- assign end_m = end_y | minus: axis_start | plus: 1 | times: 12 -%}
+        {%- assign label = degree.major | append: ', ' | append: degree.institution_short | default: degree.institution -%}
+        {%- if end_m > now_m -%}
+          <span class="trajectory-span is-study is-soft-start" style="--from:{{ from }};--to:{{ now_x }}"><span class="trajectory-label">{{ label | escape }}</span></span>
+          {%- assign to = end_m | times: 100.0 | divided_by: axis_months | round: 2 -%}
+          <span class="trajectory-span is-study is-planned is-soft-end is-end-anchored" style="--from:{{ now_x }};--to:{{ to }}"><span class="trajectory-label trajectory-note">Expected {{ end_y }}</span></span>
+        {%- else -%}
+          {%- assign to = end_m | times: 100.0 | divided_by: axis_months | round: 2 -%}
+          <span class="trajectory-span is-study is-soft-start is-soft-end" style="--from:{{ from }};--to:{{ to }}"><span class="trajectory-label">{{ label | escape }}</span></span>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- assign appointments = profile.research_experience | sort: 'start_date' -%}
+    {%- for experience in appointments -%}
+      {%- assign start_parts = experience.start_date | split: '-' -%}
+      {%- assign start_y = start_parts[0] | plus: 0 -%}
+      {%- assign classes = 'trajectory-span' -%}
+      {%- if experience.type == 'industry' -%}{%- assign classes = classes | append: ' is-industry' -%}{%- else -%}{%- assign classes = classes | append: ' is-research' -%}{%- endif -%}
+      {%- if start_parts.size > 1 -%}
+        {%- assign start_m = start_y | minus: axis_start | times: 12 | plus: start_parts[1] | minus: 1 -%}
+      {%- else -%}
+        {%- assign start_m = start_y | minus: axis_start | times: 12 -%}
+        {%- assign classes = classes | append: ' is-soft-start' -%}
+      {%- endif -%}
+      {%- if experience.end_date == 'present' -%}
+        {%- assign end_m = now_m -%}
+        {%- assign classes = classes | append: ' is-ongoing' -%}
+      {%- else -%}
+        {%- assign end_parts = experience.end_date | split: '-' -%}
+        {%- assign end_y = end_parts[0] | plus: 0 -%}
+        {%- if end_parts.size > 1 -%}
+          {%- assign end_m = end_y | minus: axis_start | times: 12 | plus: end_parts[1] -%}
+        {%- else -%}
+          {%- assign end_m = end_y | minus: axis_start | plus: 1 | times: 12 -%}
+          {%- assign classes = classes | append: ' is-soft-end' -%}
+          {%- comment -%}An appointment that ended during the current year stops at Now.{%- endcomment -%}
+          {%- if end_m > now_m -%}{%- assign end_m = now_m -%}{%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- assign from = start_m | times: 100.0 | divided_by: axis_months | round: 2 -%}
+      {%- assign to = end_m | times: 100.0 | divided_by: axis_months | round: 2 -%}
+      {%- if from > 62 -%}{%- assign classes = classes | append: ' is-end-anchored' -%}{%- endif -%}
+      {%- if experience.type == 'industry' -%}
+        {%- assign label = experience.institution_short | default: experience.institution -%}
+      {%- else -%}
+        {%- assign label = experience.group | default: experience.institution_short | replace: 'Laboratory', 'Lab' -%}
+      {%- endif -%}
+      <div class="trajectory-row">
+        <span class="{{ classes }}" data-trajectory-key="exp-{{ experience.institution_short | default: experience.institution | slugify }}" style="--from:{{ from }};--to:{{ to }}"><span class="trajectory-label">{{ label | escape }}</span></span>
+      </div>
+    {%- endfor -%}
+    <div class="trajectory-row trajectory-honors">
+      <span class="trajectory-row-label">Honors</span>
+      {%- assign award_years = profile.awards | where_exp: 'award', 'award.year' | group_by: 'year' | sort: 'name' -%}
+      {%- for group in award_years -%}
+        {%- assign at = group.name | plus: 0 | minus: axis_start | times: 12 | plus: 6 | times: 100.0 | divided_by: axis_months | round: 2 -%}
+        <span class="trajectory-mark" style="--at:{{ at }}">{% for award in group.items %}<i></i>{% endfor %}</span>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

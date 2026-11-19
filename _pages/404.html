@@ -5,14 +5,37 @@ permalink: /404.html
 sitemap: false
 ---
 <section class="error-page shell">
-  <span aria-hidden="true">404</span>
+  <figure class="reach" data-reach aria-hidden="true">
+    <svg class="reach-stage" viewBox="0 0 600 250" focusable="false">
+      <path class="reach-workspace" d="M100 206 A200 200 0 0 1 500 206" />
+      <line class="reach-floor" x1="40" y1="226" x2="560" y2="226" />
+      <g class="reach-target" data-reach-target>
+        <circle r="11" /><path d="M-18 0h9M9 0h9M0 -18v9M0 9v9" />
+      </g>
+      <path class="reach-base" d="M268 226 L276 206 H324 L332 226 Z" />
+      <g class="reach-arm">
+        <line class="reach-link" data-reach-link="0" />
+        <line class="reach-link" data-reach-link="1" />
+        <line class="reach-link" data-reach-link="2" />
+        <g class="reach-gripper" data-reach-gripper>
+          <path class="reach-finger" data-reach-finger="0" d="M0 0 L14 -7 L22 -7" />
+          <path class="reach-finger" data-reach-finger="1" d="M0 0 L14 7 L22 7" />
+        </g>
+        <circle class="reach-joint" data-reach-joint="0" r="7" />
+        <circle class="reach-joint" data-reach-joint="1" r="6" />
+        <circle class="reach-joint" data-reach-joint="2" r="5" />
+      </g>
+    </svg>
+    <figcaption class="reach-readout"><span data-reach-angles>J1 —  J2 —  J3 —</span><span data-reach-status>Move the pointer to set a target</span></figcaption>
+  </figure>
+  <p class="error-code">Error 404</p>
   <h1>Page not found</h1>
-  <p>This page may have moved. You can find my projects and posts below.</p>
+  <p>This page may have moved, and it is out of reach for this arm too. You can find my projects and posts below.</p>
   <nav class="recovery-links" aria-label="Find a page">
     <a href="{{ '/' | relative_url }}">Back to home</a>
     <a href="{{ '/projects/' | relative_url }}">Projects</a>
     <a href="{{ '/posts/' | relative_url }}">Blog</a>
     <button type="button" class="button search-trigger recovery-search" aria-haspopup="dialog" aria-controls="search-dialog">{% include icon.liquid name='search' %} Search site</button>
   </nav>
-  <noscript><style>.recovery-search{display:none!important}</style></noscript>
+  <noscript><style>.recovery-search,.reach{display:none!important}</style></noscript>
 </section>

@@ -8,6 +8,7 @@ nav_section: /posts/
     {% if page.description %}<p class="post-deck">{{ page.description | escape }}</p>{% endif %}
     <div class="post-byline"><a href="{{ '/about/' | relative_url }}">{{ site.data.profile.name | escape }}</a>
       <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%b %-d, %Y' }}</time>
+      {% assign reading_minutes = content | number_of_words | divided_by: 200 | at_least: 1 %}<span class="post-reading-time">{{ reading_minutes }} min read</span>
       {% for category in page.categories %}<a data-post-category="{{ category | escape }}" href="{{ '/posts/' | relative_url }}?category={{ category | url_encode }}" aria-label="Browse {{ category | escape }} posts">{{ category | escape }}</a>{% endfor %}
     </div>
     {% if page.tags.size > 0 %}<p class="entry-meta post-tags"><span class="sr-only">Topics: </span>{{ page.tags | join: ' · ' | escape }}</p>{% endif %}

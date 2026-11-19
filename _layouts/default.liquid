@@ -29,16 +29,27 @@
           root.dataset.background = localStorage.getItem('harry-background') === 'solid' ? 'solid' : 'wallpaper';
           if (localStorage.getItem('harry-wallpaper-motion') === 'off') root.dataset.wallpaperMotion = 'off';
         } catch { /* Use the page defaults if storage is unavailable. */ }
+        // Ambient light takes its phase from the clock, so it continues across pages.
+        root.style.setProperty('--ambient-t', (Math.round(Date.now() / 100) % 36000 / 10).toFixed(1));
+        // The first page of a visit assembles once; later pages appear directly.
+        try {
+          if (!sessionStorage.getItem('harry-intro')) { root.dataset.intro = 'play'; sessionStorage.setItem('harry-intro', '1'); }
+        } catch { /* Without session storage the page simply appears. */ }
       })();
     </script>
     <script src="{{ '/assets/js/wallpaper.js' | relative_url }}" defer></script>
+    <script src="{{ '/assets/js/light.js' | relative_url }}" defer></script>
     <link rel="stylesheet" href="{{ '/assets/css/studio.css' | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/portfolio.css' | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/craft.css' | relative_url }}">
     {% if page.url == '/about/' or page.url == '/cv/' or page.url == '/papers/' or page.url == '/publications/' %}
       <link rel="stylesheet" href="{{ '/assets/css/profile-pages.css' | relative_url }}">
     {% endif %}
     {% if page.url == '/posts/' or page.collection == 'posts' or page.url == '/404.html' %}
       <link rel="stylesheet" href="{{ '/assets/css/writing.css' | relative_url }}">
+    {% endif %}
+    {% if page.url == '/' or page.url == '/about/' %}
+      <link rel="stylesheet" href="{{ '/assets/css/trajectory.css' | relative_url }}">
     {% endif %}
     {% if page.url == '/' %}
       <link rel="stylesheet" href="{{ '/assets/css/home-work.css' | relative_url }}">
@@ -58,12 +69,15 @@
       <script src="{{ '/assets/js/project-compare.js' | relative_url }}" defer></script>
     {% endif %}
     {% if page.url == '/publications/' %}<link rel="stylesheet" href="{{ '/assets/css/research.css' | relative_url }}"><script src="{{ '/assets/js/research-map.js' | relative_url }}" defer></script>{% endif %}
-    <noscript><style>.header-tools,.filter-bar,.print-cv,[data-copy],.search-trigger{display:none!important}@media(max-width:760px){.site-header{flex-wrap:wrap}.desktop-nav{display:flex;flex-wrap:wrap;width:100%;order:2}.desktop-nav a{min-height:44px}}</style></noscript>
+    <noscript><style>.header-tools,.filter-bar,.print-cv,[data-copy],[data-copy-text],.footer-shortcuts,.search-trigger{display:none!important}@media(max-width:760px){.site-header{flex-wrap:wrap}.desktop-nav{display:flex;flex-wrap:wrap;width:100%;order:2}.desktop-nav a{min-height:44px}}</style></noscript>
     <script src="{{ '/assets/js/studio.js' | relative_url }}" defer></script>
     <script src="{{ '/assets/js/project-media.js' | relative_url }}" defer></script>
+    <script src="{{ '/assets/js/craft.js' | relative_url }}" defer></script>
+    {% if page.url == '/404.html' %}<script src="{{ '/assets/js/reach.js' | relative_url }}" defer></script>{% endif %}
   </head>
-  <body data-page="{{ page.page_class | default: 'inner' }}">
+  <body id="top" data-page="{{ page.page_class | default: 'inner' }}">
     {% include symbols.liquid %}
+    {% if page.layout == 'post' or page.layout == 'project' or page.url == '/about/' or page.url == '/cv/' %}<div class="reading-progress" aria-hidden="true"><span></span></div>{% endif %}
     <div class="desktop-wallpaper" aria-hidden="true">
       <div class="wallpaper-scene"><div class="wallpaper-layer wallpaper-a"></div><div class="wallpaper-layer wallpaper-b"></div></div>
     </div>
@@ -93,12 +107,33 @@
       </nav>
       {{ content }}</div>{% endif %}</main>
     <footer class="site-footer shell" id="site-footer">
-      <p>© {{ 'now' | date: '%Y' }} {{ site.author | escape }}. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> & <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a>.</p><nav class="footer-links" aria-label="Footer navigation">{% if page.url != '/' %}<a href="{{ '/' | relative_url }}">Back to home</a>{% endif %}<a href="{{ '/rss.xml' | relative_url }}">RSS</a></nav>
+      <div class="footer-main">
+        <div class="footer-identity">
+          <p class="footer-name">{{ site.first_name | escape }} {{ site.last_name | escape }} <span>(Harry)</span></p>
+          <p>Robotics Engineering, SCUT · PAIRS Lab, HKUST(GZ)</p>
+          <p class="footer-clock" data-local-clock data-timezone="{{ site.timezone }}" hidden><span>{{ site.data.profile.location | split: ',' | first | escape }}</span><time>--:--</time><span data-clock-offset></span></p>
+        </div>
+        <nav class="footer-column footer-sitemap" aria-label="Site sections">
+          <p class="footer-heading">Site</p>
+          {% for item in site.data.navigation %}<a href="{{ item.url | relative_url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.title }}</a>{% endfor %}
+        </nav>
+        <nav class="footer-column" aria-label="Elsewhere">
+          <p class="footer-heading">Elsewhere</p>
+          <a href="mailto:{{ site.data.profile.email | escape }}">Email</a>
+          <a href="{{ site.data.profile.github | escape }}" target="_blank" rel="noopener noreferrer">GitHub {% include icon.liquid name='external' %}</a>
+          <a href="{{ '/rss.xml' | relative_url }}">RSS</a>
+          <a href="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" download>CV (PDF)</a>
+        </nav>
+      </div>
+      <div class="footer-base">
+        <p>© {{ 'now' | date: '%Y' }} {{ site.author | escape }}. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> & <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a>. Updated <time datetime="{{ site.time | date_to_xmlschema }}">{{ site.time | date: '%b %-d, %Y' }}</time>.</p>
+        <nav class="footer-links" aria-label="Footer navigation">{% if page.url != '/' %}<a href="{{ '/' | relative_url }}">Back to home</a>{% endif %}<a class="back-to-top" href="#top">Back to top {% include icon.liquid name='arrow' %}</a><button class="footer-shortcuts" type="button" data-shortcuts-open hidden><kbd>?</kbd> Shortcuts</button></nav>
+      </div>
     </footer>
     <dialog id="wallpaper-dialog" class="wallpaper-dialog" aria-labelledby="wallpaper-title">
       <div class="wallpaper-panel-heading"><div><h2 id="wallpaper-title">Big Sur</h2><p>Wallpaper & time of day</p></div><button class="wallpaper-close icon-button" type="button" aria-label="Close wallpaper settings">{% include icon.liquid name='close' %}</button></div>
       <label class="wallpaper-setting"><span>Show wallpaper</span><input id="wallpaper-enabled" class="toggle-switch" type="checkbox" role="switch"></label>
-      <label class="wallpaper-setting"><span>Animate scenery</span><input id="wallpaper-motion" class="toggle-switch" type="checkbox" role="switch" checked aria-describedby="wallpaper-motion-hint"></label>
+      <label class="wallpaper-setting"><span>Animate light</span><input id="wallpaper-motion" class="toggle-switch" type="checkbox" role="switch" checked aria-describedby="wallpaper-motion-hint"></label>
       <p id="wallpaper-motion-hint" class="wallpaper-time-hint" hidden></p>
       <fieldset id="wallpaper-time-controls">
         <label class="wallpaper-setting"><span>Follow local time</span><input id="wallpaper-auto" class="toggle-switch" type="checkbox" role="switch" checked></label>
@@ -109,8 +144,8 @@
         <p class="wallpaper-time-hint">Choose a time to preview the changing light.</p>
       </fieldset>
     </dialog>
-    <dialog id="search-dialog" class="search-dialog glass" aria-labelledby="search-title">
-      <div class="search-top"><label id="search-title" for="site-search">{% include icon.liquid name='search' %}<span class="sr-only">Search site</span></label><input id="site-search" type="search" placeholder="Search projects, research, and writing…" maxlength="200" autocomplete="off"><button class="search-close icon-button" aria-label="Close search" type="button">{% include icon.liquid name='close' %}</button></div>
+    <dialog id="search-dialog" class="search-dialog glass" aria-labelledby="search-title" data-email="{{ site.data.profile.email | escape }}" data-github="{{ site.data.profile.github | escape }}" data-cv="{{ '/assets/pdf/yu-han-cv.pdf' | relative_url }}" data-rss="{{ '/rss.xml' | relative_url }}">
+      <div class="search-top"><label id="search-title" for="site-search">{% include icon.liquid name='search' %}<span class="sr-only">Search site</span></label><input id="site-search" type="search" placeholder="Search or type a command…" maxlength="200" autocomplete="off"><button class="search-close icon-button" aria-label="Close search" type="button">{% include icon.liquid name='close' %}</button></div>
       <div class="search-scopes" role="group" aria-label="Search within">
         <button type="button" data-search-type="all" aria-pressed="true">All</button>
         <button type="button" data-search-type="Project" aria-pressed="false">Projects</button>
@@ -119,8 +154,21 @@
         <button type="button" data-search-type="Page" aria-pressed="false">Pages</button>
       </div>
       <div id="search-results" class="search-results"></div>
-      <div class="search-bottom"><span id="search-summary" role="status">Search projects, pages, and posts</span><span><kbd>esc</kbd> Close</span></div>
+      <div class="search-bottom"><span id="search-summary" role="status">Search projects, pages, and posts</span><span class="search-keys"><kbd>↑</kbd><kbd>↓</kbd> Move <kbd>↵</kbd> Open <kbd>esc</kbd> Close</span></div>
     </dialog>
+    <dialog id="shortcuts-dialog" class="shortcuts-dialog" aria-labelledby="shortcuts-title">
+      <div class="shortcuts-heading"><h2 id="shortcuts-title">Keyboard shortcuts</h2><button class="icon-button" type="button" data-shortcuts-close aria-label="Close keyboard shortcuts">{% include icon.liquid name='close' %}</button></div>
+      <dl class="shortcuts-list">
+        <div><dt><kbd>⌘</kbd><kbd>K</kbd> or <kbd>/</kbd></dt><dd>Search and commands</dd></div>
+        {% for item in site.data.navigation %}<div><dt><kbd>G</kbd> then <kbd>{{ item.title | slice: 0 | upcase }}</kbd></dt><dd>Go to {{ item.title }}</dd></div>{% endfor %}
+        <div><dt><kbd>T</kbd></dt><dd>Switch light or dark theme</dd></div>
+        <div><dt><kbd>?</kbd></dt><dd>Show this list</dd></div>
+        <div><dt><kbd>Esc</kbd></dt><dd>Close a dialog</dd></div>
+      </dl>
+      <p class="shortcuts-note">Shortcuts pause while you type in a field.</p>
+    </dialog>
+    <div class="toast" data-toast popover="manual" aria-hidden="true" hidden></div>
+    <p class="sr-only" data-toast-status role="status" aria-live="polite"></p>
     <script id="search-data" type="application/json">{% include search-data.liquid %}</script>
   </body>
 </html>

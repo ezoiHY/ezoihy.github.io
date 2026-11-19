@@ -30,124 +30,184 @@
   .document-panel .page-heading > p { max-width:64ch; }
   .document-panel .breadcrumbs { margin-bottom:clamp(22px,3.4vw,37px); }
 }
-/* The coast sits behind the page. A viewport-sized pair of reflections travels across each reading surface. */
+/* Light, after Apple's motion and materials guidance.
+   The photograph is a stationary frame of reference. One sun, placed by light.js from the
+   frames' own solar metadata (assets/img/big-sur/apple-solar.json) at the wallpaper time,
+   lights the sky, the reading panels and the glass toolbar. Motion is slow, low-amplitude
+   drift on incommensurate periods, phased from the clock so it continues across pages.
+   Reduced motion keeps the light and stops the motion. */
+@property --sun-x { syntax:'<number>'; inherits:true; initial-value:.84; }
+@property --sun-y { syntax:'<number>'; inherits:true; initial-value:.13; }
+@property --sun-side { syntax:'<number>'; inherits:true; initial-value:.9; }
+@property --sun-glow { syntax:'<number>'; inherits:true; initial-value:.75; }
+@property --horizon-glow { syntax:'<number>'; inherits:true; initial-value:.3; }
+@property --night-glow { syntax:'<number>'; inherits:true; initial-value:0; }
 .wallpaper-scene { position:absolute; inset:0; }
 .coastal-field { display:none; }
-@media screen and (prefers-reduced-motion:no-preference) {
+@media screen {
   :root {
-    --coast-light:255 237 190;
-    --ribbon-deep:43 115 178;
-    --ribbon-color:65 190 204;
-    --ribbon-edge:203 253 241;
+    /* Light colors follow the period of the photograph shown. */
+    --sun-rgb:255 241 214;
+    /* The sheen carries the sky's hue so it reads on white paper; a lighter core gives it gloss. */
+    --sheen-rgb:70 170 210; --ribbon-deep:43 115 178; --ribbon-edge:236 250 255;
+    --pool-alpha:.3; --sheen-alpha:.36; --bounce-alpha:.08; --gloss:1.6;
+    /* The glass edge reflects the sky's hue; light enters just beneath it, tinted by the sun. */
+    --rim-rgb:var(--sheen-rgb); --rim-peak:.85; --rim-base:.42; --rim-glow:.34;
+    transition:--sun-x 1.4s var(--motion-ease),--sun-y 1.4s var(--motion-ease),--sun-side 1.4s var(--motion-ease),
+      --sun-glow 1.4s ease,--horizon-glow 1.4s ease,--night-glow 1.4s ease;
   }
-  :root:is([data-wallpaper-period="dawn"],[data-wallpaper-period="sunrise"],[data-wallpaper-period="sunset"]) {
-    --coast-light:255 217 169;
-    --ribbon-deep:162 103 154; --ribbon-color:243 154 100; --ribbon-edge:255 231 176;
-  }
-  :root:is([data-wallpaper-period="dusk"],[data-wallpaper-period="night"]) {
-    --coast-light:196 216 255;
-    --ribbon-deep:96 101 199; --ribbon-color:106 160 222; --ribbon-edge:204 238 255;
-  }
+  :root.light-instant { transition:none; }
+  :root[data-wallpaper-period="dawn"] { --sun-rgb:255 196 176; --sheen-rgb:226 138 138; --ribbon-deep:150 104 170; --ribbon-edge:255 232 222; }
+  :root[data-wallpaper-period="sunrise"] { --sun-rgb:255 210 156; --sheen-rgb:238 148 90; --ribbon-deep:162 103 154; --ribbon-edge:255 236 200; }
+  :root[data-wallpaper-period="late-afternoon"] { --sun-rgb:255 220 166; --sheen-rgb:230 166 94; --ribbon-deep:150 112 158; --ribbon-edge:255 240 210; }
+  :root[data-wallpaper-period="sunset"] { --sun-rgb:255 184 134; --sheen-rgb:238 126 90; --ribbon-deep:162 96 150; --ribbon-edge:255 228 196; }
+  :root[data-wallpaper-period="dusk"] { --sun-rgb:214 186 255; --sheen-rgb:140 126 224; --ribbon-deep:96 101 199; --ribbon-edge:230 226 255; }
+  :root[data-wallpaper-period="night"] { --sun-rgb:176 202 255; --sheen-rgb:96 140 220; --ribbon-deep:70 92 172; --ribbon-edge:214 230 255; }
+  :root[data-theme="dark"] { --pool-alpha:.17; --sheen-alpha:.3; --bounce-alpha:.12; --gloss:1.2; --rim-rgb:var(--sun-rgb); --rim-peak:.72; --rim-base:.1; --rim-glow:.22; --sheen-rgb:120 196 228; }
+  :root[data-theme="dark"][data-wallpaper-period="dawn"] { --sheen-rgb:230 166 160; }
+  :root[data-theme="dark"][data-wallpaper-period="sunrise"] { --sheen-rgb:246 180 128; }
+  :root[data-theme="dark"][data-wallpaper-period="late-afternoon"] { --sheen-rgb:240 190 130; }
+  :root[data-theme="dark"][data-wallpaper-period="sunset"] { --sheen-rgb:244 160 120; }
+  :root[data-theme="dark"][data-wallpaper-period="dusk"] { --sheen-rgb:168 160 236; }
+  :root[data-theme="dark"][data-wallpaper-period="night"] { --sheen-rgb:130 166 230; }
   :root[data-wallpaper-motion="off"], :root[data-page-visible="false"] { --scenery-play:paused; }
-  :where([data-background="wallpaper"][data-wallpaper-motion]) .wallpaper-scene {
-    animation:coastal-pan 15s ease-in-out -6s infinite alternate;
-    animation-play-state:var(--scenery-play,running);
-  }
-  :where([data-background="wallpaper"][data-wallpaper-motion]) .wallpaper-scene::after {
-    content:""; position:absolute; inset:-18%; pointer-events:none;
+
+  /* Sky light over the photograph: a bloom where the sun stands, warmth along the horizon
+     near sunrise and sunset, and faint cool sky glow at night. */
+  :where([data-background="wallpaper"]) .wallpaper-scene::after {
+    content:""; position:absolute; inset:-6%; pointer-events:none;
     background:
-      linear-gradient(113deg,transparent 9%,rgb(var(--coast-light) / .12) 18%,rgb(var(--coast-light) / .55) 24%,transparent 34% 55%,rgb(var(--coast-light) / .40) 67%,transparent 78%),
-      radial-gradient(ellipse 42% 36% at 23% 45%,rgb(var(--coast-light) / .42),transparent 82%);
-    animation:coastal-light 8s ease-in-out -3s infinite alternate;
-    animation-play-state:var(--scenery-play,running);
+      radial-gradient(ellipse 50% 44% at calc((6% + var(--sun-x) * 100%) / 1.12) calc((6% + var(--sun-y) * 100%) / 1.12),
+        rgb(var(--sun-rgb) / calc(var(--sun-glow) * .5)), rgb(var(--sun-rgb) / calc(var(--sun-glow) * .16)) 44%, transparent 74%),
+      linear-gradient(180deg, transparent 6%, rgb(var(--sun-rgb) / calc(var(--horizon-glow) * .24)) 18%, transparent 34%),
+      radial-gradient(ellipse 70% 42% at 50% 0%, rgb(var(--sun-rgb) / calc(var(--night-glow) * .2)), transparent 72%);
   }
+
+  /* Panel light. The canvas follows the reader inside each reading surface. */
   :where([data-background="wallpaper"][data-wallpaper-motion]) :is(.home-page.shell,.document-panel) {
     position:relative; isolation:isolate;
+    box-shadow:0 12px 44px #10243a14, inset 0 1px 0 rgb(255 255 255 / .7);
+  }
+  :where([data-background="wallpaper"][data-wallpaper-motion][data-theme="dark"]) :is(.home-page.shell,.document-panel) {
+    box-shadow:0 12px 44px #10243a14, inset 0 1px 0 rgb(255 255 255 / .06);
   }
   /* Only this decoration clips. Page navigation and reading outlines still stick to the viewport. */
   :where([data-background="wallpaper"][data-wallpaper-motion]) .coastal-field {
     display:block; position:absolute; inset:0; z-index:-1; overflow:clip;
     border-radius:inherit; pointer-events:none;
-    --tide-mask:linear-gradient(105deg,#0009,rgb(0 0 0 / .30) 23%,rgb(0 0 0 / .50) 56%,#000 82%);
     --tide-height:100svh;
+    --light-strength:1;
+    /* Where the sun enters, as a share of the light layers (136% of the canvas): from just past
+       the left edge in the evening to just past the right edge in the morning. */
+    --sun-at:calc((.04 + var(--sun-x) * .92) * 100%);
   }
-  .home-page .coastal-field {
-    --upper-arc:72% 58% at 81% -23%;
-    --upper-edge:var(--ribbon-edge);
-  }
+  .coastal-field--reading { --light-strength:.72; }
   .coastal-reflections {
     position:sticky; top:0; width:100%; height:min(100%,var(--tide-height));
-    overflow:clip; mask-image:var(--tide-mask);
+    overflow:clip;
+    /* Light enters at the top and is strongest on the sun's side. */
+    mask-image:
+      linear-gradient(#000 0%, rgb(0 0 0 / .62) 58%, rgb(0 0 0 / .3) 100%),
+      linear-gradient(calc(180deg + var(--sun-side) * 90deg), #000, rgb(0 0 0 / .52));
+    mask-composite:intersect;
+    -webkit-mask-composite:source-in;
+    translate:calc(var(--light-x, 0) * -12px) calc(var(--light-y, 0) * -7px);
+    opacity:var(--light-strength);
+    /* A low sun rakes the glass and reflects strongly; a high midday sun stays diffuse. */
+    --sheen:calc(var(--sheen-alpha) * (.55 + var(--sun-glow) * .45));
   }
   .coastal-reflections::before,.coastal-reflections::after {
-    content:""; position:absolute; inset:-13% -16% -14%;
-    transform-origin:69% 45%;
+    content:""; position:absolute; inset:-14% -18% -16%;
+    transform-origin:var(--sun-at) 0;
   }
+  /* Key light: the sun's pool entering at the top edge, with faint bounce light opposite. */
   .coastal-reflections::before {
     background:
-      radial-gradient(ellipse var(--upper-arc,81% 73% at 64% -24%),
-        transparent 67%,rgb(var(--ribbon-color) / .14) 77%,rgb(var(--ribbon-color) / .56) 85%,
-        rgb(var(--upper-edge,var(--ribbon-edge)) / .90) 89%,rgb(var(--ribbon-deep) / .37) 91%,transparent 99%),
-      radial-gradient(ellipse 63% 76% at 7% 138%,
-        transparent 72%,rgb(var(--ribbon-deep) / .20) 83%,rgb(var(--ribbon-color) / .40) 89%,
-        rgb(var(--ribbon-edge) / .56) 91%,transparent 98%);
-    animation:coastal-ribbon 8s ease-in-out -3s infinite alternate;
-    animation-play-state:var(--scenery-play,running);
+      radial-gradient(ellipse 56% 50% at var(--sun-at) 2%,
+        rgb(var(--sun-rgb) / calc(var(--pool-alpha) * (.45 + var(--sun-glow) * .55))),
+        rgb(var(--sun-rgb) / calc(var(--pool-alpha) * (.45 + var(--sun-glow) * .55) * .32)) 42%, transparent 74%),
+      radial-gradient(ellipse 42% 36% at calc(100% - var(--sun-at)) 98%, rgb(var(--ribbon-deep) / var(--bounce-alpha)), transparent 72%);
   }
+  /* Specular sheen: the sky's reflection as one soft arc around the sun, with a glossy core,
+     and a quieter counter-arc rising from the opposite lower corner. */
   .coastal-reflections::after {
     background:
-      radial-gradient(ellipse 91% 105% at 83% 137%,
-        transparent 73%,rgb(var(--ribbon-deep) / .18) 82%,rgb(var(--ribbon-deep) / .44) 87%,
-        rgb(var(--ribbon-edge) / .82) 90%,rgb(var(--ribbon-color) / .34) 93%,transparent 100%),
-      radial-gradient(ellipse 65% 68% at 103% 15%,rgb(var(--ribbon-color) / .25),transparent 87%);
-    animation:coastal-ripple 10s ease-in-out -5s infinite alternate;
-    animation-play-state:var(--scenery-play,running);
+      radial-gradient(ellipse 78% 66% at var(--sun-at) -24%,
+        transparent 59%, rgb(var(--sheen-rgb) / calc(var(--sheen) * .22)) 71%,
+        rgb(var(--sheen-rgb) / var(--sheen)) 81%, rgb(var(--ribbon-edge) / calc(var(--sheen) * var(--gloss))) 83.5%,
+        rgb(var(--sheen-rgb) / calc(var(--sheen) * .55)) 86.5%, transparent 96%),
+      radial-gradient(ellipse 64% 72% at calc(100% - var(--sun-at) * .6) 140%,
+        transparent 72%, rgb(var(--ribbon-deep) / calc(var(--sheen) * .34)) 84%, rgb(var(--sheen-rgb) / calc(var(--sheen) * .5)) 90%, transparent 97%);
   }
-  .coastal-field--reading {
-    --tide-mask:linear-gradient(100deg,#0009,rgb(0 0 0 / .27) 22%,rgb(0 0 0 / .34) 70%,#000c);
+  :root[data-theme="dark"] .coastal-reflections { --ribbon-edge:176 208 226; }
+  :root[data-theme="dark"]:is([data-wallpaper-period="dawn"],[data-wallpaper-period="sunrise"],[data-wallpaper-period="late-afternoon"],[data-wallpaper-period="sunset"]) .coastal-reflections { --ribbon-edge:236 196 170; }
+  :root[data-theme="dark"]:is([data-wallpaper-period="dusk"],[data-wallpaper-period="night"]) .coastal-reflections { --ribbon-edge:190 196 240; }
+
+  /* Liquid Glass: the toolbar and the section navigator catch the light on their edge.
+     The highlight stands at the sun's position and leans toward a nearby pointer. */
+  .header-wrap::before,.home-page .home-jumps::before {
+    content:""; position:absolute; inset:-1px; z-index:2; border-radius:inherit; padding:1px; pointer-events:none;
+    background:
+      radial-gradient(170px 64px at var(--rim-x,72%) 0, rgb(var(--rim-rgb) / var(--rim-peak)), transparent 74%),
+      linear-gradient(180deg, rgb(255 255 255 / var(--rim-base)), transparent 58%);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+    mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+    opacity:calc(.5 + var(--sun-glow) * .5);
   }
-  /* Temper the brightest stroke on dark paper, including where long lines reach the right margin. */
-  :root[data-theme="dark"] .coastal-reflections {
-    opacity:.71;
-    --ribbon-edge:78 113 129;
-  }
-  :root[data-theme="dark"]:is([data-wallpaper-period="dawn"],[data-wallpaper-period="sunrise"],[data-wallpaper-period="sunset"]) .coastal-reflections { --ribbon-edge:133 99 95; }
-  :root[data-theme="dark"]:is([data-wallpaper-period="dusk"],[data-wallpaper-period="night"]) .coastal-reflections { --ribbon-edge:98 107 151; }
-  @keyframes coastal-pan {
-    from { transform:translate(-2.8%,1.05%) scale(1.085); }
-    to { transform:translate(2.8%,-1.35%) scale(1.155); }
-  }
-  @keyframes coastal-light {
-    from { transform:translate(-10%,-1%) skewX(-4deg); opacity:.48; }
-    to { transform:translate(10%,2%) skewX(4deg); opacity:.91; }
-  }
-  @keyframes coastal-ribbon {
-    from { transform:translate(-7%,-10%) rotate(-9deg) scaleY(.91); }
-    to { transform:translate(6%,12%) rotate(8deg) scaleY(1.12); }
-  }
-  @keyframes coastal-ripple {
-    from { transform:translate(4%,10%) rotate(6deg); }
-    to { transform:translate(-5%,-9%) rotate(-7deg); }
+  .header-wrap::after,.home-page .home-jumps::after {
+    content:""; position:absolute; inset:0; z-index:-1; border-radius:inherit; pointer-events:none;
+    background:radial-gradient(260px 42px at var(--rim-x,72%) 0, rgb(var(--sun-rgb) / var(--rim-glow)), transparent 76%);
+    opacity:calc(.4 + var(--sun-glow) * .6);
   }
   @media (max-width:680px) {
-    .home-page .coastal-field { --upper-arc:71% 50% at 82% -23%; }
-    .coastal-field {
-      --tide-height:88svh;
-      --tide-mask:linear-gradient(100deg,#0008,#0005 30%,#0008 63%,#000e);
-    }
-    .coastal-field--reading { --tide-mask:linear-gradient(100deg,#0009,#0004 29%,#0006 73%,#000a); }
+    .coastal-field { --tide-height:88svh; }
     .coastal-reflections {
       /* Fade the end of the shorter mobile canvas into the rest of the paper. */
-      mask-image:var(--tide-mask),linear-gradient(#000 70%,transparent);
-      mask-composite:intersect;
+      mask-image:
+        linear-gradient(#000 0%, rgb(0 0 0 / .6) 52%, transparent 100%),
+        linear-gradient(calc(180deg + var(--sun-side) * 90deg), #000, rgb(0 0 0 / .52));
     }
     .coastal-reflections::before,.coastal-reflections::after { inset:-8% -34% -12% -22%; }
   }
 }
+@media screen and (prefers-reduced-motion:no-preference) {
+  /* The scenery arrives once, the first page of a visit, then holds still while you read. */
+  :root[data-intro="play"][data-background="wallpaper"] .wallpaper-scene { animation:scene-settle 2600ms var(--ease-out-soft,cubic-bezier(.16,1,.3,1)) both; }
+  /* Each layer breathes and drifts on its own long period, so nothing oscillates near the
+     0.2 Hz Apple flags. Every full cycle divides one hour, matching the hour-long clock phase
+     in --ambient-t: the light continues from page to page, even across the wrap, and the
+     composite repeats at most once an hour. */
+  :where([data-background="wallpaper"]) .wallpaper-scene::after {
+    animation:sky-breathe 40s linear infinite, sky-drift-x 60s ease-in-out infinite alternate, sky-drift-y 50s ease-in-out infinite alternate;
+    animation-delay:calc(var(--ambient-t, 0) * -1s);
+    animation-play-state:var(--scenery-play,running);
+  }
+  .coastal-reflections::before {
+    animation:pool-breathe 45s linear infinite, pool-drift-x 75s ease-in-out infinite alternate, pool-drift-y 36s ease-in-out infinite alternate;
+    animation-delay:calc(var(--ambient-t, 0) * -1s);
+    animation-play-state:var(--scenery-play,running);
+  }
+  .coastal-reflections::after {
+    animation:sheen-breathe 30s linear infinite, sheen-drift-x 45s ease-in-out infinite alternate, sheen-drift-y 72s ease-in-out infinite alternate;
+    animation-delay:calc(var(--ambient-t, 0) * -1s);
+    animation-play-state:var(--scenery-play,running);
+  }
+  @keyframes scene-settle { from { transform:scale(1.06); } }
+  @keyframes sky-breathe { 0%,100% { opacity:.88; } 23% { opacity:1; } 41% { opacity:.92; } 64% { opacity:.99; } 82% { opacity:.9; } }
+  @keyframes sky-drift-x { from { translate:-1.2% 0; } to { translate:1.2% 0; } }
+  @keyframes sky-drift-y { from { transform:translateY(-.8%); } to { transform:translateY(.8%); } }
+  @keyframes pool-breathe { 0%,100% { opacity:.84; } 31% { opacity:1; } 52% { opacity:.9; } 77% { opacity:.97; } }
+  @keyframes pool-drift-x { from { translate:-2.4% 0; } to { translate:2.4% 0; } }
+  @keyframes pool-drift-y { from { transform:translateY(-1.8%) scale(1); } to { transform:translateY(1.8%) scale(1.04); } }
+  @keyframes sheen-breathe { 0%,100% { opacity:.8; } 27% { opacity:1; } 49% { opacity:.88; } 71% { opacity:.97; } 88% { opacity:.86; } }
+  @keyframes sheen-drift-x { from { translate:-2% 0; } to { translate:2% 0; } }
+  @keyframes sheen-drift-y { from { transform:translateY(-1.5%) scale(1); } to { transform:translateY(1.5%) scale(1.03); } }
+}
 @media (prefers-contrast:more), (prefers-reduced-transparency:reduce), (forced-colors:active) {
   .wallpaper-scene { animation:none; }
   :root[data-background] .wallpaper-scene::after,
-  :root[data-background] .coastal-field { display:none; animation:none; }
+  :root[data-background] .coastal-field,
+  .header-wrap::before,.header-wrap::after,.home-page .home-jumps::before,.home-page .home-jumps::after { display:none; animation:none; }
 }
 .brand { display:inline-flex; align-items:center; gap:9px; font-size:18px; font-weight:400; }
 .brand-sign { width:30px; height:30px; flex:none; border-radius:9px; }

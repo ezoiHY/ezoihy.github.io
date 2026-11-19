@@ -24,12 +24,19 @@ description: Yu Han (Harry). Education at SCUT, research at PAIRS Lab and the In
     </figure>
   </header>
   <nav class="folio-jumps" aria-label="About page sections">
-    <a href="#background">Background</a><a href="#education">Education</a><a href="#experience">Experience</a><a href="#awards">Honors</a><a href="#contact">Contact</a>
+    <a href="#background">Background</a><a href="#timeline">Timeline</a><a href="#education">Education</a><a href="#experience">Experience</a><a href="#awards">Honors</a><a href="#contact">Contact</a>
   </nav>
   <section class="dossier-row" id="background">
     <h2>Background</h2>
     <div class="prose">{% for paragraph in profile.bio offset: 1 %}{{ paragraph | markdownify }}{% endfor %}
       <p>I keep <a href="{{ '/posts/' | relative_url }}">notes on what I learn and build</a>. <a href="{{ '/posts/hello-world/' | relative_url }}">Why I started this blog</a> describes how I use them.</p>
+    </div>
+  </section>
+  <section class="dossier-row" id="timeline">
+    <h2>Timeline</h2>
+    <div class="dossier-timeline">
+      {% include trajectory.liquid %}
+      <p class="trajectory-caption">Dates with only a year span the whole year; the internship is drawn by month. Entries are listed below.</p>
     </div>
   </section>
   <section class="dossier-row" id="education">
